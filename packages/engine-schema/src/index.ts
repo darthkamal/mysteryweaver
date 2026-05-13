@@ -6,3 +6,6 @@ export type { Characters, Character, PublicProfile, PrivateProfile } from './cha
 
 export { AssetsSchema } from './assets.schema.js'
 export type { Assets, Asset, AssetType, Visibility } from './assets.schema.js'
+
+export { GmScriptSchema } from './gm-script.schema.js'
+export type { GmScript, ScriptEntry, NpcRosterEntry, NpcEvent } from './gm-script.schema.js'
