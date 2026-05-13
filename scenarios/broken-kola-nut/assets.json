@@ -1,0 +1,121 @@
+{
+  "assets": [
+    {
+      "id": "evidence_1",
+      "type": "evidence",
+      "title": "The Thorn",
+      "content": "A small, sharp thorn found near Ezeudu's son's body. It doesn't match any plants growing in that area.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_2",
+      "type": "evidence",
+      "title": "The Stone",
+      "content": "A small, strangely carved stone, smooth and worn, found near the first victim. It feels oddly warm to the touch.",
+      "imageUrl": null,
+      "visibility": "held",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_3",
+      "type": "evidence",
+      "title": "The Powder Residue",
+      "content": "A faint residue of a strange-smelling powder is found on the rim of the Mbaino elder's drinking gourd.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_4",
+      "type": "evidence",
+      "title": "The Ceremonial Knife",
+      "content": "A ceremonial knife, missing a small piece from its blade, found near Ikemefuna's body. The markings on the blade match those used by Umuofia's warriors, but the craftsmanship is slightly different.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": { "npcEvent": "ikemefuna_dies" }
+    },
+    {
+      "id": "omen_1",
+      "type": "omen",
+      "title": "The Vultures",
+      "content": "A flock of vultures circles over Okonkwo's compound. This is a sign of impending misfortune.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "omen_2",
+      "type": "omen",
+      "title": "The Burning Barn",
+      "content": "A player character has a recurring dream of a yam barn being consumed by fire — a symbol of Umuofia's destruction.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "oracle_1",
+      "type": "oracle",
+      "title": "The Serpent's Skin",
+      "content": "The python sheds its skin, but the serpent remains. Look to the one who heals, for he also holds the power to harm.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "oracle_2",
+      "type": "oracle",
+      "title": "The Scales",
+      "content": "The Earth cries out for balance, the scales tip precariously.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_1",
+      "type": "rumor",
+      "title": "The Mbaino Bride",
+      "content": "I heard Ezeudu's son boasting that he would take another wife from Mbaino. Perhaps they killed him to prevent it!",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_2",
+      "type": "rumor",
+      "title": "Chielo's Strange Behaviour",
+      "content": "Some say Chielo has been acting strangely lately, muttering to herself and making pronouncements that don't make sense.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_3",
+      "type": "rumor",
+      "title": "Nwoye and Ikemefuna",
+      "content": "Nwoye has been spending a lot of time with Ikemefuna. The two seem closer every day.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rel_card_1",
+      "type": "relationship",
+      "title": "Ojiugo and Amadi",
+      "content": "Ojiugo often seeks out Amadi for herbal remedies, even for minor ailments. They seem to have a close rapport.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rel_card_2",
+      "type": "relationship",
+      "title": "The Debt",
+      "content": "Nwakibie has lent a large sum of yams to Okonkwo, and is becoming impatient for repayment.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    }
+  ]
+}
