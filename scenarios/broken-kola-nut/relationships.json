@@ -1,0 +1,31 @@
+{
+  "edges": [
+    { "from": "okonkwo",  "to": "obierika",   "label": "Closest friend",    "public": true  },
+    { "from": "okonkwo",  "to": "ezinma",     "label": "Favourite daughter", "public": true  },
+    { "from": "okonkwo",  "to": "nwakibie",   "label": "Debt",               "public": false },
+    { "from": "okonkwo",  "to": "ikemefuna",  "label": "Guardian",           "public": true  },
+    { "from": "okonkwo",  "to": "chielo",     "label": "Respect/Fear",       "public": true  },
+    { "from": "okonkwo",  "to": "amadi",      "label": "Wary acquaintance",  "public": true  },
+    { "from": "amadi",    "to": "ojiugo",     "label": "Forbidden love",     "public": false },
+    { "from": "amadi",    "to": "chielo",     "label": "Manipulation",       "public": false },
+    { "from": "amadi",    "to": "okonkwo",    "label": "Jealousy/obstacle",  "public": false },
+    { "from": "nwakibie", "to": "ojiugo",     "label": "Affair",             "public": false },
+    { "from": "nwakibie", "to": "okonkwo",    "label": "Creditor",           "public": false },
+    { "from": "chielo",   "to": "ezinma",     "label": "Spiritual bond",     "public": true  },
+    { "from": "ezinma",   "to": "okonkwo",    "label": "Protective love",    "public": true  },
+    { "from": "ikemefuna","to": "nwoye",      "label": "Friendship",         "public": true  },
+    { "from": "obierika", "to": "okonkwo",    "label": "Counsel",            "public": true  }
+  ],
+  "relationshipCards": [
+    {
+      "assetId": "rel_card_1",
+      "content": "Ojiugo often seeks out Amadi for herbal remedies, even for minor ailments. They seem to have a close rapport.",
+      "revealsEdge": { "from": "ojiugo", "to": "amadi" }
+    },
+    {
+      "assetId": "rel_card_2",
+      "content": "Nwakibie has lent a large sum of yams to Okonkwo, and is becoming impatient for repayment.",
+      "revealsEdge": { "from": "nwakibie", "to": "okonkwo" }
+    }
+  ]
+}
