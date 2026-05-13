@@ -1,0 +1,182 @@
+{
+  "characters": [
+    {
+      "id": "okonkwo",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Okonkwo",
+        "title": "The Fearless Warrior",
+        "avatarUrl": null,
+        "bio": "A man of titles and hard-won reputation, Okonkwo is one of the greatest warriors Umuofia has ever seen. He has earned three titles and is feared and respected throughout the nine villages."
+      },
+      "private": {
+        "secretObjectives": [
+          "Maintain your reputation — let no one question your strength, courage, or loyalty to Umuofia.",
+          "Repay your debt to Nwakibie discreetly before the accusation phase.",
+          "Shape Nwoye's future — guide him to become a strong warrior, even if it requires harshness.",
+          "Discover the source of the recent deaths and protect Umuofia."
+        ],
+        "startingInventory": { "yams": 5, "oracle_bones": 0 },
+        "hiddenKnowledge": [
+          "You owe Nwakibie a large debt of yams. This gnaws at you — a reminder of your father's failures.",
+          "Your crippling fear of failure, inherited from your father Unoka's legacy. You will do anything to avoid ending up like him.",
+          "Your harsh treatment of Nwoye and growing frustration with his perceived weakness.",
+          "Your suspicion that someone within Umuofia might be betraying the village to Mbaino."
+        ],
+        "roleplayingNotes": "Speak with a firm, commanding voice. Be decisive and authoritative. Be quick to anger when challenged or when you perceive weakness. Show respect for tradition but despise laziness and failure. Never show your fear of failure openly."
+      }
+    },
+    {
+      "id": "amadi",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Amadi",
+        "title": "The Medicine Man",
+        "avatarUrl": null,
+        "bio": "Amadi is the respected medicine man of Umuofia. His knowledge of herbs, roots, and the healing arts is renowned throughout the nine villages. He is calm, helpful, and trusted with bodies and secrets alike."
+      },
+      "private": {
+        "secretObjectives": [
+          "Avenge yourself — carry out your plan to destabilize Umuofia and punish those who embody the traditions that have marginalized you.",
+          "Be with Ojiugo — you are consumed by a forbidden love for Okonkwo's youngest wife.",
+          "Disrupt the village — sow discord and chaos using your knowledge and position.",
+          "Maintain your cover — above all, do not get caught. Keep your image as a trusted healer."
+        ],
+        "startingInventory": { "yams": 6, "oracle_bones": 0 },
+        "hiddenKnowledge": [
+          "You are secretly sterile. This is the root of your resentment — a profound shame in a society that prizes virility.",
+          "You have an elaborate plan to murder key figures in Umuofia using poisons derived from rare plants.",
+          "You are manipulating Chielo with hallucinogenic herbs, making her pronouncements unreliable and her mind susceptible to your influence.",
+          "You have secret communications with Mbaino, using the land dispute to your advantage.",
+          "You recently treated Ezeudu's son for a supposed snake bite shortly before his death — you applied a poisoned poultice to the wound.",
+          "You have poisoned the Mbaino elder's drinking gourd."
+        ],
+        "roleplayingNotes": "Be deceptive at all times. Maintain a calm, helpful, and concerned demeanour. Offer assistance freely but always with an ulterior motive. Be charming and persuasive — people trust you, use that trust. Be observant and gather information. Be patient; your plan is unfolding gradually. You are consumed by jealousy of Okonkwo and anyone who embodies the traditional values you hate."
+      }
+    },
+    {
+      "id": "chielo",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Chielo",
+        "title": "Priestess of Agbala",
+        "avatarUrl": null,
+        "bio": "Chielo is the priestess of the Oracle of the Hills and Caves, the voice of the gods in Umuofia. In ordinary moments she is a widow living a simple life, but when the spirit of Agbala possesses her she becomes a vessel of divine power, feared and revered throughout the nine villages."
+      },
+      "private": {
+        "secretObjectives": [
+          "Obey Agbala's will — understand and interpret Agbala's pronouncements, even when they are unclear or frightening.",
+          "Protect Umuofia — use your powers and influence to safeguard the village from threatening forces.",
+          "Conceal your weakness — hide your declining health. If people lose faith in your ability to commune with Agbala, all will be lost."
+        ],
+        "startingInventory": { "yams": 4, "oracle_bones": 1 },
+        "hiddenKnowledge": [
+          "You are aware of your own declining health and increasing difficulty controlling the spirit of Agbala. You fear your pronouncements are becoming unreliable.",
+          "You are being subtly manipulated by Amadi, who gives you herbs that alter your perceptions. You are completely unaware of this manipulation."
+        ],
+        "roleplayingNotes": "Speak with great authority and conviction, especially when possessed by Agbala. Be enigmatic and cryptic — your pronouncements should be open to interpretation, veiled in metaphor. Show signs of physical weakness and mental strain (fatigue, confusion) but try to conceal them. When possessed by Agbala, your behaviour should change dramatically: voice deeper, movements more forceful, pronouncements more absolute. The GM will signal when you are possessed."
+      }
+    },
+    {
+      "id": "ezinma",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Ezinma",
+        "title": "The Child of Spirits",
+        "avatarUrl": null,
+        "bio": "Ezinma is Okonkwo's favourite daughter, a girl touched by the spirit world. They say she is an ogbanje, a child who has returned after many lives. She is perceptive, intelligent, and possesses a quiet strength that belies her age."
+      },
+      "private": {
+        "secretObjectives": [
+          "Uncover the truth — find the source of the evil that has infected Umuofia. Your instincts tell you these deaths are not what they seem.",
+          "Protect your father — you love and admire Okonkwo but sense his vulnerability.",
+          "Understand the whispers — you have overheard fragments of conversations that could be the key to the mystery.",
+          "Maintain your connection to the spirit world — preserve your bond with Chielo and your link to Agbala."
+        ],
+        "startingInventory": { "yams": 3, "oracle_bones": 1 },
+        "hiddenKnowledge": [
+          "You have overheard whispers of a forbidden romance between two villagers, but you do not know who they are.",
+          "You found a small, strangely carved stone near the body of Ezeudu's son. It feels warm to the touch and you sense it is important.",
+          "You have been having vivid dreams filled with cryptic symbols and unsettling images related to the events in Umuofia.",
+          "You have noticed a change in Chielo's behaviour — she seems more agitated and distracted, and her pronouncements are less clear."
+        ],
+        "roleplayingNotes": "Be quiet and observant, but when you speak, make your words count. Be inquisitive and thoughtful — ask questions and pay attention to details others overlook. Show a deep understanding of Umuofia's traditions especially those connected to the spirit world. Trust your intuition. If something feels wrong, it probably is."
+      }
+    },
+    {
+      "id": "nwakibie",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Nwakibie",
+        "title": "The Wealthy Man",
+        "avatarUrl": null,
+        "bio": "Nwakibie is a man of many yams, multiple wives, and considerable influence. He has earned his position through hard work and shrewd dealings, and he is generous with his wealth — but he always expects a return on his investment."
+      },
+      "private": {
+        "secretObjectives": [
+          "Maintain your wealth and status — protect your position and possessions. Your influence in Umuofia must remain strong.",
+          "Discover your betrayer — you suspect someone in Umuofia is working against you, possibly in league with the neighbouring village.",
+          "Resolve the conflict with Mbaino in a way that benefits you.",
+          "Continue your secret affair discreetly — discovery would be disastrous."
+        ],
+        "startingInventory": { "yams": 10, "oracle_bones": 0 },
+        "hiddenKnowledge": [
+          "You are having a secret affair with Ojiugo, Okonkwo's youngest wife. This is a dangerous liaison with severe consequences if discovered.",
+          "You know that someone within Umuofia is passing information to Mbaino, undermining your efforts and putting you at risk.",
+          "You are considering drastic measures to resolve the Mbaino conflict — measures that could be seen as controversial."
+        ],
+        "roleplayingNotes": "Project an air of confidence and authority. Be generous with praise but always with underlying self-interest — everything is a transaction. Value wealth, status, and power above all else. Be shrewd and calculating. Be subtly paranoid; you suspect treachery everywhere. Be extremely discreet about your secrets."
+      }
+    },
+    {
+      "id": "obierika",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Obierika",
+        "title": "The Voice of Reason",
+        "avatarUrl": null,
+        "bio": "Obierika is a man of thought and reason, a respected member of the village and Okonkwo's closest friend. He values tradition but is not afraid to question it when necessary. He believes in fairness, justice, and the importance of maintaining peace."
+      },
+      "private": {
+        "secretObjectives": [
+          "Maintain peace — prevent further conflict and division within Umuofia.",
+          "Uncover the truth — find the real cause of the murders in a way that minimises disruption and avoids bloodshed.",
+          "Protect Okonkwo — your friend can be impulsive and reckless. You must guide him and prevent a terrible mistake.",
+          "Ensure justice — see that justice is served in a way that is fair and consistent with the values of Umuofia."
+        ],
+        "startingInventory": { "yams": 7, "oracle_bones": 0 },
+        "hiddenKnowledge": [
+          "You are secretly questioning some of the recent pronouncements of the Oracle and are concerned about Chielo's health.",
+          "You are aware of the growing rift between Okonkwo and Nwoye.",
+          "You have overheard younger villagers expressing frustration with Umuofia's traditions and a desire for change."
+        ],
+        "roleplayingNotes": "Be calm, rational, and diplomatic. Speak thoughtfully and deliberately. Listen carefully and consider all perspectives before making a judgement. Question tradition respectfully but always with the best interests of Umuofia in mind. Be a voice of reason and moderation. Be loyal to your friends but willing to challenge them."
+      }
+    },
+    {
+      "id": "ikemefuna",
+      "variantFlag": { "includedIn": ["7-player"] },
+      "public": {
+        "name": "Ikemefuna",
+        "title": "The Outsider",
+        "avatarUrl": null,
+        "bio": "Ikemefuna came to Umuofia as a hostage, a peace offering from his village after an offence was committed. He now lives under Okonkwo's care, adapting to the ways of Umuofia, learning the customs, and forming new bonds."
+      },
+      "private": {
+        "secretObjectives": [
+          "Protect yourself — ensure your safety and well-being in this unfamiliar and potentially dangerous environment.",
+          "Adapt to Umuofia — learn the customs and traditions and try to fit in, at least outwardly.",
+          "Find your place — determine your role in this new community and build meaningful relationships if possible.",
+          "Eventually return home — you long for your village and your family, though you know it may not be possible for a long time."
+        ],
+        "startingInventory": { "yams": 2, "oracle_bones": 0 },
+        "hiddenKnowledge": [
+          "You carry a secret message from your home village warning of a potential alliance between Mbaino and a treacherous individual within Umuofia. You are unsure who to trust with this information.",
+          "You are aware of the growing tension between Okonkwo and Nwoye and fear it could escalate into violence.",
+          "You are deeply homesick and miss your family terribly, but you hide your feelings to avoid appearing weak."
+        ],
+        "roleplayingNotes": "Be cautious and observant. Speak softly and respectfully, especially to those in authority. Be polite and deferential. Try to follow Umuofia's customs even if you do not fully understand them. Be hesitant to reveal your secret message until you are absolutely certain you can trust someone. Be torn between your desire to fit in and your longing for home."
+      }
+    }
+  ]
+}
