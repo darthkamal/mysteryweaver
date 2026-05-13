@@ -5,3 +5,8 @@ dist/
 .env
 .env.local
 .firebase/
+coverage/
+*.log
+.DS_Store
+build/
+.cache/
