@@ -1,2 +1,2 @@
-// schemas and types exported here as they are built
-export {}
+export { ManifestSchema } from './manifest.schema.js'
+export type { Manifest, Currency, Phase } from './manifest.schema.js'
