@@ -1,0 +1,142 @@
+{
+  "timeline": [
+    {
+      "phaseId": "introduction",
+      "entries": [
+        {
+          "time": "0:00",
+          "label": "Introduction & Welcome",
+          "type": "gm_monologue",
+          "script": "Welcome, everyone, to Umuofia! Tonight, we step back in time to a world of tradition, honour, and the ever-present spirits. I am your Game Master, and I will be guiding you through this story. You will each be playing a character from Umuofia, a prominent villager with their own secrets and objectives. You'll be working together — and sometimes against each other — to solve a series of murders that have thrown the village into turmoil. Your goal is to uncover the truth: who committed the murders, why they did it, and how. You'll do this by interacting with each other in character, investigating locations, gathering clues, and sharing information — or keeping it secret! I will be playing all the Non-Player Characters you encounter. Remember: this is a game of roleplaying, deduction, and collaboration. Stay in character as much as possible, listen carefully to others, and be prepared to adapt your theories as new information comes to light. Please take your character folders. Do not share the contents with anyone else. Read everything carefully. Take five minutes to familiarise yourselves with your roles.",
+          "gmTip": "Speak slowly, clearly, and warmly. Emphasise the setting and gravity. Distribute character folders now."
+        },
+        {
+          "time": "0:05",
+          "label": "Character Introductions",
+          "type": "player_prompt",
+          "script": "Let's go around the circle. One by one, introduce yourselves in character. Tell us who you are, your role in Umuofia, and your initial feelings about the recent unsettling events.",
+          "gmTip": "Guide the introductions. Encourage players to interact with each other. Praise good roleplaying. Note early alliances and conflicts — they will shape the game."
+        }
+      ]
+    },
+    {
+      "phaseId": "investigation",
+      "entries": [
+        {
+          "time": "0:15",
+          "label": "The Ndichie's Summons",
+          "type": "npc_dialogue",
+          "npcId": "ezeudu",
+          "script": "Children of Umuofia, you have been summoned. A great darkness has fallen upon our land. Ezeudu's son, a promising young warrior, was found dead near the Evil Forest. The spirits are angered. And now, a respected elder from Mbaino has also died, seemingly without cause. The drums of war are beginning to sound.",
+          "gmTip": "Use a frail but authoritative voice. Pause for effect. Do NOT give direct clues — the elders set the stage, they do not solve the mystery."
+        },
+        {
+          "time": "0:20",
+          "label": "The Second Elder Speaks",
+          "type": "npc_dialogue",
+          "npcId": "elder_2",
+          "script": "We, the ndichie, are divided. Some believe these deaths are the work of evil spirits, angered by some transgression. Others whisper of treachery, of enemies within our own ranks. We are too old and too set in our ways to see clearly. We need your help. You, the strong and the wise of Umuofia, must uncover the truth and restore balance before it is too late.",
+          "gmTip": "Use a worried, urgent tone. Allow players to ask questions. Elders should be vague and fearful, emphasising the need for the players to investigate."
+        },
+        {
+          "time": "0:25",
+          "label": "Initial Clue Distribution",
+          "type": "clue_distribution",
+          "script": "The ndichie grant you leave to investigate. Speak to anyone, examine any location, seek guidance from the Oracle — but be warned, the truth may be more dangerous than the ignorance.",
+          "gmTip": "Distribute: rel_card_2 (The Debt) to Obierika. evidence_2 (The Stone) should already be with Ezinma per her character sheet. Begin open investigation phase."
+        },
+        {
+          "time": "0:30",
+          "label": "Open Investigation",
+          "type": "gm_note",
+          "script": "Players investigate freely. Facilitate conversations, roleplay NPCs as needed, and distribute clues based on player actions.",
+          "gmTip": "Key investigation triggers: (1) If players consult Chielo: distribute oracle_1. (2) If players investigate the Evil Forest: distribute evidence_1. (3) If players examine the elder's drinking gourd: distribute evidence_3. (4) If players question Amadi directly: he is helpful and cooperative — this is his cover. (5) If players notice Chielo's strange behaviour: distribute rumor_2."
+        },
+        {
+          "time": "1:00",
+          "label": "Mid-Game Pulse Check",
+          "type": "gm_note",
+          "script": "Check where suspicions lie and adjust clue distribution accordingly.",
+          "gmTip": "Check where suspicions lie. If players are not suspecting Amadi, consider distributing oracle_1 or omen_1. If the Nwakibie/Ojiugo affair is undetected and it would add drama, make rel_card_1 available. Keep the Yam economy active — prompt players to consider bribes if investigations stall."
+        },
+        {
+          "time": "1:30",
+          "label": "Approaching Accusation",
+          "type": "gm_note",
+          "script": "Begin steering toward the accusation phase.",
+          "gmTip": "Begin steering toward the accusation phase. Ensure at least evidence_1 and oracle_1 have been distributed. If Ikemefuna's fate event has not been triggered and you wish to use Evidence Card 4, trigger ikemefuna_dies now."
+        }
+      ]
+    },
+    {
+      "phaseId": "accusation",
+      "entries": [
+        {
+          "time": "2:30",
+          "label": "The Accusation Phase Begins",
+          "type": "gm_monologue",
+          "script": "The ndichie call you back together. The time for investigation has passed. Umuofia demands answers. Each of you may now formally accuse a suspect. State your accusation, your evidence, and your reasoning. The elders — and the village — are watching.",
+          "gmTip": "Players submit accusations via the app. Read out each accusation aloud for dramatic effect. After all accusations are submitted, reveal the truth as GM."
+        },
+        {
+          "time": "2:45",
+          "label": "The Reveal",
+          "type": "gm_monologue",
+          "script": "The truth, as Agbala sees it: Amadi, the medicine man — the trusted healer — is the murderer. Driven by secret shame and a burning desire for vengeance against the traditions that humiliated him, he poisoned Ezeudu's son using a thorn dipped in plant extract, and later poisoned the Mbaino elder's drinking gourd with rare herb residue. He has been manipulating Chielo with hallucinogenic herbs, corrupting the Oracle's voice. The stone near the first victim bears the markings of his trade.",
+          "gmTip": "Deliver this slowly and dramatically. Pause after naming Amadi. Allow the weight of the betrayal to land before moving to debrief."
+        }
+      ]
+    },
+    {
+      "phaseId": "debrief",
+      "entries": [
+        {
+          "time": "3:00",
+          "label": "Debrief & Secrets Revealed",
+          "type": "gm_monologue",
+          "script": "Now we step out of Umuofia. Let's reveal everyone's hidden secrets and talk about the decisions you made. Who had the most surprising secret? Who came closest to the truth? Was anyone nearly caught?",
+          "gmTip": "Go around the table. Each player reads their hidden knowledge aloud. Celebrate clever plays, missed moments, and dramatic near-misses. This is the reward for a well-played game."
+        }
+      ]
+    }
+  ],
+  "npcRoster": [
+    {
+      "id": "ezeudu",
+      "name": "Ezeudu",
+      "description": "An ancient, frail elder of Umuofia. One of the most respected of the ndichie. His son was the first victim.",
+      "portraitUrl": null,
+      "playingNotes": "Speak slowly with a trembling voice. Be authoritative despite physical fragility. He knows about the land dispute and both deaths but has no idea who is responsible. He is genuinely frightened."
+    },
+    {
+      "id": "elder_2",
+      "name": "Elder of the Ndichie",
+      "description": "A second elder, less prominent than Ezeudu but equally fearful of what is happening to Umuofia.",
+      "portraitUrl": null,
+      "playingNotes": "Worried and urgent. Emphasise division among the elders — some believe spirits, others believe treachery."
+    },
+    {
+      "id": "ojiugo",
+      "name": "Ojiugo",
+      "description": "Okonkwo's youngest wife. She is gentle and somewhat isolated within the household. Unknown to most, she is sought after by both Amadi and Nwakibie.",
+      "portraitUrl": null,
+      "playingNotes": "Be demure and cautious. She is aware of Amadi's attention but does not know his dark side. She is frightened by the deaths and uncertain who to trust."
+    },
+    {
+      "id": "nwoye",
+      "name": "Nwoye",
+      "description": "Okonkwo's son. Gentle, sensitive, and deeply uncomfortable with the harsh masculine culture of Umuofia. Close friends with Ikemefuna.",
+      "portraitUrl": null,
+      "playingNotes": "Quiet and hesitant. Flinches at conflict. He sees something wrong in the village but cannot articulate it. He is closest to Ikemefuna and will be devastated if Ikemefuna is harmed."
+    }
+  ],
+  "npcEvents": [
+    {
+      "id": "ikemefuna_dies",
+      "label": "Ikemefuna Dies",
+      "description": "The GM triggers this event when the narrative reaches the point of Ikemefuna's death. This is optional and GM-discretionary — use it if it serves the dramatic arc of your specific session.",
+      "unlocksAssets": ["evidence_4"],
+      "autoDistribute": false
+    }
+  ]
+}
