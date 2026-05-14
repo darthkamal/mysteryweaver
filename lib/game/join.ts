@@ -1,6 +1,7 @@
 import type { Firestore } from 'firebase-admin/firestore'
 import { z } from 'zod'
 import { GameError } from './types'
+import { getSession, getScenario } from './helpers'
 import { writeLog } from './log'
 
 export const JoinGameSchema = z.object({
@@ -18,6 +19,16 @@ export async function joinGame(
 ): Promise<void> {
   const { sessionId, characterId, displayName } = data
 
+  const session = await getSession(db, sessionId)
+  if (session.status !== 'lobby') throw new GameError(422, 'Session is not in lobby phase')
+
+  const scenario = await getScenario(db, session.scenarioId)
+  const character = scenario.characters.characters.find((c) => c.id === characterId)
+  if (!character) throw new GameError(404, `Character ${characterId} not found in scenario`)
+
+  if (session.characterAssignments[characterId])
+    throw new GameError(409, `Character ${characterId} is already taken`)
+
   const sessionRef = db.doc(`sessions/${sessionId}`)
   const playerRef = db.doc(`sessions/${sessionId}/players/${uid}`)
 
@@ -25,26 +36,9 @@ export async function joinGame(
     const sessionSnap = await tx.get(sessionRef)
     if (!sessionSnap.exists) throw new GameError(404, `Session ${sessionId} not found`)
 
-    const session = sessionSnap.data() as Record<string, unknown>
-    if (session['status'] !== 'lobby')
-      throw new GameError(422, 'Session is not in lobby phase')
-
-    const assignments = (session['characterAssignments'] ?? {}) as Record<string, string>
-    if (assignments[characterId])
+    const freshAssignments = (sessionSnap.data()!['characterAssignments'] ?? {}) as Record<string, string>
+    if (freshAssignments[characterId])
       throw new GameError(409, `Character ${characterId} is already taken`)
-
-    const scenarioSnap = await db.doc(`scenarios/${session['scenarioId']}`).get()
-    if (!scenarioSnap.exists) throw new GameError(404, 'Scenario not found')
-
-    const characters = (
-      (scenarioSnap.data() as Record<string, unknown>)['characters'] as Record<string, unknown>
-    )['characters'] as Array<{
-      id: string
-      private: { startingInventory: Record<string, number> }
-    }>
-
-    const character = characters.find((c) => c.id === characterId)
-    if (!character) throw new GameError(404, `Character ${characterId} not found in scenario`)
 
     tx.set(playerRef, {
       characterId,
