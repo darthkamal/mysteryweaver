@@ -22,20 +22,22 @@ export async function distributeClue(
   const session = await getSession(db, sessionId)
   verifyHost(session, uid)
 
-  const batch = db.batch()
-
-  for (const charId of targetCharacterIds) {
+  const playerRefs = targetCharacterIds.map((charId) => {
     const playerId = session.characterAssignments[charId]
     if (!playerId) throw new GameError(404, `Character ${charId} is not in this session`)
+    return { charId, playerRef: db.doc(`sessions/${sessionId}/players/${playerId}`) }
+  })
 
-    const playerRef = db.doc(`sessions/${sessionId}/players/${playerId}`)
-    const playerSnap = await playerRef.get()
-    if (!playerSnap.exists)
-      throw new GameError(404, `Player document for ${charId} not found`)
+  const playerSnaps = await Promise.all(playerRefs.map(({ playerRef }) => playerRef.get()))
 
-    const currentClues = (playerSnap.data()!['clues'] ?? []) as string[]
+  const batch = db.batch()
+  for (let i = 0; i < playerRefs.length; i++) {
+    const snap = playerSnaps[i]!
+    if (!snap.exists)
+      throw new GameError(404, `Player document for ${playerRefs[i]!.charId} not found`)
+    const currentClues = (snap.data()!['clues'] ?? []) as string[]
     const newClues = currentClues.includes(clueId) ? currentClues : [...currentClues, clueId]
-    batch.update(playerRef, { clues: newClues })
+    batch.update(playerRefs[i]!.playerRef, { clues: newClues })
   }
 
   await batch.commit()
