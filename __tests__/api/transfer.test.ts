@@ -86,4 +86,16 @@ describe('transferCurrency', () => {
       }),
     ).rejects.toMatchObject({ status: 422 })
   })
+
+  it('rejects when player tries to transfer to themselves', async () => {
+    // PLAYER_1_UID controls 'okonkwo'; transferring to 'okonkwo' while being okonkwo
+    await expect(
+      transferCurrency(db, PLAYER_1_UID, {
+        sessionId: SESSION_ID,
+        toCharacterId: 'okonkwo',
+        currencyType: 'yams',
+        amount: 1,
+      }),
+    ).rejects.toMatchObject({ status: 400 })
+  })
 })
