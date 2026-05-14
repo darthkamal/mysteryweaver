@@ -64,8 +64,10 @@ export default function JoinFlow() {
       const scenarioSnap = await getDoc(doc(db, 'scenarios', info.scenarioId))
       if (!scenarioSnap.exists()) throw new Error('Scenario data not found.')
 
+      const rawChars = scenarioSnap.data()?.['characters']?.['characters']
+      if (!Array.isArray(rawChars)) throw new Error('Invalid scenario data.')
       const allChars = (
-        scenarioSnap.data()['characters']['characters'] as Array<{
+        rawChars as Array<{
           id: string
           public: { name: string; title: string; bio: string }
         }>
@@ -87,7 +89,11 @@ export default function JoinFlow() {
   }
 
   async function handleJoin() {
-    if (!selectedCharacterId || !displayName.trim() || !sessionInfo || !uid) return
+    if (!selectedCharacterId || !displayName.trim() || !sessionInfo) return
+    if (!uid) {
+      setError('Your session expired. Please refresh and try again.')
+      return
+    }
     setStep('joining')
     setError(null)
     try {
