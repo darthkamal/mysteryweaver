@@ -1,12 +1,31 @@
+# dependencies
 node_modules/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# build outputs
 dist/
+build/
+
+# cache
 .turbo/
+.cache/
 *.tsbuildinfo
+
+# environment
 .env
 .env.local
+.env*.local
+
+# Firebase
 .firebase/
+
+# testing
 coverage/
-*.log
+
+# OS
 .DS_Store
-build/
-.cache/
+*.log
