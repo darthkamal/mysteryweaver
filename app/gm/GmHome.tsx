@@ -91,7 +91,9 @@ export default function GmHome() {
     )
   }
 
-  const activeSessions = sessions.filter((s) => s.status !== 'ended')
+  const activeSessions = sessions
+    .filter((s) => s.status === 'lobby' || s.status === 'active')
+    .sort((a, b) => b.createdAt - a.createdAt)
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
