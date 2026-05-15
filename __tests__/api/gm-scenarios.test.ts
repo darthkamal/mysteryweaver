@@ -257,6 +257,15 @@ describe('POST /api/gm/scenarios', () => {
     const res = await uploadScenario(req as any)
     expect(res.status).toBe(400)
   })
+
+  it('returns 400 when name is empty string', async () => {
+    const req = makeRequest('http://localhost/api/gm/scenarios', {
+      method: 'POST',
+      body: JSON.stringify({ ...VALID_UPLOAD_BODY, name: '' }),
+    })
+    const res = await uploadScenario(req as any)
+    expect(res.status).toBe(400)
+  })
 })
 
 // ── GET /api/gm/scenarios/[scenarioId] ──────────────────────────────────────
@@ -346,7 +355,7 @@ describe('DELETE /api/gm/scenarios/[scenarioId]', () => {
     expect(row).toBeUndefined()
   })
 
-  it('returns 409 when an active session references this scenario', async () => {
+  it('returns 409 when a lobby session references this scenario', async () => {
     insertSession(testDb, LOBBY_SESSION_DATA) // status: 'lobby' — not ended
 
     const req = makeRequest(`http://localhost/api/gm/scenarios/${SCENARIO_ID}`, {

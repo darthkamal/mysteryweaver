@@ -28,8 +28,9 @@ export async function GET(req: NextRequest) {
       scenarios: rows.map((row) => {
         let characterCount = 0
         try {
-          const parsed = JSON.parse(row.characters) as { characters?: unknown[] }
-          if (Array.isArray(parsed?.characters)) characterCount = parsed.characters.length
+          const result = z.object({ characters: z.array(z.unknown()) })
+            .safeParse(JSON.parse(row.characters))
+          if (result.success) characterCount = result.data.characters.length
         } catch {}
         return { id: row.id, name: row.name, characterCount, createdAt: row.createdAt }
       }),

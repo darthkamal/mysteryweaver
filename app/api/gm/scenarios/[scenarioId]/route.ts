@@ -6,6 +6,11 @@ import { verifyGmToken } from '@/lib/api/auth'
 import { ok, err } from '@/lib/api/respond'
 import { GameError } from '@/lib/game/types'
 
+function parseField<T>(raw: string, field: string): T {
+  try { return JSON.parse(raw) as T }
+  catch { throw new GameError(500, `Scenario data corrupt: ${field}`) }
+}
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ scenarioId: string }> },
@@ -22,11 +27,11 @@ export async function GET(
     return NextResponse.json({
       id: row.id,
       name: row.name,
-      manifest: JSON.parse(row.manifest),
-      characters: JSON.parse(row.characters),
-      assets: JSON.parse(row.assets),
-      gmScript: JSON.parse(row.gmScript),
-      relationships: JSON.parse(row.relationships),
+      manifest: parseField(row.manifest, 'manifest'),
+      characters: parseField(row.characters, 'characters'),
+      assets: parseField(row.assets, 'assets'),
+      gmScript: parseField(row.gmScript, 'gmScript'),
+      relationships: parseField(row.relationships, 'relationships'),
     })
   } catch (error) {
     return err(error)
