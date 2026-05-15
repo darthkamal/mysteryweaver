@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+data
+.env*
+docs
+__tests__
+.playwright-mcp
+drizzle.config.ts
+*.log
+.DS_Store
