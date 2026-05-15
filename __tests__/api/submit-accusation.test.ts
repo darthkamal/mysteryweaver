@@ -1,39 +1,41 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { eq, and } from 'drizzle-orm'
+import { accusations } from '@/lib/db/schema'
 import {
-  createMockDb, HOST_UID, PLAYER_1_UID,
-  SESSION_ID, SCENARIO_ID, ACTIVE_SESSION, SCENARIO_DATA,
+  createTestDb, insertScenario, insertSession,
+  HOST_UID, PLAYER_1_UID,
+  SESSION_ID, ACTIVE_SESSION_DATA,
 } from './helpers'
 
-vi.mock('@/lib/game/log', () => ({ writeLog: vi.fn().mockResolvedValue(undefined) }))
+vi.mock('@/lib/game/log', () => ({ writeLog: vi.fn() }))
 
 import { submitAccusation } from '@/lib/game/submit-accusation'
 
-const ACCUSATION_SESSION = { ...ACTIVE_SESSION, phase: 'accusation', phaseIndex: 3 }
+const ACCUSATION_SESSION = { ...ACTIVE_SESSION_DATA, phase: 'accusation', phaseIndex: 3 }
 
 describe('submitAccusation', () => {
-  let db: ReturnType<typeof createMockDb>
+  let db: ReturnType<typeof createTestDb>
 
   beforeEach(() => {
     vi.clearAllMocks()
-    db = createMockDb({
-      [`scenarios/${SCENARIO_ID}`]: SCENARIO_DATA,
-      [`sessions/${SESSION_ID}`]: ACCUSATION_SESSION,
-    })
+    db = createTestDb()
+    insertScenario(db)
+    insertSession(db, ACCUSATION_SESSION)
   })
 
-  it('stores accusation in /accusations/{uid}', async () => {
+  it('stores accusation row in accusations table', async () => {
     await submitAccusation(db, PLAYER_1_UID, {
-      sessionId: SESSION_ID,
-      suspectId: 'amadi',
-      motive: 'Jealousy and shame',
-      evidenceIds: ['evidence_1'],
+      sessionId: SESSION_ID, suspectId: 'amadi',
+      motive: 'Jealousy and shame', evidenceIds: ['evidence_1'],
     })
-    const snap = await db.doc(`sessions/${SESSION_ID}/accusations/${PLAYER_1_UID}`).get()
-    expect(snap.exists).toBe(true)
-    expect(snap.data()!['suspectId']).toBe('amadi')
-    expect(snap.data()!['motive']).toBe('Jealousy and shame')
-    expect(snap.data()!['evidenceIds']).toEqual(['evidence_1'])
-    expect(snap.data()!['accuserId']).toBe(PLAYER_1_UID)
+    const row = db.select().from(accusations)
+      .where(and(eq(accusations.sessionId, SESSION_ID), eq(accusations.accuserId, PLAYER_1_UID)))
+      .get()
+    expect(row).not.toBeNull()
+    expect(row!.suspectId).toBe('amadi')
+    expect(row!.motive).toBe('Jealousy and shame')
+    expect(JSON.parse(row!.evidenceIds)).toEqual(['evidence_1'])
+    expect(row!.accuserId).toBe(PLAYER_1_UID)
   })
 
   it('overwrites a prior accusation from the same player', async () => {
@@ -43,15 +45,16 @@ describe('submitAccusation', () => {
     await submitAccusation(db, PLAYER_1_UID, {
       sessionId: SESSION_ID, suspectId: 'chielo', motive: 'changed mind', evidenceIds: ['oracle_1'],
     })
-    const snap = await db.doc(`sessions/${SESSION_ID}/accusations/${PLAYER_1_UID}`).get()
-    expect(snap.data()!['suspectId']).toBe('chielo')
+    const row = db.select().from(accusations)
+      .where(and(eq(accusations.sessionId, SESSION_ID), eq(accusations.accuserId, PLAYER_1_UID)))
+      .get()
+    expect(row!.suspectId).toBe('chielo')
   })
 
   it('rejects when session is not in accusation phase', async () => {
-    db = createMockDb({
-      [`scenarios/${SCENARIO_ID}`]: SCENARIO_DATA,
-      [`sessions/${SESSION_ID}`]: ACTIVE_SESSION,
-    })
+    db = createTestDb()
+    insertScenario(db)
+    insertSession(db, ACTIVE_SESSION_DATA) // phase: investigation
     await expect(
       submitAccusation(db, PLAYER_1_UID, {
         sessionId: SESSION_ID, suspectId: 'amadi', motive: 'greed', evidenceIds: ['evidence_1'],
@@ -74,11 +77,15 @@ describe('submitAccusation', () => {
     await submitAccusation(db, HOST_UID, {
       sessionId: SESSION_ID, suspectId: 'chielo', motive: 'second', evidenceIds: ['oracle_1'],
     })
-    const a1 = await db.doc(`sessions/${SESSION_ID}/accusations/${PLAYER_1_UID}`).get()
-    const a2 = await db.doc(`sessions/${SESSION_ID}/accusations/${HOST_UID}`).get()
-    expect(a1.exists).toBe(true)
-    expect(a2.exists).toBe(true)
-    expect(a1.data()!['suspectId']).toBe('amadi')
-    expect(a2.data()!['suspectId']).toBe('chielo')
+    const a1 = db.select().from(accusations)
+      .where(and(eq(accusations.sessionId, SESSION_ID), eq(accusations.accuserId, PLAYER_1_UID)))
+      .get()
+    const a2 = db.select().from(accusations)
+      .where(and(eq(accusations.sessionId, SESSION_ID), eq(accusations.accuserId, HOST_UID)))
+      .get()
+    expect(a1).not.toBeNull()
+    expect(a2).not.toBeNull()
+    expect(a1!.suspectId).toBe('amadi')
+    expect(a2!.suspectId).toBe('chielo')
   })
 })

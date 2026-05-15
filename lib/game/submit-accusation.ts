@@ -1,5 +1,6 @@
-import type { Firestore } from 'firebase-admin/firestore'
 import { z } from 'zod'
+import type { Db } from '@/lib/db'
+import { accusations } from '@/lib/db/schema'
 import { GameError } from './types'
 import { getSession, getScenario, verifyPhaseIs } from './helpers'
 import { writeLog } from './log'
@@ -13,15 +14,11 @@ export const SubmitAccusationSchema = z.object({
 
 export type SubmitAccusationData = z.infer<typeof SubmitAccusationSchema>
 
-export async function submitAccusation(
-  db: Firestore,
-  uid: string,
-  data: SubmitAccusationData,
-): Promise<void> {
+export async function submitAccusation(db: Db, uid: string, data: SubmitAccusationData): Promise<void> {
   const { sessionId, suspectId, motive, evidenceIds } = data
 
-  const session = await getSession(db, sessionId)
-  const scenario = await getScenario(db, session.scenarioId)
+  const session = getSession(db, sessionId)
+  const scenario = getScenario(db, session.scenarioId)
   const mechanic = scenario.manifest.accusationMechanic
 
   verifyPhaseIs(session, mechanic.allowedPhase)
@@ -30,15 +27,27 @@ export async function submitAccusation(
     throw new GameError(400, 'At least one evidence card ID is required to make an accusation')
   }
 
-  await db.doc(`sessions/${sessionId}/accusations/${uid}`).set({
-    accuserId: uid,
-    suspectId,
-    motive,
-    evidenceIds,
-    submittedAt: new Date().toISOString(),
-  })
+  db.insert(accusations)
+    .values({
+      sessionId,
+      accuserId: uid,
+      suspectId,
+      motive,
+      evidenceIds: JSON.stringify(evidenceIds),
+      submittedAt: Date.now(),
+    })
+    .onConflictDoUpdate({
+      target: [accusations.sessionId, accusations.accuserId],
+      set: {
+        suspectId,
+        motive,
+        evidenceIds: JSON.stringify(evidenceIds),
+        submittedAt: Date.now(),
+      },
+    })
+    .run()
 
-  await writeLog(db, sessionId, {
+  writeLog(db, sessionId, {
     type: 'accusation',
     message: `Player ${uid} accused ${suspectId}`,
     actorId: uid,
