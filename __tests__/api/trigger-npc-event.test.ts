@@ -1,40 +1,37 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { scenarios } from '@/lib/db/schema'
 import {
-  createMockDb, HOST_UID, PLAYER_1_UID, PLAYER_2_UID,
-  SESSION_ID, SCENARIO_ID, ACTIVE_SESSION, SCENARIO_DATA,
-  PLAYER_1, PLAYER_2,
+  createTestDb, insertScenario, insertSession, insertPlayer, getPlayerRow, getSessionRow,
+  HOST_UID, PLAYER_1_UID, PLAYER_2_UID,
+  SESSION_ID, SCENARIO_ID, SCENARIO_DATA, ACTIVE_SESSION_DATA, PLAYER_1_DATA, PLAYER_2_DATA,
 } from './helpers'
 
-vi.mock('@/lib/game/log', () => ({ writeLog: vi.fn().mockResolvedValue(undefined) }))
+vi.mock('@/lib/game/log', () => ({ writeLog: vi.fn() }))
 
 import { triggerNpcEvent } from '@/lib/game/trigger-npc-event'
 
 describe('triggerNpcEvent', () => {
-  let db: ReturnType<typeof createMockDb>
+  let db: ReturnType<typeof createTestDb>
 
   beforeEach(() => {
     vi.clearAllMocks()
-    db = createMockDb({
-      [`scenarios/${SCENARIO_ID}`]: SCENARIO_DATA,
-      [`sessions/${SESSION_ID}`]: ACTIVE_SESSION,
-      [`sessions/${SESSION_ID}/players/${PLAYER_1_UID}`]: PLAYER_1,
-      [`sessions/${SESSION_ID}/players/${PLAYER_2_UID}`]: PLAYER_2,
-    })
+    db = createTestDb()
+    insertScenario(db)
+    insertSession(db, ACTIVE_SESSION_DATA)
+    insertPlayer(db, PLAYER_1_UID, PLAYER_1_DATA)
+    insertPlayer(db, PLAYER_2_UID, PLAYER_2_DATA)
   })
 
   it('adds unlocked assets to session.unlockedAssets (deduplicated)', async () => {
-    await triggerNpcEvent(db, HOST_UID, {
-      sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies',
-    })
-    const snap = await db.doc(`sessions/${SESSION_ID}`).get()
-    expect(snap.data()!['unlockedAssets']).toContain('evidence_4')
+    await triggerNpcEvent(db, HOST_UID, { sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies' })
+    const row = getSessionRow(db)!
+    expect(JSON.parse(row.unlockedAssets)).toContain('evidence_4')
   })
 
   it('does not duplicate if triggered twice', async () => {
     await triggerNpcEvent(db, HOST_UID, { sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies' })
     await triggerNpcEvent(db, HOST_UID, { sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies' })
-    const snap = await db.doc(`sessions/${SESSION_ID}`).get()
-    const unlocked = snap.data()!['unlockedAssets'] as string[]
+    const unlocked = JSON.parse(getSessionRow(db)!.unlockedAssets) as string[]
     expect(unlocked.filter((a) => a === 'evidence_4')).toHaveLength(1)
   })
 
@@ -47,17 +44,22 @@ describe('triggerNpcEvent', () => {
         ],
       },
     }
-    db = createMockDb({
-      [`scenarios/${SCENARIO_ID}`]: autoScenario,
-      [`sessions/${SESSION_ID}`]: ACTIVE_SESSION,
-      [`sessions/${SESSION_ID}/players/${PLAYER_1_UID}`]: PLAYER_1,
-      [`sessions/${SESSION_ID}/players/${PLAYER_2_UID}`]: PLAYER_2,
-    })
+    db = createTestDb()
+    db.insert(scenarios).values({
+      id: SCENARIO_ID, ownerId: HOST_UID, name: 'Test', schemaVersion: '1.0',
+      manifest: JSON.stringify(autoScenario.manifest),
+      characters: JSON.stringify(autoScenario.characters),
+      assets: JSON.stringify(autoScenario.assets),
+      gmScript: JSON.stringify(autoScenario.gmScript),
+      relationships: JSON.stringify({ edges: [] }),
+      createdAt: Date.now(),
+    }).run()
+    insertSession(db, ACTIVE_SESSION_DATA)
+    insertPlayer(db, PLAYER_1_UID, PLAYER_1_DATA)
+    insertPlayer(db, PLAYER_2_UID, PLAYER_2_DATA)
     await triggerNpcEvent(db, HOST_UID, { sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies' })
-    const p1 = (await db.doc(`sessions/${SESSION_ID}/players/${PLAYER_1_UID}`).get()).data()!
-    const p2 = (await db.doc(`sessions/${SESSION_ID}/players/${PLAYER_2_UID}`).get()).data()!
-    expect(p1['clues']).toContain('evidence_4')
-    expect(p2['clues']).toContain('evidence_4')
+    expect(JSON.parse(getPlayerRow(db, PLAYER_1_UID)!.clues)).toContain('evidence_4')
+    expect(JSON.parse(getPlayerRow(db, PLAYER_2_UID)!.clues)).toContain('evidence_4')
   })
 
   it('rejects when caller is not the host', async () => {
