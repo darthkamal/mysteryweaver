@@ -3,6 +3,7 @@ import {
   createTestDb, insertScenario, insertSession,
   HOST_UID, SESSION_ID, SCENARIO_ID, ACTIVE_SESSION_DATA,
 } from './helpers'
+import { broadcastAll } from '@/lib/sse/broadcast'
 
 // ── Mocks (must be before imports that use them) ─────────────────────────────
 
@@ -234,6 +235,7 @@ describe('PATCH /api/gm/sessions/[sessionId]', () => {
     expect(res.status).toBe(200)
     const body = await res.json()
     expect(body.ended).toBe(true)
+    expect(vi.mocked(broadcastAll)).toHaveBeenCalledWith(SESSION_ID)
   })
 
   it('persists status=ended in the database', async () => {

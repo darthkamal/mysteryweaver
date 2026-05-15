@@ -43,9 +43,14 @@ export async function GET(req: NextRequest) {
         phase: row.phase,
         phaseIndex: row.phaseIndex,
         status: row.status,
-        playerCount: Object.keys(
-          (JSON.parse(row.characterAssignments) as Record<string, string> | null) ?? {}
-        ).length,
+        playerCount: (() => {
+          try {
+            const parsed = JSON.parse(row.characterAssignments)
+            return typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)
+              ? Object.keys(parsed as Record<string, string>).length
+              : 0
+          } catch { return 0 }
+        })(),
         createdAt: row.createdAt,
       })),
     })
@@ -71,7 +76,6 @@ export async function POST(req: NextRequest) {
     if (!scenario) throw new GameError(404, 'Scenario not found or does not belong to you')
 
     const sessionId = randomUUID()
-    let inserted = false
 
     for (let i = 0; i < 5; i++) {
       const candidate = randomRoomCode()
@@ -89,7 +93,6 @@ export async function POST(req: NextRequest) {
           triggeredNpcEvents: JSON.stringify([]),
           createdAt: Date.now(),
         }).run()
-        inserted = true
         return ok({ sessionId, roomCode: candidate })
       } catch (e: unknown) {
         const msg = e instanceof Error ? e.message : String(e)
@@ -98,7 +101,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    if (!inserted) throw new GameError(500, 'Failed to generate unique room code after 5 attempts')
+    throw new GameError(500, 'Failed to generate unique room code after 5 attempts')
   } catch (error) {
     return err(error)
   }
