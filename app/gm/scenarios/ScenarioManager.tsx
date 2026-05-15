@@ -9,6 +9,7 @@ import {
 } from '@mui/material'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import ErrorIcon from '@mui/icons-material/Error'
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useGmAuth } from '@/lib/hooks/useGmAuth'
@@ -153,6 +154,7 @@ export default function ScenarioManager() {
                     <input type="file" accept=".json" hidden
                       onChange={handleFileSelect(mod.key, mod.schema)} />
                   </Box>
+                  {state.status === 'idle' && <RadioButtonUncheckedIcon sx={{ color: 'grey.400' }} fontSize="small" />}
                   {state.status === 'valid' && <CheckCircleIcon color="success" fontSize="small" />}
                   {state.status === 'error' && <ErrorIcon color="error" fontSize="small" />}
                 </Box>
