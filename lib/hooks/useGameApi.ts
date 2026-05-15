@@ -1,9 +1,10 @@
 'use client'
-import { getToken } from '@/lib/firebase/auth-client'
 
-export function useGameApi() {
+export function useGameApi(sessionId: string) {
   async function call(endpoint: string, body: unknown): Promise<unknown> {
-    const token = await getToken()
+    const token = localStorage.getItem(`mw-player-token-${sessionId}`)
+    if (!token) throw new Error('Not authenticated — please rejoin the game')
+
     const res = await fetch(endpoint, {
       method: 'POST',
       headers: {

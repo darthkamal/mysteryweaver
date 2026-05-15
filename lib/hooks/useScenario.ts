@@ -1,7 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { doc, getDoc } from 'firebase/firestore'
-import { getClientDb } from '@/lib/firebase/firestore-client'
 import { useSessionStore } from '@/lib/store/session-store'
 
 export interface ScenarioCharacter {
@@ -33,14 +31,20 @@ export function useScenario(): ScenarioCache | null {
 
   useEffect(() => {
     if (!scenarioId) return
-    getDoc(doc(getClientDb(), 'scenarios', scenarioId)).then((snap) => {
-      if (!snap.exists()) return
-      const d = snap.data()
-      setScenario({
-        characters: d['characters']['characters'] as ScenarioCharacter[],
-        assets: d['assets']['assets'] as ScenarioAsset[],
-      })
-    })
+    fetch(`/api/scenario/${scenarioId}`)
+      .then((r) => r.json())
+      .then(
+        (data: {
+          characters: { characters: ScenarioCharacter[] }
+          assets: { assets: ScenarioAsset[] }
+        }) => {
+          setScenario({
+            characters: data.characters.characters,
+            assets: data.assets.assets,
+          })
+        },
+      )
+      .catch(() => {})
   }, [scenarioId])
 
   return scenario

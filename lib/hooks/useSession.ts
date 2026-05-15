@@ -1,32 +1,40 @@
 'use client'
 import { useEffect } from 'react'
-import { doc, onSnapshot } from 'firebase/firestore'
-import { getClientDb } from '@/lib/firebase/firestore-client'
 import { useSessionStore } from '@/lib/store/session-store'
+import { usePlayerStore } from '@/lib/store/player-store'
 
-export function useSession(sessionId: string) {
+export function useSession(sessionId: string, uid: string | null) {
   const setSession = useSessionStore((s) => s.setSession)
   const clearSession = useSessionStore((s) => s.clearSession)
+  const setPlayer = usePlayerStore((s) => s.setPlayer)
+  const clearPlayer = usePlayerStore((s) => s.clearPlayer)
 
   useEffect(() => {
-    if (!sessionId) return
-    const ref = doc(getClientDb(), 'sessions', sessionId)
-    const unsubscribe = onSnapshot(ref, (snap) => {
-      if (!snap.exists()) return
-      const d = snap.data()
-      setSession({
-        sessionId: snap.id,
-        scenarioId: d['scenarioId'],
-        phase: d['phase'],
-        status: d['status'],
-        hostId: d['hostId'],
-        characterAssignments: d['characterAssignments'] ?? {},
-        unlockedAssets: d['unlockedAssets'] ?? [],
-      })
+    if (!sessionId || !uid) return
+
+    const token = localStorage.getItem(`mw-player-token-${sessionId}`)
+    if (!token) return
+
+    const es = new EventSource(
+      `/api/sse/${sessionId}?token=${encodeURIComponent(token)}`,
+    )
+
+    es.addEventListener('session-updated', (e) => {
+      const data = JSON.parse((e as MessageEvent).data)
+      setSession(data)
     })
+
+    es.addEventListener('player-updated', (e) => {
+      const data = JSON.parse((e as MessageEvent).data)
+      setPlayer(data)
+    })
+
+    es.onerror = () => es.close()
+
     return () => {
-      unsubscribe()
+      es.close()
       clearSession()
+      clearPlayer()
     }
-  }, [sessionId, setSession, clearSession])
+  }, [sessionId, uid, setSession, clearSession, setPlayer, clearPlayer])
 }
