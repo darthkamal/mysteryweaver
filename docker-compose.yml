@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - sqlite_data:/app/data
+    environment:
+      DATABASE_URL: file:/app/data/mysteryweaver.db
+      JWT_SECRET: ${JWT_SECRET}
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
