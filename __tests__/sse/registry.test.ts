@@ -1,7 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import {
   addClient, removeClient, clearRegistry,
   broadcastSession, broadcastPlayer, getConnectedUids,
+  addGmClient, removeGmClient, broadcastGm,
 } from '@/lib/sse/registry'
 
 const decoder = new TextDecoder()
@@ -73,5 +74,34 @@ describe('SSE registry', () => {
     const uids = getConnectedUids('TEST01')
     expect(uids).toContain('uid_p1')
     expect(uids).not.toContain('uid_p2')
+  })
+})
+
+describe('GM client registry', () => {
+  beforeEach(() => clearRegistry())
+
+  it('addGmClient registers a GM client', () => {
+    const ctrl = { enqueue: vi.fn(), close: vi.fn() } as unknown as ReadableStreamDefaultController<Uint8Array>
+    addGmClient({ sessionId: 'sess1', uid: 'gm1', controller: ctrl })
+    broadcastGm('sess1', 'test-event', { hello: true })
+    expect(ctrl.enqueue).toHaveBeenCalledOnce()
+  })
+
+  it('addGmClient replaces previous connection for same session', () => {
+    const ctrl1 = { enqueue: vi.fn(), close: vi.fn() } as unknown as ReadableStreamDefaultController<Uint8Array>
+    const ctrl2 = { enqueue: vi.fn(), close: vi.fn() } as unknown as ReadableStreamDefaultController<Uint8Array>
+    addGmClient({ sessionId: 'sess1', uid: 'gm1', controller: ctrl1 })
+    addGmClient({ sessionId: 'sess1', uid: 'gm1', controller: ctrl2 })
+    broadcastGm('sess1', 'test-event', {})
+    expect(ctrl1.enqueue).not.toHaveBeenCalled()
+    expect(ctrl2.enqueue).toHaveBeenCalledOnce()
+  })
+
+  it('removeGmClient stops broadcasts', () => {
+    const ctrl = { enqueue: vi.fn(), close: vi.fn() } as unknown as ReadableStreamDefaultController<Uint8Array>
+    addGmClient({ sessionId: 'sess1', uid: 'gm1', controller: ctrl })
+    removeGmClient('sess1')
+    broadcastGm('sess1', 'test-event', {})
+    expect(ctrl.enqueue).not.toHaveBeenCalled()
   })
 })

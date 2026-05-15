@@ -1,7 +1,7 @@
 import { eq, and } from 'drizzle-orm'
 import { db } from '@/lib/db'
-import { sessions, players, scenarios } from '@/lib/db/schema'
-import { broadcastSession, broadcastPlayer, getConnectedUids } from './registry'
+import { sessions, players, scenarios, accusations } from '@/lib/db/schema'
+import { broadcastSession, broadcastPlayer, getConnectedUids, broadcastGm } from './registry'
 
 function safeParse<T>(raw: string): T | null {
   try { return JSON.parse(raw) as T } catch { return null }
@@ -52,6 +52,52 @@ function buildPlayerPayload(sessionId: string, uid: string) {
   }
 }
 
+function buildRosterPayload(sessionId: string) {
+  const rows = db.select().from(players).where(eq(players.sessionId, sessionId)).all()
+  return {
+    players: rows.map((row) => ({
+      uid: row.uid,
+      characterId: row.characterId,
+      displayName: row.displayName,
+      currencies: safeParse<Record<string, number>>(row.currencies) ?? {},
+      clues: safeParse<string[]>(row.clues) ?? [],
+      isOnline: row.isOnline,
+    })),
+  }
+}
+
+function buildAccusationsPayload(sessionId: string) {
+  const rows = db.select().from(accusations).where(eq(accusations.sessionId, sessionId)).all()
+  return {
+    accusations: rows.map((row) => ({
+      accuserId: row.accuserId,
+      suspectId: row.suspectId,
+      motive: row.motive,
+      evidenceIds: safeParse<string[]>(row.evidenceIds) ?? [],
+      submittedAt: row.submittedAt,
+    })),
+  }
+}
+
+export function broadcastGmFull(sessionId: string): void {
+  try {
+    const sessionData = buildSessionPayload(sessionId)
+    if (sessionData) broadcastGm(sessionId, 'session-updated', sessionData)
+  } catch (e) {
+    console.error('[broadcast] GM session payload failed for', sessionId, e)
+  }
+  try {
+    broadcastGm(sessionId, 'roster-updated', buildRosterPayload(sessionId))
+  } catch (e) {
+    console.error('[broadcast] GM roster payload failed for', sessionId, e)
+  }
+  try {
+    broadcastGm(sessionId, 'accusations-updated', buildAccusationsPayload(sessionId))
+  } catch (e) {
+    console.error('[broadcast] GM accusations payload failed for', sessionId, e)
+  }
+}
+
 export function broadcastAll(sessionId: string): void {
   try {
     const sessionData = buildSessionPayload(sessionId)
@@ -69,4 +115,5 @@ export function broadcastAll(sessionId: string): void {
       console.error('[broadcast] player payload failed for', sessionId, uid, e)
     }
   }
+  broadcastGmFull(sessionId)
 }
