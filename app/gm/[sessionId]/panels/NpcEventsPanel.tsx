@@ -69,17 +69,14 @@ export default function NpcEventsPanel({ sessionId, scenario, onAction }: Props)
       </Box>
 
       <Dialog open={!!confirmEvent} onClose={() => !triggering && setConfirmEvent(null)}>
-        <DialogTitle>Trigger Event?</DialogTitle>
+        <DialogTitle>Trigger &quot;{confirmEvent?.label}&quot;?</DialogTitle>
         <DialogContent>
-          <Typography gutterBottom><strong>{confirmEvent?.label}</strong></Typography>
-          {confirmEvent?.unlocksAssets && confirmEvent.unlocksAssets.length > 0 && (
-            <Typography variant="body2" color="text.secondary">
-              This will unlock: {assetTitles(confirmEvent.unlocksAssets)}
-            </Typography>
-          )}
-          <Typography variant="body2" color="error" sx={{ mt: 1 }}>
-            This cannot be undone.
+          <Typography gutterBottom>
+            {confirmEvent?.unlocksAssets && confirmEvent.unlocksAssets.length > 0
+              ? `This will unlock: ${assetTitles(confirmEvent.unlocksAssets)}.`
+              : 'No assets will be unlocked.'}
           </Typography>
+          <Typography variant="body2" color="error">This cannot be undone.</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setConfirmEvent(null)} disabled={triggering}>Cancel</Button>
