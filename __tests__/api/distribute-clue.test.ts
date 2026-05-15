@@ -1,43 +1,40 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import {
-  createMockDb, HOST_UID, PLAYER_1_UID, PLAYER_2_UID,
-  SESSION_ID, SCENARIO_ID, ACTIVE_SESSION, SCENARIO_DATA,
-  PLAYER_1, PLAYER_2,
+  createTestDb, insertScenario, insertSession, insertPlayer, getPlayerRow,
+  HOST_UID, PLAYER_1_UID, PLAYER_2_UID,
+  SESSION_ID, ACTIVE_SESSION_DATA, PLAYER_1_DATA, PLAYER_2_DATA,
 } from './helpers'
 
-vi.mock('@/lib/game/log', () => ({ writeLog: vi.fn().mockResolvedValue(undefined) }))
+vi.mock('@/lib/game/log', () => ({ writeLog: vi.fn() }))
 
 import { distributeClue } from '@/lib/game/distribute-clue'
 
 describe('distributeClue', () => {
-  let db: ReturnType<typeof createMockDb>
+  let db: ReturnType<typeof createTestDb>
 
   beforeEach(() => {
     vi.clearAllMocks()
-    db = createMockDb({
-      [`scenarios/${SCENARIO_ID}`]: SCENARIO_DATA,
-      [`sessions/${SESSION_ID}`]: ACTIVE_SESSION,
-      [`sessions/${SESSION_ID}/players/${PLAYER_1_UID}`]: PLAYER_1,
-      [`sessions/${SESSION_ID}/players/${PLAYER_2_UID}`]: PLAYER_2,
-    })
+    db = createTestDb()
+    insertScenario(db)
+    insertSession(db, ACTIVE_SESSION_DATA)
+    insertPlayer(db, PLAYER_1_UID, PLAYER_1_DATA)
+    insertPlayer(db, PLAYER_2_UID, PLAYER_2_DATA)
   })
 
   it('adds clue to a single target player', async () => {
     await distributeClue(db, HOST_UID, {
       sessionId: SESSION_ID, targetCharacterIds: ['okonkwo'], clueId: 'evidence_1',
     })
-    const snap = await db.doc(`sessions/${SESSION_ID}/players/${PLAYER_1_UID}`).get()
-    expect(snap.data()!['clues']).toContain('evidence_1')
+    const row = getPlayerRow(db, PLAYER_1_UID)!
+    expect(JSON.parse(row.clues)).toContain('evidence_1')
   })
 
   it('adds clue to multiple target players', async () => {
     await distributeClue(db, HOST_UID, {
       sessionId: SESSION_ID, targetCharacterIds: ['okonkwo', 'amadi'], clueId: 'oracle_1',
     })
-    const p1 = (await db.doc(`sessions/${SESSION_ID}/players/${PLAYER_1_UID}`).get()).data()!
-    const p2 = (await db.doc(`sessions/${SESSION_ID}/players/${PLAYER_2_UID}`).get()).data()!
-    expect(p1['clues']).toContain('oracle_1')
-    expect(p2['clues']).toContain('oracle_1')
+    expect(JSON.parse(getPlayerRow(db, PLAYER_1_UID)!.clues)).toContain('oracle_1')
+    expect(JSON.parse(getPlayerRow(db, PLAYER_2_UID)!.clues)).toContain('oracle_1')
   })
 
   it('does not duplicate a clue already held', async () => {
@@ -47,8 +44,7 @@ describe('distributeClue', () => {
     await distributeClue(db, HOST_UID, {
       sessionId: SESSION_ID, targetCharacterIds: ['okonkwo'], clueId: 'evidence_1',
     })
-    const snap = await db.doc(`sessions/${SESSION_ID}/players/${PLAYER_1_UID}`).get()
-    const clues = snap.data()!['clues'] as string[]
+    const clues = JSON.parse(getPlayerRow(db, PLAYER_1_UID)!.clues) as string[]
     expect(clues.filter((c) => c === 'evidence_1')).toHaveLength(1)
   })
 

@@ -1,5 +1,7 @@
-import type { Firestore } from 'firebase-admin/firestore'
+import { eq, and } from 'drizzle-orm'
 import { z } from 'zod'
+import type { Db } from '@/lib/db'
+import { players } from '@/lib/db/schema'
 import { GameError } from './types'
 import { getSession, verifyHost } from './helpers'
 import { writeLog } from './log'
@@ -12,37 +14,31 @@ export const DistributeClueSchema = z.object({
 
 export type DistributeClueData = z.infer<typeof DistributeClueSchema>
 
-export async function distributeClue(
-  db: Firestore,
-  uid: string,
-  data: DistributeClueData,
-): Promise<void> {
+export async function distributeClue(db: Db, uid: string, data: DistributeClueData): Promise<void> {
   const { sessionId, targetCharacterIds, clueId } = data
 
-  const session = await getSession(db, sessionId)
+  const session = getSession(db, sessionId)
   verifyHost(session, uid)
 
-  const playerRefs = targetCharacterIds.map((charId) => {
+  for (const charId of targetCharacterIds) {
     const playerId = session.characterAssignments[charId]
     if (!playerId) throw new GameError(404, `Character ${charId} is not in this session`)
-    return { charId, playerRef: db.doc(`sessions/${sessionId}/players/${playerId}`) }
-  })
 
-  const playerSnaps = await Promise.all(playerRefs.map(({ playerRef }) => playerRef.get()))
+    const playerRow = db.select().from(players)
+      .where(and(eq(players.sessionId, sessionId), eq(players.uid, playerId)))
+      .get()
+    if (!playerRow) throw new GameError(404, `Player document for ${charId} not found`)
 
-  const batch = db.batch()
-  for (let i = 0; i < playerRefs.length; i++) {
-    const snap = playerSnaps[i]!
-    if (!snap.exists)
-      throw new GameError(404, `Player document for ${playerRefs[i]!.charId} not found`)
-    const currentClues = (snap.data()!['clues'] ?? []) as string[]
+    const currentClues: string[] = JSON.parse(playerRow.clues)
     const newClues = currentClues.includes(clueId) ? currentClues : [...currentClues, clueId]
-    batch.update(playerRefs[i]!.playerRef, { clues: newClues })
+
+    db.update(players)
+      .set({ clues: JSON.stringify(newClues) })
+      .where(and(eq(players.sessionId, sessionId), eq(players.uid, playerId)))
+      .run()
   }
 
-  await batch.commit()
-
-  await writeLog(db, sessionId, {
+  writeLog(db, sessionId, {
     type: 'clue_given',
     message: `GM distributed ${clueId} to [${targetCharacterIds.join(', ')}]`,
     actorId: uid,
