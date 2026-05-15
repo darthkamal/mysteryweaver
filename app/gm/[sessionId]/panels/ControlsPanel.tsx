@@ -73,8 +73,8 @@ export default function ControlsPanel({
   // Players from store have uid and characterId
   const joinedCharacterIds = new Set(players.map((p) => p.characterId))
 
-  // All characters from characterAssignments (characterId → uid mapping)
-  const allCharacterIds = Object.keys(characterAssignments)
+  // All characters from the scenario (the authoritative list of every character slot)
+  const allCharacterIds = scenario?.characters.characters.map((c) => c.id) ?? []
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>

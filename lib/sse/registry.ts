@@ -44,6 +44,10 @@ export function removeGmClient(sessionId: string): void {
   gmClients.delete(sessionId)
 }
 
+export function isCurrentGmClient(client: SseClient): boolean {
+  return gmClients.get(client.sessionId) === client
+}
+
 export function broadcastSession(sessionId: string, data: unknown): void {
   for (const client of clients) {
     if (client.sessionId === sessionId) send(client, 'session-updated', data)

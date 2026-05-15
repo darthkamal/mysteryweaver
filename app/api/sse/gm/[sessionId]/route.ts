@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { sessions } from '@/lib/db/schema'
 import { verifyGmToken } from '@/lib/api/auth'
-import { addGmClient, removeGmClient } from '@/lib/sse/registry'
+import { addGmClient, removeGmClient, isCurrentGmClient } from '@/lib/sse/registry'
 import { broadcastGmFull } from '@/lib/sse/broadcast'
 import type { SseClient } from '@/lib/sse/registry'
 
@@ -52,14 +52,16 @@ export async function GET(
           controller.enqueue(encoder.encode(': ping\n\n'))
         } catch {
           if (pingTimer) { clearInterval(pingTimer); pingTimer = null }
-          removeGmClient(sessionId)
-          client = null
+          if (client && isCurrentGmClient(client)) {
+            removeGmClient(sessionId)
+            client = null
+          }
         }
       }, 30_000)
     },
     cancel() {
       if (pingTimer) { clearInterval(pingTimer); pingTimer = null }
-      if (client) { removeGmClient(sessionId); client = null }
+      if (client && isCurrentGmClient(client)) { removeGmClient(sessionId); client = null }
     },
   })
 

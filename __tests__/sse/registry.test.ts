@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import {
   addClient, removeClient, clearRegistry,
   broadcastSession, broadcastPlayer, getConnectedUids,
-  addGmClient, removeGmClient, broadcastGm,
+  addGmClient, removeGmClient, broadcastGm, isCurrentGmClient,
 } from '@/lib/sse/registry'
 
 const decoder = new TextDecoder()
@@ -103,5 +103,16 @@ describe('GM client registry', () => {
     removeGmClient('sess1')
     broadcastGm('sess1', 'test-event', {})
     expect(ctrl.enqueue).not.toHaveBeenCalled()
+  })
+
+  it('isCurrentGmClient returns false after replacement', () => {
+    const ctrl1 = { enqueue: vi.fn(), close: vi.fn() } as unknown as ReadableStreamDefaultController<Uint8Array>
+    const ctrl2 = { enqueue: vi.fn(), close: vi.fn() } as unknown as ReadableStreamDefaultController<Uint8Array>
+    const client1 = { sessionId: 'sess1', uid: 'gm1', controller: ctrl1 }
+    const client2 = { sessionId: 'sess1', uid: 'gm1', controller: ctrl2 }
+    addGmClient(client1)
+    addGmClient(client2) // replaces client1
+    expect(isCurrentGmClient(client1)).toBe(false)
+    expect(isCurrentGmClient(client2)).toBe(true)
   })
 })

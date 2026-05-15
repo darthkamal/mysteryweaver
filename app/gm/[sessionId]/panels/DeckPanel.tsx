@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import {
   Box, Paper, Typography, Button, Chip, Drawer, List, ListItem,
-  ListItemText, Checkbox, Divider, CircularProgress,
+  ListItemText, Checkbox, Divider, CircularProgress, Alert,
 } from '@mui/material'
 import { useGmStore } from '@/lib/store/gm-store'
 import type { ScenarioFull } from '../SessionRunner'
@@ -26,6 +26,7 @@ export default function DeckPanel({ sessionId, scenario, characterMap, onAction 
   const [sendAssetId, setSendAssetId] = useState<string | null>(null)
   const [selectedUids, setSelectedUids] = useState<string[]>([])
   const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState<string | null>(null)
 
   // Available: no triggerCondition OR triggerCondition.npcEvent is in unlockedAssets
   const available = scenario.assets.assets.filter(
@@ -47,20 +48,28 @@ export default function DeckPanel({ sessionId, scenario, characterMap, onAction 
   async function handleSend() {
     if (!sendAssetId || selectedUids.length === 0) return
     setSending(true)
+    setSendError(null)
     try {
       const characterIds = selectedUids
         .map((uid) => players.find((pl) => pl.uid === uid)?.characterId ?? '')
         .filter(Boolean)
 
-      await fetch('/api/game/distribute-clue', {
+      const res = await fetch('/api/game/distribute-clue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId, clueId: sendAssetId, targetCharacterIds: characterIds }),
       })
-      onAction(`Clue sent to ${selectedUids.length} player(s)`)
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({})) as { error?: string }
+        setSendError(d.error ?? `Failed (${res.status})`)
+      } else {
+        onAction(`Clue sent to ${selectedUids.length} player(s)`)
+        setSendAssetId(null)
+      }
+    } catch {
+      setSendError('Network error')
     } finally {
       setSending(false)
-      setSendAssetId(null)
     }
   }
 
@@ -134,6 +143,7 @@ export default function DeckPanel({ sessionId, scenario, characterMap, onAction 
             </ListItem>
           ))}
         </List>
+        {sendError && <Alert severity="error" sx={{ mt: 1 }}>{sendError}</Alert>}
         <Button variant="contained" fullWidth disabled={selectedUids.length === 0 || sending}
           onClick={handleSend} sx={{ mt: 1 }}>
           {sending

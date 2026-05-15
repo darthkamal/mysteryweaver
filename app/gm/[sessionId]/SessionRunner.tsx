@@ -55,6 +55,7 @@ export default function SessionRunner({ sessionId }: { sessionId: string }) {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   useEffect(() => {
+    if (authLoading) return
     fetch('/api/gm/sessions')
       .then((r) => r.ok ? r.json() : null)
       .then((data: { sessions: Array<{ id: string; scenarioId: string; roomCode: string }> } | null) => {
@@ -67,7 +68,7 @@ export default function SessionRunner({ sessionId }: { sessionId: string }) {
       .then((r) => r?.ok ? r.json() : null)
       .then((data) => { if (data) setScenario(data as ScenarioFull) })
       .catch(console.error)
-  }, [sessionId])
+  }, [sessionId, authLoading])
 
   const characterMap: Record<string, string> = {}
   scenario?.characters.characters.forEach((c) => { characterMap[c.id] = c.public.name })

@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import {
   Box, Paper, Typography, Button, Chip, Dialog, DialogTitle,
-  DialogContent, DialogActions, CircularProgress,
+  DialogContent, DialogActions, CircularProgress, Alert,
 } from '@mui/material'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useGmStore } from '@/lib/store/gm-store'
@@ -18,22 +18,31 @@ export default function NpcEventsPanel({ sessionId, scenario, onAction }: Props)
   const triggeredNpcEvents = useGmStore((s) => s.triggeredNpcEvents)
   const [confirmEvent, setConfirmEvent] = useState<(typeof scenario.gmScript.npcEvents)[0] | null>(null)
   const [triggering, setTriggering] = useState(false)
+  const [triggerError, setTriggerError] = useState<string | null>(null)
 
   const assetTitles = (ids: string[]) =>
     ids.map((id) => scenario.assets.assets.find((a) => a.id === id)?.title ?? id).join(', ')
 
   async function handleTrigger(eventId: string) {
     setTriggering(true)
+    setTriggerError(null)
     try {
-      await fetch('/api/game/trigger-npc-event', {
+      const res = await fetch('/api/game/trigger-npc-event', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId, npcEventId: eventId }),
       })
-      onAction(`Event triggered: ${confirmEvent?.label}`)
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({})) as { error?: string }
+        setTriggerError(d.error ?? `Failed (${res.status})`)
+      } else {
+        onAction(`Event triggered: ${confirmEvent?.label}`)
+        setConfirmEvent(null)
+      }
+    } catch {
+      setTriggerError('Network error')
     } finally {
       setTriggering(false)
-      setConfirmEvent(null)
     }
   }
 
@@ -77,6 +86,7 @@ export default function NpcEventsPanel({ sessionId, scenario, onAction }: Props)
               : 'No assets will be unlocked.'}
           </Typography>
           <Typography variant="body2" color="error">This cannot be undone.</Typography>
+          {triggerError && <Alert severity="error" sx={{ mt: 1 }}>{triggerError}</Alert>}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setConfirmEvent(null)} disabled={triggering}>Cancel</Button>
