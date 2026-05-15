@@ -25,8 +25,12 @@ export async function triggerNpcEvent(db: Db, uid: string, data: TriggerNpcEvent
   if (!npcEvent) throw new GameError(404, `NPC event ${npcEventId} not found in scenario`)
 
   const newUnlocked = [...new Set([...session.unlockedAssets, ...npcEvent.unlocksAssets])]
+  const newTriggered = [...new Set([...session.triggeredNpcEvents, npcEventId])]
   db.update(sessions)
-    .set({ unlockedAssets: JSON.stringify(newUnlocked) })
+    .set({
+      unlockedAssets: JSON.stringify(newUnlocked),
+      triggeredNpcEvents: JSON.stringify(newTriggered),
+    })
     .where(eq(sessions.id, sessionId))
     .run()
 

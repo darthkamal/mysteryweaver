@@ -31,6 +31,7 @@ export const sessions = sqliteTable('sessions', {
   status: text('status').notNull(),
   characterAssignments: text('character_assignments').notNull(),
   unlockedAssets: text('unlocked_assets').notNull(),
+  triggeredNpcEvents: text('triggered_npc_events').notNull().default('[]'),
   createdAt: integer('created_at').notNull(),
 })
 

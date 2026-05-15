@@ -63,6 +63,7 @@ export const LOBBY_SESSION_DATA = {
   status: 'lobby',
   characterAssignments: {} as Record<string, string>,
   unlockedAssets: [] as string[],
+  triggeredNpcEvents: [] as string[],
 }
 
 export const ACTIVE_SESSION_DATA = {
@@ -129,6 +130,7 @@ export function insertSession(
     status: data.status,
     characterAssignments: JSON.stringify(data.characterAssignments),
     unlockedAssets: JSON.stringify(data.unlockedAssets),
+    triggeredNpcEvents: JSON.stringify(data.triggeredNpcEvents),
     createdAt: Date.now(),
   }).run()
 }

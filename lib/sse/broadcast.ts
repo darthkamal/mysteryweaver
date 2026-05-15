@@ -19,6 +19,7 @@ function buildSessionPayload(sessionId: string) {
     hostId: row.hostId,
     characterAssignments: safeParse<Record<string, string>>(row.characterAssignments) ?? {},
     unlockedAssets: safeParse<string[]>(row.unlockedAssets) ?? [],
+    triggeredNpcEvents: safeParse<string[]>(row.triggeredNpcEvents) ?? [],
   }
 }
 

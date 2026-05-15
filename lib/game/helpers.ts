@@ -25,6 +25,7 @@ export function getSession(db: Db, sessionId: string): SessionData {
     status: row.status as 'lobby' | 'active' | 'ended',
     characterAssignments: safeJsonParse(row.characterAssignments, 'characterAssignments'),
     unlockedAssets: safeJsonParse(row.unlockedAssets, 'unlockedAssets'),
+    triggeredNpcEvents: safeJsonParse(row.triggeredNpcEvents, 'triggeredNpcEvents'),
   }
 }
 

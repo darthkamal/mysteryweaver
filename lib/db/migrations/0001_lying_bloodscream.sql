@@ -1,0 +1,1 @@
+ALTER TABLE `sessions` ADD `triggered_npc_events` text DEFAULT '[]' NOT NULL;

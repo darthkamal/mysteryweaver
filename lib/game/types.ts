@@ -18,6 +18,7 @@ export type SessionData = {
   status: 'lobby' | 'active' | 'ended'
   characterAssignments: Record<string, string>
   unlockedAssets: string[]
+  triggeredNpcEvents: string[]
 }
 
 export type ScenarioData = {
