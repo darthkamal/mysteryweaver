@@ -1,5 +1,9 @@
-import { vi } from 'vitest'
-import type { Firestore } from 'firebase-admin/firestore'
+import Database from 'better-sqlite3'
+import { drizzle } from 'drizzle-orm/better-sqlite3'
+import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
+import * as schema from '@/lib/db/schema'
+import { sessions, scenarios, players } from '@/lib/db/schema'
+import path from 'path'
 
 // ── Shared test constants ─────────────────────────────────────────────────────
 
@@ -44,153 +48,111 @@ export const SCENARIO_DATA = {
   },
 }
 
-export const LOBBY_SESSION = {
+export const LOBBY_SESSION_DATA = {
+  id: SESSION_ID,
   roomCode: SESSION_ID,
   hostId: HOST_UID,
   scenarioId: SCENARIO_ID,
   phase: 'lobby',
   phaseIndex: 0,
   status: 'lobby',
-  characterAssignments: {},
-  unlockedAssets: [],
-  accusation: null,
+  characterAssignments: {} as Record<string, string>,
+  unlockedAssets: [] as string[],
 }
 
-export const ACTIVE_SESSION = {
-  ...LOBBY_SESSION,
+export const ACTIVE_SESSION_DATA = {
+  ...LOBBY_SESSION_DATA,
   phase: 'investigation',
   phaseIndex: 2,
   status: 'active',
   characterAssignments: { okonkwo: PLAYER_1_UID, amadi: PLAYER_2_UID },
 }
 
-export const PLAYER_1 = {
+export const PLAYER_1_DATA = {
   characterId: 'okonkwo',
   displayName: 'Player One',
   currencies: { yams: 5, oracle_bones: 0 },
-  clues: [],
-  isOnline: true,
+  clues: [] as string[],
 }
 
-export const PLAYER_2 = {
+export const PLAYER_2_DATA = {
   characterId: 'amadi',
   displayName: 'Player Two',
   currencies: { yams: 6, oracle_bones: 0 },
-  clues: [],
-  isOnline: true,
+  clues: [] as string[],
 }
 
-// ── In-memory Firestore mock ──────────────────────────────────────────────────
+// ── In-memory SQLite test database ───────────────────────────────────────────
 
-type DocData = Record<string, unknown>
+export function createTestDb() {
+  const sqlite = new Database(':memory:')
+  sqlite.pragma('journal_mode = WAL')
+  sqlite.pragma('foreign_keys = ON')
+  const db = drizzle(sqlite, { schema })
+  migrate(db, { migrationsFolder: path.join(process.cwd(), 'lib/db/migrations') })
+  return db
+}
 
-export function createMockDb(
-  initialDocs: Record<string, object> = {},
-): Firestore & { _store: Map<string, DocData> } {
-  const store = new Map<string, DocData>(
-    Object.entries(initialDocs).map(([k, v]) => [k, v as DocData]),
-  )
+export type TestDb = ReturnType<typeof createTestDb>
 
-  function applyDotNotation(target: DocData, updates: DocData): DocData {
-    const result = { ...target }
-    for (const [key, value] of Object.entries(updates)) {
-      if (key.includes('.')) {
-        const dotIdx = key.indexOf('.')
-        const top = key.slice(0, dotIdx)
-        const rest = key.slice(dotIdx + 1)
-        result[top] = applyDotNotation(
-          (result[top] as DocData) ?? {},
-          { [rest]: value },
-        )
-      } else {
-        result[key] = value
-      }
-    }
-    return result
-  }
+export function insertScenario(db: TestDb) {
+  db.insert(scenarios).values({
+    id: SCENARIO_ID,
+    ownerId: HOST_UID,
+    name: 'Test Scenario',
+    schemaVersion: '1.0',
+    manifest: JSON.stringify(SCENARIO_DATA.manifest),
+    characters: JSON.stringify(SCENARIO_DATA.characters),
+    assets: JSON.stringify(SCENARIO_DATA.assets),
+    gmScript: JSON.stringify(SCENARIO_DATA.gmScript),
+    relationships: JSON.stringify({ edges: [] }),
+    createdAt: Date.now(),
+  }).run()
+}
 
-  function makeRef(path: string) {
-    return {
-      path,
-      id: path.split('/').pop() ?? '',
-      get: () =>
-        Promise.resolve({
-          exists: store.has(path),
-          id: path.split('/').pop() ?? '',
-          data: () => store.get(path),
-          ref: makeRef(path),
-        }),
-      set: (data: DocData) => {
-        store.set(path, data)
-        return Promise.resolve()
-      },
-      update: (updates: DocData) => {
-        const existing = store.get(path) ?? {}
-        store.set(path, applyDotNotation(existing, updates))
-        return Promise.resolve()
-      },
-    }
-  }
+export function insertSession(
+  db: TestDb,
+  data: typeof LOBBY_SESSION_DATA | typeof ACTIVE_SESSION_DATA,
+) {
+  db.insert(sessions).values({
+    id: data.id,
+    roomCode: data.roomCode,
+    hostId: data.hostId,
+    scenarioId: data.scenarioId,
+    phase: data.phase,
+    phaseIndex: data.phaseIndex,
+    status: data.status,
+    characterAssignments: JSON.stringify(data.characterAssignments),
+    unlockedAssets: JSON.stringify(data.unlockedAssets),
+    createdAt: Date.now(),
+  }).run()
+}
 
-  const db = {
-    _store: store,
+export function insertPlayer(
+  db: TestDb,
+  uid: string,
+  data: typeof PLAYER_1_DATA | typeof PLAYER_2_DATA,
+) {
+  db.insert(players).values({
+    sessionId: SESSION_ID,
+    uid,
+    characterId: data.characterId,
+    displayName: data.displayName,
+    currencies: JSON.stringify(data.currencies),
+    clues: JSON.stringify(data.clues),
+    isOnline: true,
+    joinedAt: Date.now(),
+  }).run()
+}
 
-    doc: vi.fn().mockImplementation(makeRef),
+export function getPlayerRow(db: TestDb, uid: string) {
+  const { eq, and } = require('drizzle-orm') as typeof import('drizzle-orm')
+  return db.select().from(players)
+    .where(and(eq(players.sessionId, SESSION_ID), eq(players.uid, uid)))
+    .get()
+}
 
-    collection: vi.fn().mockImplementation((colPath: string) => ({
-      path: colPath,
-      add: vi.fn().mockImplementation((data: DocData) => {
-        const id = `auto-${Math.random().toString(36).slice(2, 8)}`
-        store.set(`${colPath}/${id}`, data)
-        return Promise.resolve({ id })
-      }),
-      get: vi.fn().mockImplementation(() => {
-        const prefix = colPath + '/'
-        const docs = []
-        for (const [docPath, docData] of store) {
-          const afterPrefix = docPath.slice(prefix.length)
-          if (docPath.startsWith(prefix) && !afterPrefix.includes('/')) {
-            docs.push({
-              id: afterPrefix,
-              ref: makeRef(docPath),
-              data: () => docData,
-              exists: true,
-            })
-          }
-        }
-        return Promise.resolve({ docs, empty: docs.length === 0, size: docs.length })
-      }),
-    })),
-
-    runTransaction: vi.fn().mockImplementation(
-      async (fn: (tx: object) => Promise<unknown>) => {
-        const tx = {
-          get: (ref: ReturnType<typeof makeRef>) => ref.get(),
-          set: (ref: ReturnType<typeof makeRef>, data: DocData) => ref.set(data),
-          update: (ref: ReturnType<typeof makeRef>, updates: DocData) => ref.update(updates),
-        }
-        return fn(tx)
-      },
-    ),
-
-    batch: vi.fn().mockImplementation(() => {
-      const ops: Array<() => void> = []
-      return {
-        update: vi.fn().mockImplementation(
-          (ref: ReturnType<typeof makeRef>, updates: DocData) => {
-            ops.push(() => ref.update(updates))
-          },
-        ),
-        set: vi.fn().mockImplementation((ref: ReturnType<typeof makeRef>, data: DocData) => {
-          ops.push(() => ref.set(data))
-        }),
-        commit: vi.fn().mockImplementation(() => {
-          for (const op of ops) op()
-          return Promise.resolve()
-        }),
-      }
-    }),
-  }
-
-  return db as unknown as Firestore & { _store: Map<string, DocData> }
+export function getSessionRow(db: TestDb) {
+  const { eq } = require('drizzle-orm') as typeof import('drizzle-orm')
+  return db.select().from(sessions).where(eq(sessions.id, SESSION_ID)).get()
 }
