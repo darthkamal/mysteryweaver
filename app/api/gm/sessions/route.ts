@@ -43,7 +43,9 @@ export async function GET(req: NextRequest) {
         phase: row.phase,
         phaseIndex: row.phaseIndex,
         status: row.status,
-        playerCount: Object.keys(JSON.parse(row.characterAssignments) as Record<string, string>).length,
+        playerCount: Object.keys(
+          (JSON.parse(row.characterAssignments) as Record<string, string> | null) ?? {}
+        ).length,
         createdAt: row.createdAt,
       })),
     })
@@ -68,30 +70,35 @@ export async function POST(req: NextRequest) {
       .get()
     if (!scenario) throw new GameError(404, 'Scenario not found or does not belong to you')
 
-    let roomCode: string | null = null
+    const sessionId = randomUUID()
+    let inserted = false
+
     for (let i = 0; i < 5; i++) {
       const candidate = randomRoomCode()
-      const existing = db.select({ id: sessions.id }).from(sessions).where(eq(sessions.roomCode, candidate)).get()
-      if (!existing) { roomCode = candidate; break }
+      try {
+        db.insert(sessions).values({
+          id: sessionId,
+          roomCode: candidate,
+          hostId: gmId,
+          scenarioId: body.scenarioId,
+          phase: 'lobby',
+          phaseIndex: 0,
+          status: 'lobby',
+          characterAssignments: JSON.stringify({}),
+          unlockedAssets: JSON.stringify([]),
+          triggeredNpcEvents: JSON.stringify([]),
+          createdAt: Date.now(),
+        }).run()
+        inserted = true
+        return ok({ sessionId, roomCode: candidate })
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : String(e)
+        if (!msg.includes('UNIQUE')) throw e
+        // Otherwise loop and try a new code
+      }
     }
-    if (!roomCode) throw new GameError(500, 'Failed to generate unique room code after 5 attempts')
 
-    const sessionId = randomUUID()
-    db.insert(sessions).values({
-      id: sessionId,
-      roomCode,
-      hostId: gmId,
-      scenarioId: body.scenarioId,
-      phase: 'lobby',
-      phaseIndex: 0,
-      status: 'lobby',
-      characterAssignments: JSON.stringify({}),
-      unlockedAssets: JSON.stringify([]),
-      triggeredNpcEvents: JSON.stringify([]),
-      createdAt: Date.now(),
-    }).run()
-
-    return ok({ sessionId, roomCode })
+    if (!inserted) throw new GameError(500, 'Failed to generate unique room code after 5 attempts')
   } catch (error) {
     return err(error)
   }

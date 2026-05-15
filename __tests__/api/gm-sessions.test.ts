@@ -181,6 +181,39 @@ describe('POST /api/gm/sessions', () => {
     const res = await POST(req as any)
     expect(res.status).toBe(400)
   })
+
+  it('returns 500 when all 5 room code attempts collide', async () => {
+    // With Math.random() always returning 0, chars[Math.floor(0 * 32)] = chars[0] = 'A'
+    // So randomRoomCode() will always produce 'AAAAAA'
+    const mathRandom = vi.spyOn(Math, 'random').mockReturnValue(0)
+
+    const { sessions } = await import('@/lib/db/schema')
+    // Pre-insert a session with the room code that will always be generated
+    const existingRoomCode = 'AAAAAA'
+    testDb.insert(sessions).values({
+      id: 'existing-session',
+      roomCode: existingRoomCode,
+      hostId: HOST_UID,
+      scenarioId: SCENARIO_ID,
+      phase: 'lobby',
+      phaseIndex: 0,
+      status: 'lobby',
+      characterAssignments: JSON.stringify({}),
+      unlockedAssets: JSON.stringify([]),
+      triggeredNpcEvents: JSON.stringify([]),
+      createdAt: Date.now(),
+    }).run()
+
+    const req = makeRequest('http://localhost/api/gm/sessions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ scenarioId: SCENARIO_ID }),
+    })
+    const res = await POST(req as any)
+    expect(res.status).toBe(500)
+
+    mathRandom.mockRestore()
+  })
 })
 
 // ── PATCH /api/gm/sessions/[sessionId] ───────────────────────────────────────
