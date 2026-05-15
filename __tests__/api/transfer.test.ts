@@ -1,39 +1,34 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import {
-  createMockDb, HOST_UID, PLAYER_1_UID, PLAYER_2_UID,
-  SESSION_ID, SCENARIO_ID, ACTIVE_SESSION, SCENARIO_DATA,
-  PLAYER_1, PLAYER_2,
+  createTestDb, insertScenario, insertSession, insertPlayer, getPlayerRow,
+  HOST_UID, PLAYER_1_UID, PLAYER_2_UID,
+  SESSION_ID, ACTIVE_SESSION_DATA, PLAYER_1_DATA, PLAYER_2_DATA,
 } from './helpers'
 
-vi.mock('@/lib/game/log', () => ({ writeLog: vi.fn().mockResolvedValue(undefined) }))
+vi.mock('@/lib/game/log', () => ({ writeLog: vi.fn() }))
 
 import { transferCurrency } from '@/lib/game/transfer'
 
-function makeDb() {
-  return createMockDb({
-    [`scenarios/${SCENARIO_ID}`]: SCENARIO_DATA,
-    [`sessions/${SESSION_ID}`]: ACTIVE_SESSION,
-    [`sessions/${SESSION_ID}/players/${PLAYER_1_UID}`]: PLAYER_1,
-    [`sessions/${SESSION_ID}/players/${PLAYER_2_UID}`]: PLAYER_2,
-  })
-}
-
 describe('transferCurrency', () => {
-  let db: ReturnType<typeof createMockDb>
+  let db: ReturnType<typeof createTestDb>
 
   beforeEach(() => {
     vi.clearAllMocks()
-    db = makeDb()
+    db = createTestDb()
+    insertScenario(db)
+    insertSession(db, ACTIVE_SESSION_DATA)
+    insertPlayer(db, PLAYER_1_UID, PLAYER_1_DATA)
+    insertPlayer(db, PLAYER_2_UID, PLAYER_2_DATA)
   })
 
   it('decrements sender balance and increments recipient balance', async () => {
     await transferCurrency(db, PLAYER_1_UID, {
       sessionId: SESSION_ID, toCharacterId: 'amadi', currencyType: 'yams', amount: 3,
     })
-    const p1 = (await db.doc(`sessions/${SESSION_ID}/players/${PLAYER_1_UID}`).get()).data()!
-    const p2 = (await db.doc(`sessions/${SESSION_ID}/players/${PLAYER_2_UID}`).get()).data()!
-    expect(p1['currencies']['yams']).toBe(2)
-    expect(p2['currencies']['yams']).toBe(9)
+    const p1 = getPlayerRow(db, PLAYER_1_UID)!
+    const p2 = getPlayerRow(db, PLAYER_2_UID)!
+    expect(JSON.parse(p1.currencies).yams).toBe(2)
+    expect(JSON.parse(p2.currencies).yams).toBe(9)
   })
 
   it('rejects when balance is insufficient', async () => {
@@ -45,12 +40,11 @@ describe('transferCurrency', () => {
   })
 
   it('rejects when yams are locked in the current phase', async () => {
-    db = createMockDb({
-      [`scenarios/${SCENARIO_ID}`]: SCENARIO_DATA,
-      [`sessions/${SESSION_ID}`]: { ...ACTIVE_SESSION, phase: 'accusation' },
-      [`sessions/${SESSION_ID}/players/${PLAYER_1_UID}`]: PLAYER_1,
-      [`sessions/${SESSION_ID}/players/${PLAYER_2_UID}`]: PLAYER_2,
-    })
+    db = createTestDb()
+    insertScenario(db)
+    insertSession(db, { ...ACTIVE_SESSION_DATA, phase: 'accusation', phaseIndex: 3 })
+    insertPlayer(db, PLAYER_1_UID, PLAYER_1_DATA)
+    insertPlayer(db, PLAYER_2_UID, PLAYER_2_DATA)
     await expect(
       transferCurrency(db, PLAYER_1_UID, {
         sessionId: SESSION_ID, toCharacterId: 'amadi', currencyType: 'yams', amount: 1,
@@ -75,11 +69,10 @@ describe('transferCurrency', () => {
   })
 
   it('rejects when session is not active', async () => {
-    db = createMockDb({
-      [`scenarios/${SCENARIO_ID}`]: SCENARIO_DATA,
-      [`sessions/${SESSION_ID}`]: { ...ACTIVE_SESSION, status: 'ended' },
-      [`sessions/${SESSION_ID}/players/${PLAYER_1_UID}`]: PLAYER_1,
-    })
+    db = createTestDb()
+    insertScenario(db)
+    insertSession(db, { ...ACTIVE_SESSION_DATA, status: 'ended' })
+    insertPlayer(db, PLAYER_1_UID, PLAYER_1_DATA)
     await expect(
       transferCurrency(db, PLAYER_1_UID, {
         sessionId: SESSION_ID, toCharacterId: 'amadi', currencyType: 'yams', amount: 1,
@@ -88,13 +81,9 @@ describe('transferCurrency', () => {
   })
 
   it('rejects when player tries to transfer to themselves', async () => {
-    // PLAYER_1_UID controls 'okonkwo'; transferring to 'okonkwo' while being okonkwo
     await expect(
       transferCurrency(db, PLAYER_1_UID, {
-        sessionId: SESSION_ID,
-        toCharacterId: 'okonkwo',
-        currencyType: 'yams',
-        amount: 1,
+        sessionId: SESSION_ID, toCharacterId: 'okonkwo', currencyType: 'yams', amount: 1,
       }),
     ).rejects.toMatchObject({ status: 400 })
   })
