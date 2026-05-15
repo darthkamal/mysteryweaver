@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3'
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
+import { eq, and } from 'drizzle-orm'
 import * as schema from '@/lib/db/schema'
 import { sessions, scenarios, players } from '@/lib/db/schema'
 import path from 'path'
@@ -146,13 +147,11 @@ export function insertPlayer(
 }
 
 export function getPlayerRow(db: TestDb, uid: string) {
-  const { eq, and } = require('drizzle-orm') as typeof import('drizzle-orm')
   return db.select().from(players)
     .where(and(eq(players.sessionId, SESSION_ID), eq(players.uid, uid)))
     .get()
 }
 
 export function getSessionRow(db: TestDb) {
-  const { eq } = require('drizzle-orm') as typeof import('drizzle-orm')
   return db.select().from(sessions).where(eq(sessions.id, SESSION_ID)).get()
 }
