@@ -19,7 +19,7 @@ interface CharacterOption {
 interface SessionInfo {
   id: string
   scenarioId: string
-  characterAssignments: Record<string, string>
+  takenCharacterIds: string[]
 }
 
 export default function JoinFlow() {
@@ -47,7 +47,7 @@ export default function JoinFlow() {
       const info: SessionInfo = {
         id: sessionData.id,
         scenarioId: sessionData.scenarioId,
-        characterAssignments: sessionData.characterAssignments ?? {},
+        takenCharacterIds: sessionData.takenCharacterIds ?? [],
       }
 
       const scenarioRes = await fetch(`/api/scenario/${info.scenarioId}`)
@@ -160,7 +160,7 @@ export default function JoinFlow() {
           />
           <Stack spacing={2} sx={{ mb: 3 }}>
             {characters.map((char) => {
-              const taken = char.id in sessionInfo.characterAssignments
+              const taken = sessionInfo.takenCharacterIds.includes(char.id)
               const selected = selectedCharacterId === char.id
               return (
                 <Card

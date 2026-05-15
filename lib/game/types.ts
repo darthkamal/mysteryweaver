@@ -1,6 +1,6 @@
 export class GameError extends Error {
   constructor(
-    public readonly status: 400 | 401 | 403 | 404 | 409 | 422,
+    public readonly status: 400 | 401 | 403 | 404 | 409 | 422 | 500,
     message: string,
   ) {
     super(message)

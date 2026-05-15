@@ -6,9 +6,9 @@ import { GameError } from './types'
 import { writeLog } from './log'
 
 export const JoinGameSchema = z.object({
-  sessionId: z.string().min(1),
-  characterId: z.string().min(1),
-  displayName: z.string().min(1),
+  sessionId: z.string().uuid(),
+  characterId: z.string().min(1).max(64),
+  displayName: z.string().min(1).max(64),
 })
 
 export type JoinGameData = z.infer<typeof JoinGameSchema>

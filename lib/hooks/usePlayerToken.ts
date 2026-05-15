@@ -6,9 +6,15 @@ export function usePlayerToken(sessionId: string) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem(`mw-player-token-${sessionId}`)
-    setUid(token)
-    setLoading(false)
+    try {
+      const token = localStorage.getItem(`mw-player-token-${sessionId}`)
+      setUid(token)
+    } catch (e) {
+      console.error('[usePlayerToken] localStorage unavailable:', e)
+      setUid(null)
+    } finally {
+      setLoading(false)
+    }
   }, [sessionId])
 
   return { uid, loading }

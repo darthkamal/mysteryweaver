@@ -5,12 +5,7 @@ import { useSessionStore } from '@/lib/store/session-store'
 export interface ScenarioCharacter {
   id: string
   public: { name: string; title: string; bio: string; avatarUrl: string | null }
-  private: {
-    secretObjectives: string[]
-    hiddenKnowledge: string[]
-    roleplayingNotes: string
-    startingInventory: Record<string, number>
-  }
+  variantFlag?: { includedIn: string[] }
 }
 
 export interface ScenarioAsset {
@@ -32,19 +27,19 @@ export function useScenario(): ScenarioCache | null {
   useEffect(() => {
     if (!scenarioId) return
     fetch(`/api/scenario/${scenarioId}`)
-      .then((r) => r.json())
-      .then(
-        (data: {
-          characters: { characters: ScenarioCharacter[] }
-          assets: { assets: ScenarioAsset[] }
-        }) => {
-          setScenario({
-            characters: data.characters.characters,
-            assets: data.assets.assets,
-          })
-        },
-      )
-      .catch(() => {})
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        return r.json()
+      })
+      .then((data: { characters: { characters: ScenarioCharacter[] }; assets: { assets: ScenarioAsset[] } }) => {
+        setScenario({
+          characters: data.characters.characters,
+          assets: data.assets.assets,
+        })
+      })
+      .catch((e) => {
+        console.error('[useScenario] Failed to load scenario:', e)
+      })
   }, [scenarioId])
 
   return scenario

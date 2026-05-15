@@ -7,9 +7,9 @@ import { getSession, verifyHost, verifyActiveSession } from './helpers'
 import { writeLog } from './log'
 
 export const DistributeClueSchema = z.object({
-  sessionId: z.string().min(1),
-  targetCharacterIds: z.array(z.string().min(1)).min(1),
-  clueId: z.string().min(1),
+  sessionId: z.string().uuid(),
+  targetCharacterIds: z.array(z.string().min(1).max(64)).min(1).max(20),
+  clueId: z.string().min(1).max(64),
 })
 
 export type DistributeClueData = z.infer<typeof DistributeClueSchema>

@@ -5,17 +5,38 @@ import * as schema from './schema'
 import path from 'path'
 import fs from 'fs'
 
-const dbUrl = process.env.DATABASE_URL ?? 'file:./data/mysteryweaver.db'
-const dbPath = dbUrl.replace('file:', '')
+// Fail hard at startup if JWT_SECRET is missing — better than silent runtime 500s
+if (!process.env.JWT_SECRET && process.env.NODE_ENV !== 'test') {
+  console.error('[FATAL] JWT_SECRET environment variable is not set. Refusing to start.')
+  process.exit(1)
+}
 
-const dataDir = path.dirname(path.resolve(dbPath))
+const dbUrl = process.env.DATABASE_URL ?? 'file:./data/mysteryweaver.db'
+if (!dbUrl.startsWith('file:')) {
+  console.error('[FATAL] DATABASE_URL must use the file: scheme.')
+  process.exit(1)
+}
+const dbPath = path.resolve(dbUrl.slice(5))
+
+const dataDir = path.dirname(dbPath)
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true })
 
-const sqlite = new Database(dbPath)
-sqlite.pragma('journal_mode = WAL')
-sqlite.pragma('foreign_keys = ON')
+let sqlite: Database.Database
+try {
+  sqlite = new Database(dbPath)
+  sqlite.pragma('journal_mode = WAL')
+  sqlite.pragma('foreign_keys = ON')
+} catch (e) {
+  console.error('[FATAL] Failed to open SQLite database:', e)
+  process.exit(1)
+}
 
 export const db = drizzle(sqlite, { schema })
 export type Db = typeof db
 
-migrate(db, { migrationsFolder: path.join(process.cwd(), 'lib/db/migrations') })
+try {
+  migrate(db, { migrationsFolder: path.join(process.cwd(), 'lib/db/migrations') })
+} catch (e) {
+  console.error('[FATAL] Database migration failed:', e)
+  process.exit(1)
+}

@@ -12,7 +12,12 @@ export function useSession(sessionId: string, uid: string | null) {
   useEffect(() => {
     if (!sessionId || !uid) return
 
-    const token = localStorage.getItem(`mw-player-token-${sessionId}`)
+    let token: string | null = null
+    try {
+      token = localStorage.getItem(`mw-player-token-${sessionId}`)
+    } catch {
+      return
+    }
     if (!token) return
 
     const es = new EventSource(
@@ -20,13 +25,21 @@ export function useSession(sessionId: string, uid: string | null) {
     )
 
     es.addEventListener('session-updated', (e) => {
-      const data = JSON.parse((e as MessageEvent).data)
-      setSession(data)
+      try {
+        const data = JSON.parse((e as MessageEvent).data)
+        setSession(data)
+      } catch {
+        console.error('[useSession] Failed to parse session-updated payload')
+      }
     })
 
     es.addEventListener('player-updated', (e) => {
-      const data = JSON.parse((e as MessageEvent).data)
-      setPlayer(data)
+      try {
+        const data = JSON.parse((e as MessageEvent).data)
+        setPlayer(data)
+      } catch {
+        console.error('[useSession] Failed to parse player-updated payload')
+      }
     })
 
     es.onerror = () => es.close()

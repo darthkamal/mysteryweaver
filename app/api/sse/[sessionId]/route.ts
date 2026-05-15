@@ -1,11 +1,15 @@
 import { type NextRequest } from 'next/server'
 import { eq, and } from 'drizzle-orm'
 import { db } from '@/lib/db'
-import { sessions, players } from '@/lib/db/schema'
+import { sessions, players, scenarios } from '@/lib/db/schema'
 import { addClient, removeClient } from '@/lib/sse/registry'
 import type { SseClient } from '@/lib/sse/registry'
 
 const encoder = new TextEncoder()
+
+function safeParse<T>(raw: string): T | null {
+  try { return JSON.parse(raw) as T } catch { return null }
+}
 
 export async function GET(
   req: NextRequest,
@@ -33,34 +37,53 @@ export async function GET(
       client = { sessionId, uid, controller }
       addClient(client)
 
-      // Send current session state immediately on connect
-      const sessionRow = db.select().from(sessions).where(eq(sessions.id, sessionId)).get()
-      if (sessionRow) {
-        const sessionData = {
-          sessionId: sessionRow.id,
-          scenarioId: sessionRow.scenarioId,
-          phase: sessionRow.phase,
-          phaseIndex: sessionRow.phaseIndex,
-          status: sessionRow.status,
-          hostId: sessionRow.hostId,
-          characterAssignments: JSON.parse(sessionRow.characterAssignments),
-          unlockedAssets: JSON.parse(sessionRow.unlockedAssets),
+      try {
+        // Send current session state immediately on connect
+        const sessionRow = db.select().from(sessions).where(eq(sessions.id, sessionId)).get()
+        if (sessionRow) {
+          const sessionData = {
+            sessionId: sessionRow.id,
+            scenarioId: sessionRow.scenarioId,
+            phase: sessionRow.phase,
+            phaseIndex: sessionRow.phaseIndex,
+            status: sessionRow.status,
+            hostId: sessionRow.hostId,
+            characterAssignments: safeParse(sessionRow.characterAssignments) ?? {},
+            unlockedAssets: safeParse(sessionRow.unlockedAssets) ?? [],
+          }
+          controller.enqueue(
+            encoder.encode(`event: session-updated\ndata: ${JSON.stringify(sessionData)}\n\n`),
+          )
+        }
+
+        // Include the player's own private character data
+        let privateCharacter = null
+        const sessionForScenario = sessionRow ?? db.select({ scenarioId: sessions.scenarioId }).from(sessions).where(eq(sessions.id, sessionId)).get()
+        if (sessionForScenario) {
+          const scenarioRow = db.select({ characters: scenarios.characters }).from(scenarios).where(eq(scenarios.id, sessionForScenario.scenarioId)).get()
+          if (scenarioRow) {
+            const chars = safeParse<{ characters: Array<{ id: string; private: unknown }> }>(scenarioRow.characters)
+            privateCharacter = chars?.characters.find((c) => c.id === playerRow.characterId)?.private ?? null
+          }
+        }
+
+        // Send current player state immediately on connect
+        const playerData = {
+          characterId: playerRow.characterId,
+          displayName: playerRow.displayName,
+          currencies: safeParse(playerRow.currencies) ?? {},
+          clues: safeParse(playerRow.clues) ?? [],
+          privateCharacter,
         }
         controller.enqueue(
-          encoder.encode(`event: session-updated\ndata: ${JSON.stringify(sessionData)}\n\n`),
+          encoder.encode(`event: player-updated\ndata: ${JSON.stringify(playerData)}\n\n`),
         )
+      } catch (e) {
+        // On any error during init, clean up and close the stream
+        if (client) { removeClient(client); client = null }
+        controller.error(e)
+        return
       }
-
-      // Send current player state immediately on connect
-      const playerData = {
-        characterId: playerRow.characterId,
-        displayName: playerRow.displayName,
-        currencies: JSON.parse(playerRow.currencies),
-        clues: JSON.parse(playerRow.clues),
-      }
-      controller.enqueue(
-        encoder.encode(`event: player-updated\ndata: ${JSON.stringify(playerData)}\n\n`),
-      )
 
       // Keep connection alive with periodic pings
       pingTimer = setInterval(() => {

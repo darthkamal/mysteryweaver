@@ -13,8 +13,18 @@ export async function GET(
     const { scenarioId } = await params
     const row = db.select().from(scenarios).where(eq(scenarios.id, scenarioId)).get()
     if (!row) throw new GameError(404, `Scenario ${scenarioId} not found`)
+
+    const characters = JSON.parse(row.characters) as {
+      characters: Array<{ id: string; public: unknown; private?: unknown; variantFlag?: unknown }>
+    }
+
+    // Strip private fields — private character data is delivered via SSE player-updated only
+    const publicCharacters = {
+      characters: characters.characters.map(({ private: _priv, ...rest }) => rest),
+    }
+
     return NextResponse.json({
-      characters: JSON.parse(row.characters),
+      characters: publicCharacters,
       assets: JSON.parse(row.assets),
     })
   } catch (error) {

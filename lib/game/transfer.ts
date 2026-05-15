@@ -7,10 +7,10 @@ import { getSession, getScenario, verifyActiveSession, getPhaseConfig } from './
 import { writeLog } from './log'
 
 export const TransferCurrencySchema = z.object({
-  sessionId: z.string().min(1),
-  toCharacterId: z.string().min(1),
-  currencyType: z.string().min(1),
-  amount: z.number().int(),
+  sessionId: z.string().uuid(),
+  toCharacterId: z.string().min(1).max(64),
+  currencyType: z.string().min(1).max(32),
+  amount: z.number().int().positive().max(10_000),
 })
 
 export type TransferCurrencyData = z.infer<typeof TransferCurrencySchema>

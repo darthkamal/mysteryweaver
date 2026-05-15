@@ -11,10 +11,12 @@ export function err(error: unknown): NextResponse {
     return NextResponse.json({ error: error.message }, { status: error.status })
   }
   if (error instanceof ZodError) {
-    return NextResponse.json(
-      { error: 'Invalid request body', details: error.flatten() },
-      { status: 400 },
-    )
+    // Strip field-level details in production to avoid leaking schema shape
+    const body =
+      process.env.NODE_ENV === 'production'
+        ? { error: 'Invalid request body' }
+        : { error: 'Invalid request body', details: error.flatten() }
+    return NextResponse.json(body, { status: 400 })
   }
   console.error('[API Error]', error)
   return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

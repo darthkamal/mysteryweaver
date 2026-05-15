@@ -7,7 +7,7 @@ import { getSession, getScenario, verifyHost } from './helpers'
 import { writeLog } from './log'
 
 export const AdvancePhaseSchema = z.object({
-  sessionId: z.string().min(1),
+  sessionId: z.string().uuid(),
 })
 
 export type AdvancePhaseData = z.infer<typeof AdvancePhaseSchema>
@@ -17,6 +17,7 @@ export async function advancePhase(db: Db, uid: string, data: AdvancePhaseData):
 
   const session = getSession(db, sessionId)
   verifyHost(session, uid)
+  if (session.status === 'ended') throw new GameError(422, 'Session has already ended')
 
   const scenario = getScenario(db, session.scenarioId)
   const phases = scenario.manifest.phases

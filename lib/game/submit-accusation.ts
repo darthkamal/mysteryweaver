@@ -6,10 +6,10 @@ import { getSession, getScenario, verifyPhaseIs } from './helpers'
 import { writeLog } from './log'
 
 export const SubmitAccusationSchema = z.object({
-  sessionId: z.string().min(1),
-  suspectId: z.string().min(1),
-  motive: z.string().min(1),
-  evidenceIds: z.array(z.string()),
+  sessionId: z.string().uuid(),
+  suspectId: z.string().min(1).max(64),
+  motive: z.string().min(1).max(500),
+  evidenceIds: z.array(z.string().max(64)).max(20),
 })
 
 export type SubmitAccusationData = z.infer<typeof SubmitAccusationSchema>

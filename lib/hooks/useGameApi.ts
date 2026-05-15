@@ -2,7 +2,12 @@
 
 export function useGameApi(sessionId: string) {
   async function call(endpoint: string, body: unknown): Promise<unknown> {
-    const token = localStorage.getItem(`mw-player-token-${sessionId}`)
+    let token: string | null = null
+    try {
+      token = localStorage.getItem(`mw-player-token-${sessionId}`)
+    } catch {
+      throw new Error('Storage unavailable — cannot authenticate')
+    }
     if (!token) throw new Error('Not authenticated — please rejoin the game')
 
     const res = await fetch(endpoint, {

@@ -7,8 +7,8 @@ import { getSession, getScenario, verifyHost, verifyActiveSession } from './help
 import { writeLog } from './log'
 
 export const TriggerNpcEventSchema = z.object({
-  sessionId: z.string().min(1),
-  npcEventId: z.string().min(1),
+  sessionId: z.string().uuid(),
+  npcEventId: z.string().min(1).max(64),
 })
 
 export type TriggerNpcEventData = z.infer<typeof TriggerNpcEventSchema>

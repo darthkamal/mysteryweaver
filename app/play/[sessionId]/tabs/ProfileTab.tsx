@@ -11,6 +11,7 @@ interface Props {
 export default function ProfileTab({ sessionId: _sessionId, uid: _uid }: Props) {
   const characterId = usePlayerStore((s) => s.characterId)
   const displayName = usePlayerStore((s) => s.displayName)
+  const privateCharacter = usePlayerStore((s) => s.privateCharacter)
   const scenario = useScenario()
 
   if (!characterId) {
@@ -51,46 +52,50 @@ export default function ProfileTab({ sessionId: _sessionId, uid: _uid }: Props) 
         {character.public.bio}
       </Typography>
 
-      <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-        <Typography variant="subtitle2" fontWeight="bold" gutterBottom color="primary">
-          Your Secret Objectives
-        </Typography>
-        <List dense disablePadding>
-          {character.private.secretObjectives.map((obj, i) => (
-            <ListItem key={i} sx={{ py: 0.25, alignItems: 'flex-start' }}>
-              <ListItemText
-                primary={`${i + 1}. ${obj}`}
-                primaryTypographyProps={{ variant: 'body2' }}
-              />
-            </ListItem>
-          ))}
-        </List>
-      </Paper>
+      {privateCharacter && (
+        <>
+          <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+            <Typography variant="subtitle2" fontWeight="bold" gutterBottom color="primary">
+              Your Secret Objectives
+            </Typography>
+            <List dense disablePadding>
+              {privateCharacter.secretObjectives.map((obj, i) => (
+                <ListItem key={i} sx={{ py: 0.25, alignItems: 'flex-start' }}>
+                  <ListItemText
+                    primary={`${i + 1}. ${obj}`}
+                    primaryTypographyProps={{ variant: 'body2' }}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
 
-      <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-        <Typography variant="subtitle2" fontWeight="bold" gutterBottom color="primary">
-          What You Know
-        </Typography>
-        <List dense disablePadding>
-          {character.private.hiddenKnowledge.map((fact, i) => (
-            <ListItem key={i} sx={{ py: 0.25, alignItems: 'flex-start' }}>
-              <ListItemText
-                primary={`• ${fact}`}
-                primaryTypographyProps={{ variant: 'body2' }}
-              />
-            </ListItem>
-          ))}
-        </List>
-      </Paper>
+          <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+            <Typography variant="subtitle2" fontWeight="bold" gutterBottom color="primary">
+              What You Know
+            </Typography>
+            <List dense disablePadding>
+              {privateCharacter.hiddenKnowledge.map((fact, i) => (
+                <ListItem key={i} sx={{ py: 0.25, alignItems: 'flex-start' }}>
+                  <ListItemText
+                    primary={`• ${fact}`}
+                    primaryTypographyProps={{ variant: 'body2' }}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
 
-      <Paper variant="outlined" sx={{ p: 2 }}>
-        <Typography variant="subtitle2" fontWeight="bold" gutterBottom color="primary">
-          How to Play This Character
-        </Typography>
-        <Typography variant="body2" fontStyle="italic">
-          {character.private.roleplayingNotes}
-        </Typography>
-      </Paper>
+          <Paper variant="outlined" sx={{ p: 2 }}>
+            <Typography variant="subtitle2" fontWeight="bold" gutterBottom color="primary">
+              How to Play This Character
+            </Typography>
+            <Typography variant="body2" fontStyle="italic">
+              {privateCharacter.roleplayingNotes}
+            </Typography>
+          </Paper>
+        </>
+      )}
     </Box>
   )
 }
