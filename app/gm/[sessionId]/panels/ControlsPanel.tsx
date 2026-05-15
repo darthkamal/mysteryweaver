@@ -30,6 +30,7 @@ export default function ControlsPanel({
   phaseIndex,
   status,
   characterMap,
+  assetMap,
   totalCharacters,
   nextPhase,
   sessionId,
@@ -175,9 +176,27 @@ export default function ControlsPanel({
 
       <Divider />
 
-      <NpcEventsPanel scenario={scenario} phase={phase} phaseIndex={phaseIndex} status={status} characterMap={{}} assetMap={{}} totalCharacters={totalCharacters} nextPhase={nextPhase} onAction={onAction} />
-      <DeckPanel scenario={scenario} phase={phase} phaseIndex={phaseIndex} status={status} characterMap={{}} assetMap={{}} totalCharacters={totalCharacters} nextPhase={nextPhase} onAction={onAction} />
-      <AccusationsPanel scenario={scenario} phase={phase} phaseIndex={phaseIndex} status={status} characterMap={{}} assetMap={{}} totalCharacters={totalCharacters} nextPhase={nextPhase} onAction={onAction} />
+      {scenario && (
+        <>
+          <NpcEventsPanel
+            sessionId={sessionId}
+            scenario={scenario}
+            onAction={(msg: string) => onAction({ open: true, message: msg, severity: 'info' })}
+          />
+          <DeckPanel
+            sessionId={sessionId}
+            scenario={scenario}
+            characterMap={characterMap}
+            assetMap={assetMap}
+            onAction={(msg: string) => onAction({ open: true, message: msg, severity: 'info' })}
+          />
+          <AccusationsPanel
+            sessionId={sessionId}
+            scenario={scenario}
+            onAction={(msg: string) => onAction({ open: true, message: msg, severity: 'info' })}
+          />
+        </>
+      )}
 
       {/* Advance Phase Confirmation Dialog */}
       <Dialog open={confirmAdvance} onClose={() => setConfirmAdvance(false)}>
