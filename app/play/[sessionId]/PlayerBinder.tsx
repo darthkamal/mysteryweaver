@@ -5,9 +5,8 @@ import PersonIcon from '@mui/icons-material/Person'
 import SavingsIcon from '@mui/icons-material/Savings'
 import SearchIcon from '@mui/icons-material/Search'
 import EditNoteIcon from '@mui/icons-material/EditNote'
-import { useAuth } from '@/lib/hooks/useAuth'
+import { usePlayerToken } from '@/lib/hooks/usePlayerToken'
 import { useSession } from '@/lib/hooks/useSession'
-import { usePlayer } from '@/lib/hooks/usePlayer'
 import { usePlayerStore } from '@/lib/store/player-store'
 import { useSessionStore } from '@/lib/store/session-store'
 import ProfileTab from './tabs/ProfileTab'
@@ -20,15 +19,14 @@ interface Props {
 }
 
 export default function PlayerBinder({ sessionId }: Props) {
-  const { uid, loading: authLoading } = useAuth()
+  const { uid, loading } = usePlayerToken(sessionId)
   const [activeTab, setActiveTab] = useState(0)
   const newClueCount = usePlayerStore((s) => s.newClueCount)
   const phase = useSessionStore((s) => s.phase)
 
-  useSession(sessionId)
-  usePlayer(sessionId, uid)
+  useSession(sessionId, uid)
 
-  if (authLoading) {
+  if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100dvh">
         <Typography color="text.secondary">Connecting…</Typography>

@@ -21,7 +21,7 @@ export default function YamsTab({ sessionId, uid: _uid }: Props) {
   const characterAssignments = useSessionStore((s) => s.characterAssignments)
   const phase = useSessionStore((s) => s.phase)
   const scenario = useScenario()
-  const { call } = useGameApi()
+  const { call } = useGameApi(sessionId)
 
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [toCharacterId, setToCharacterId] = useState('')

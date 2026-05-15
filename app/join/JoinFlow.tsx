@@ -1,15 +1,11 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore'
 import {
   Box, Container, TextField, Button, Typography, Card, CardContent,
   Alert, CircularProgress, Avatar, Chip, Stack,
 } from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person'
-import { getClientDb } from '@/lib/firebase/firestore-client'
-import { useAuth } from '@/lib/hooks/useAuth'
-import { useGameApi } from '@/lib/hooks/useGameApi'
 
 type JoinStep = 'code' | 'character' | 'joining'
 
@@ -28,8 +24,6 @@ interface SessionInfo {
 
 export default function JoinFlow() {
   const router = useRouter()
-  const { uid, loading: authLoading } = useAuth()
-  const { call } = useGameApi()
 
   const [step, setStep] = useState<JoinStep>('code')
   const [roomCode, setRoomCode] = useState('')
@@ -44,33 +38,26 @@ export default function JoinFlow() {
     setLoading(true)
     setError(null)
     try {
-      const db = getClientDb()
-      const snap = await getDocs(
-        query(collection(db, 'sessions'), where('roomCode', '==', roomCode.trim().toUpperCase())),
+      const sessionRes = await fetch(
+        `/api/session/lookup?roomCode=${encodeURIComponent(roomCode.trim().toUpperCase())}`,
       )
-      if (snap.empty) throw new Error('No game found with that room code.')
-
-      const sessionDoc = snap.docs[0]!
-      const sd = sessionDoc.data()
-      if (sd['status'] !== 'lobby')
-        throw new Error('This game has already started. Ask the GM to add you.')
+      const sessionData = await sessionRes.json()
+      if (!sessionRes.ok) throw new Error(sessionData.error ?? 'No game found with that room code.')
 
       const info: SessionInfo = {
-        id: sessionDoc.id,
-        scenarioId: sd['scenarioId'],
-        characterAssignments: sd['characterAssignments'] ?? {},
+        id: sessionData.id,
+        scenarioId: sessionData.scenarioId,
+        characterAssignments: sessionData.characterAssignments ?? {},
       }
 
-      const scenarioSnap = await getDoc(doc(db, 'scenarios', info.scenarioId))
-      if (!scenarioSnap.exists()) throw new Error('Scenario data not found.')
+      const scenarioRes = await fetch(`/api/scenario/${info.scenarioId}`)
+      const scenarioData = await scenarioRes.json()
+      if (!scenarioRes.ok) throw new Error('Scenario data not found.')
 
-      const rawChars = scenarioSnap.data()?.['characters']?.['characters']
+      const rawChars = scenarioData.characters?.characters
       if (!Array.isArray(rawChars)) throw new Error('Invalid scenario data.')
       const allChars = (
-        rawChars as Array<{
-          id: string
-          public: { name: string; title: string; bio: string }
-        }>
+        rawChars as Array<{ id: string; public: { name: string; title: string; bio: string } }>
       ).map((c) => ({
         id: c.id,
         name: c.public.name,
@@ -90,31 +77,26 @@ export default function JoinFlow() {
 
   async function handleJoin() {
     if (!selectedCharacterId || !displayName.trim() || !sessionInfo) return
-    if (!uid) {
-      setError('Your session expired. Please refresh and try again.')
-      return
-    }
     setStep('joining')
     setError(null)
     try {
-      await call('/api/game/join', {
-        sessionId: sessionInfo.id,
-        characterId: selectedCharacterId,
-        displayName: displayName.trim(),
+      const res = await fetch('/api/game/join', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: sessionInfo.id,
+          characterId: selectedCharacterId,
+          displayName: displayName.trim(),
+        }),
       })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? 'Failed to join.')
+      localStorage.setItem(`mw-player-token-${sessionInfo.id}`, data.playerToken)
       router.push(`/play/${sessionInfo.id}`)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to join. Try again.')
       setStep('character')
     }
-  }
-
-  if (authLoading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-        <CircularProgress />
-      </Box>
-    )
   }
 
   return (
