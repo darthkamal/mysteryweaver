@@ -22,7 +22,10 @@ export async function advancePhase(db: Db, uid: string, data: AdvancePhaseData):
   const phases = scenario.manifest.phases
   const currentIndex = phases.findIndex((p: { id: string }) => p.id === session.phase)
 
-  if (currentIndex === -1 || currentIndex >= phases.length - 1) {
+  if (currentIndex === -1) {
+    throw new GameError(422, 'Current phase not found in scenario manifest')
+  }
+  if (currentIndex >= phases.length - 1) {
     throw new GameError(422, 'Already on the last phase — cannot advance further')
   }
 
