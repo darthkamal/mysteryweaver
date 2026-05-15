@@ -111,7 +111,7 @@ export function insertScenario(db: TestDb) {
     characters: JSON.stringify(SCENARIO_DATA.characters),
     assets: JSON.stringify(SCENARIO_DATA.assets),
     gmScript: JSON.stringify(SCENARIO_DATA.gmScript),
-    relationships: JSON.stringify({ edges: [] }),
+    relationships: JSON.stringify({ edges: [{ from: 'okonkwo', to: 'amadi', label: 'Rivals', public: true }] }),
     createdAt: Date.now(),
   }).run()
 }

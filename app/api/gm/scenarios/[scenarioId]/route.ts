@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server'
-import { eq, and, ne } from 'drizzle-orm'
+import { eq, and, or } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { scenarios, sessions } from '@/lib/db/schema'
 import { verifyGmToken } from '@/lib/api/auth'
@@ -48,7 +48,10 @@ export async function DELETE(
 
     // Block deletion if active/lobby sessions reference this scenario
     const activeSession = db.select({ id: sessions.id }).from(sessions)
-      .where(and(eq(sessions.scenarioId, scenarioId), ne(sessions.status, 'ended')))
+      .where(and(
+        eq(sessions.scenarioId, scenarioId),
+        or(eq(sessions.status, 'lobby'), eq(sessions.status, 'active')),
+      ))
       .get()
     if (activeSession) throw new GameError(409, 'Cannot delete a scenario with active sessions')
 

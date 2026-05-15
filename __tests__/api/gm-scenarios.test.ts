@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import {
   createTestDb, insertScenario, insertSession,
-  HOST_UID, SCENARIO_ID, LOBBY_SESSION_DATA,
+  HOST_UID, SCENARIO_ID, LOBBY_SESSION_DATA, ACTIVE_SESSION_DATA,
 } from './helpers'
 
 // ── Mocks (must be before imports that use them) ─────────────────────────────
@@ -178,7 +178,7 @@ describe('GET /api/gm/scenarios', () => {
       characters: JSON.stringify({ characters: [] }),
       assets: JSON.stringify({}),
       gmScript: JSON.stringify({}),
-      relationships: JSON.stringify({ edges: [] }),
+      relationships: JSON.stringify({ edges: [{ from: 'okonkwo', to: 'amadi', label: 'Rivals', public: true }] }),
       createdAt: Date.now(),
     }).run()
 
@@ -307,7 +307,7 @@ describe('GET /api/gm/scenarios/[scenarioId]', () => {
       characters: JSON.stringify({}),
       assets: JSON.stringify({}),
       gmScript: JSON.stringify({}),
-      relationships: JSON.stringify({ edges: [] }),
+      relationships: JSON.stringify({ edges: [{ from: 'okonkwo', to: 'amadi', label: 'Rivals', public: true }] }),
       createdAt: Date.now(),
     }).run()
 
@@ -348,6 +348,20 @@ describe('DELETE /api/gm/scenarios/[scenarioId]', () => {
 
   it('returns 409 when an active session references this scenario', async () => {
     insertSession(testDb, LOBBY_SESSION_DATA) // status: 'lobby' — not ended
+
+    const req = makeRequest(`http://localhost/api/gm/scenarios/${SCENARIO_ID}`, {
+      method: 'DELETE',
+    })
+    const res = await deleteScenario(req as any, {
+      params: Promise.resolve({ scenarioId: SCENARIO_ID }),
+    })
+    expect(res.status).toBe(409)
+    const body = await res.json()
+    expect(body.error).toMatch(/active session/i)
+  })
+
+  it('returns 409 when an active session references the scenario', async () => {
+    insertSession(testDb, ACTIVE_SESSION_DATA) // status: 'active'
 
     const req = makeRequest(`http://localhost/api/gm/scenarios/${SCENARIO_ID}`, {
       method: 'DELETE',
