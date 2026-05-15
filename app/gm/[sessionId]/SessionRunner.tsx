@@ -109,6 +109,7 @@ export default function SessionRunner({ sessionId }: { sessionId: string }) {
     assetMap,
     totalCharacters,
     nextPhase,
+    sessionId,
     onAction: setSnackbar,
   }
 
@@ -160,7 +161,7 @@ export default function SessionRunner({ sessionId }: { sessionId: string }) {
           <Box sx={{ flex: 1, overflow: 'auto' }}>
             <ScriptPanel {...sharedProps} />
           </Box>
-          <Box sx={{ width: 360, flexShrink: 0, overflow: 'auto' }}>
+          <Box sx={{ flex: 1, overflow: 'auto' }}>
             <ControlsPanel {...sharedProps} />
           </Box>
         </Box>

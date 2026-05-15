@@ -20,6 +20,7 @@ interface ControlsPanelProps {
   assetMap: Record<string, string>
   totalCharacters: number
   nextPhase: { id: string; name: string; yamsLocked: boolean } | undefined
+  sessionId: string
   onAction: (state: { open: boolean; message: string; severity: 'success' | 'error' | 'info' | 'warning' }) => void
 }
 
@@ -31,6 +32,7 @@ export default function ControlsPanel({
   characterMap,
   totalCharacters,
   nextPhase,
+  sessionId,
   onAction,
 }: ControlsPanelProps) {
   const players = useGmStore((s) => s.players)
@@ -50,7 +52,7 @@ export default function ControlsPanel({
       const res = await fetch('/api/game/advance-phase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId: undefined }),
+        body: JSON.stringify({ sessionId }),
       })
       if (res.ok) {
         onAction({ open: true, message: 'Phase advanced successfully', severity: 'success' })
