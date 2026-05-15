@@ -1,17 +1,34 @@
-import type { Firestore } from 'firebase-admin/firestore'
+import { eq } from 'drizzle-orm'
+import type { Db } from '@/lib/db'
+import { sessions, scenarios } from '@/lib/db/schema'
 import { GameError } from './types'
 import type { SessionData, ScenarioData } from './types'
 
-export async function getSession(db: Firestore, sessionId: string): Promise<SessionData> {
-  const snap = await db.doc(`sessions/${sessionId}`).get()
-  if (!snap.exists) throw new GameError(404, `Session ${sessionId} not found`)
-  return snap.data() as SessionData
+export function getSession(db: Db, sessionId: string): SessionData {
+  const row = db.select().from(sessions).where(eq(sessions.id, sessionId)).get()
+  if (!row) throw new GameError(404, `Session ${sessionId} not found`)
+  return {
+    id: row.id,
+    roomCode: row.roomCode,
+    hostId: row.hostId,
+    scenarioId: row.scenarioId,
+    phase: row.phase,
+    phaseIndex: row.phaseIndex,
+    status: row.status as 'lobby' | 'active' | 'ended',
+    characterAssignments: JSON.parse(row.characterAssignments) as Record<string, string>,
+    unlockedAssets: JSON.parse(row.unlockedAssets) as string[],
+  }
 }
 
-export async function getScenario(db: Firestore, scenarioId: string): Promise<ScenarioData> {
-  const snap = await db.doc(`scenarios/${scenarioId}`).get()
-  if (!snap.exists) throw new GameError(404, `Scenario ${scenarioId} not found`)
-  return snap.data() as ScenarioData
+export function getScenario(db: Db, scenarioId: string): ScenarioData {
+  const row = db.select().from(scenarios).where(eq(scenarios.id, scenarioId)).get()
+  if (!row) throw new GameError(404, `Scenario ${scenarioId} not found`)
+  return {
+    manifest: JSON.parse(row.manifest),
+    characters: JSON.parse(row.characters),
+    assets: JSON.parse(row.assets),
+    gmScript: JSON.parse(row.gmScript),
+  }
 }
 
 export function verifyHost(session: SessionData, uid: string): void {

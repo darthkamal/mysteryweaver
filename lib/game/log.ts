@@ -1,6 +1,5 @@
-import 'server-only'
-import type { Firestore } from 'firebase-admin/firestore'
-import { FieldValue } from 'firebase-admin/firestore'
+import type { Db } from '@/lib/db'
+import { logs } from '@/lib/db/schema'
 
 export type LogType =
   | 'join'
@@ -10,13 +9,16 @@ export type LogType =
   | 'npc_event'
   | 'accusation'
 
-export async function writeLog(
-  db: Firestore,
+export function writeLog(
+  db: Db,
   sessionId: string,
   entry: { type: LogType; message: string; actorId: string },
-): Promise<void> {
-  await db.collection(`sessions/${sessionId}/logs`).add({
-    ...entry,
-    timestamp: FieldValue.serverTimestamp(),
-  })
+): void {
+  db.insert(logs).values({
+    sessionId,
+    type: entry.type,
+    message: entry.message,
+    actorId: entry.actorId,
+    timestamp: Date.now(),
+  }).run()
 }

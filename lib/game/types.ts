@@ -9,6 +9,7 @@ export class GameError extends Error {
 }
 
 export type SessionData = {
+  id: string
   roomCode: string
   hostId: string
   scenarioId: string
@@ -17,7 +18,6 @@ export type SessionData = {
   status: 'lobby' | 'active' | 'ended'
   characterAssignments: Record<string, string>
   unlockedAssets: string[]
-  accusation: null | Record<string, unknown>
 }
 
 export type ScenarioData = {
