@@ -26,8 +26,12 @@ export async function transferCurrency(db: Db, uid: string, data: TransferCurren
   const scenario = getScenario(db, session.scenarioId)
   const currentPhase = getPhaseConfig(scenario, session.phase)
 
-  if (currencyType === 'yams' && currentPhase.yamsLocked) {
-    throw new GameError(422, 'Yam transfers are locked during this phase')
+  const currency = scenario.manifest.currencies.find((c) => c.id === currencyType)
+  if (!currency) throw new GameError(404, `Currency '${currencyType}' not found in this scenario`)
+  if (!currency.tradeable) throw new GameError(422, `${currency.name} cannot be traded`)
+
+  if (currentPhase.yamsLocked) {
+    throw new GameError(422, 'Transfers are locked during this phase')
   }
 
   const recipientUid = session.characterAssignments[toCharacterId]

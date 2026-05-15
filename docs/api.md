@@ -122,7 +122,7 @@ Transfer a tradeable currency from the authenticated player to another character
 { "transferred": true }
 ```
 
-**Errors:** `400` invalid body or amount ≤ 0 · `401` bad token · `403` insufficient balance · `404` session or player not found · `409` currency is not tradeable · `422` session not active, phase locks yams, or target character not in session
+**Errors:** `400` invalid body or amount ≤ 0 · `401` bad token · `404` session, player, or currency not found · `422` session not active, currency is not tradeable, transfers locked during this phase, or target character not in session
 
 ---
 
@@ -136,8 +136,8 @@ Push one or more clue asset IDs to one or more players. GM only.
 ```json
 {
   "sessionId": "session-uuid",
-  "assetIds": ["evidence_1", "evidence_2"],
-  "characterIds": ["okonkwo", "obierika"]
+  "clueId": "evidence_1",
+  "targetCharacterIds": ["okonkwo", "obierika"]
 }
 ```
 
@@ -163,7 +163,7 @@ Move the session to the next phase in the manifest. GM only.
 
 **Response `200`:**
 ```json
-{ "advanced": true, "phase": "investigation" }
+{ "advanced": true }
 ```
 
 **Errors:** `401` · `403` · `404` · `422` already on last phase or session ended
@@ -180,7 +180,7 @@ Fire a named NPC event. Unlocks conditional assets. GM only.
 ```json
 {
   "sessionId": "session-uuid",
-  "eventId": "ikemefuna_dies"
+  "npcEventId": "ikemefuna_dies"
 }
 ```
 

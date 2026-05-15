@@ -3,7 +3,7 @@ import { z } from 'zod'
 import type { Db } from '@/lib/db'
 import { sessions, players } from '@/lib/db/schema'
 import { GameError } from './types'
-import { getSession, getScenario, verifyHost } from './helpers'
+import { getSession, getScenario, verifyHost, verifyActiveSession } from './helpers'
 import { writeLog } from './log'
 
 export const TriggerNpcEventSchema = z.object({
@@ -18,6 +18,7 @@ export async function triggerNpcEvent(db: Db, uid: string, data: TriggerNpcEvent
 
   const session = getSession(db, sessionId)
   verifyHost(session, uid)
+  verifyActiveSession(session)
 
   const scenario = getScenario(db, session.scenarioId)
   const npcEvent = scenario.gmScript.npcEvents.find((e: { id: string }) => e.id === npcEventId)

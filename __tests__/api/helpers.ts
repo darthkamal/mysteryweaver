@@ -23,6 +23,10 @@ export const SCENARIO_DATA = {
       { id: 'accusation', yamsLocked: true },
       { id: 'debrief', yamsLocked: true },
     ],
+    currencies: [
+      { id: 'yams', name: 'Yams', tradeable: true },
+      { id: 'oracle_bones', name: 'Oracle Bones', tradeable: false },
+    ],
     accusationMechanic: { allowedPhase: 'accusation', requiresEvidence: true },
   },
   characters: {

@@ -23,6 +23,7 @@ export type SessionData = {
 export type ScenarioData = {
   manifest: {
     phases: Array<{ id: string; yamsLocked: boolean }>
+    currencies: Array<{ id: string; name: string; tradeable: boolean }>
     accusationMechanic: { allowedPhase: string; requiresEvidence: boolean }
   }
   characters: {

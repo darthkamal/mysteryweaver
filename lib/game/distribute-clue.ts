@@ -3,7 +3,7 @@ import { z } from 'zod'
 import type { Db } from '@/lib/db'
 import { players } from '@/lib/db/schema'
 import { GameError } from './types'
-import { getSession, verifyHost } from './helpers'
+import { getSession, verifyHost, verifyActiveSession } from './helpers'
 import { writeLog } from './log'
 
 export const DistributeClueSchema = z.object({
@@ -19,6 +19,7 @@ export async function distributeClue(db: Db, uid: string, data: DistributeClueDa
 
   const session = getSession(db, sessionId)
   verifyHost(session, uid)
+  verifyActiveSession(session)
 
   for (const charId of targetCharacterIds) {
     const playerId = session.characterAssignments[charId]

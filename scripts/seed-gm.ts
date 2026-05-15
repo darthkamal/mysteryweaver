@@ -16,21 +16,28 @@ if (!emailArg || !passwordArg) {
   process.exit(1)
 }
 
-const dbUrl = process.env.DATABASE_URL ?? 'file:./data/mysteryweaver.db'
-const sqlite = new Database(dbUrl.replace('file:', ''))
-const db = drizzle(sqlite, { schema })
-migrate(db, { migrationsFolder: path.join(process.cwd(), 'lib/db/migrations') })
+async function main() {
+  const dbUrl = process.env.DATABASE_URL ?? 'file:./data/mysteryweaver.db'
+  const sqlite = new Database(dbUrl.replace('file:', ''))
+  const db = drizzle(sqlite, { schema })
+  migrate(db, { migrationsFolder: path.join(process.cwd(), 'lib/db/migrations') })
 
-const passwordHash = await bcrypt.hash(passwordArg, 12)
-const id = randomUUID()
+  const passwordHash = await bcrypt.hash(passwordArg!, 12)
+  const id = randomUUID()
 
-db.insert(schema.gms).values({
-  id,
-  email: emailArg,
-  passwordHash,
-  displayName: displayNameArg ?? 'Game Master',
-  createdAt: Date.now(),
-}).run()
+  db.insert(schema.gms).values({
+    id,
+    email: emailArg!,
+    passwordHash,
+    displayName: displayNameArg ?? 'Game Master',
+    createdAt: Date.now(),
+  }).run()
 
-console.log(`✓ GM created: ${emailArg} (id: ${id})`)
-sqlite.close()
+  console.log(`✓ GM created: ${emailArg} (id: ${id})`)
+  sqlite.close()
+}
+
+main().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})
