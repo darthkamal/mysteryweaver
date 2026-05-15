@@ -1,2 +1,60 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function AccusationsPanel(_: any) { return null }
+'use client'
+import { Box, Paper, Typography, Chip, Divider } from '@mui/material'
+import { useGmStore } from '@/lib/store/gm-store'
+import type { ScenarioFull } from '../SessionRunner'
+
+interface Props {
+  scenario: ScenarioFull | null
+  characterMap?: Record<string, string>
+  assetMap?: Record<string, string>
+  sessionId?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onAction?: (msgOrState: any) => void
+}
+
+export default function AccusationsPanel({ characterMap = {}, assetMap = {} }: Props) {
+  const accusations = useGmStore((s) => s.accusations)
+  const players = useGmStore((s) => s.players)
+
+  // Build uid → characterId lookup
+  const uidToCharId: Record<string, string> = {}
+  players.forEach((p) => { uidToCharId[p.uid] = p.characterId })
+
+  return (
+    <Paper variant="outlined" sx={{ p: 2 }}>
+      <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
+        Accusations ({accusations.length})
+      </Typography>
+
+      {accusations.length === 0 ? (
+        <Typography variant="body2" color="text.secondary">No accusations submitted yet.</Typography>
+      ) : (
+        accusations.map((acc, i) => {
+          const accuserCharId = uidToCharId[acc.accuserId]
+          const accuserName = accuserCharId ? (characterMap[accuserCharId] ?? accuserCharId) : acc.accuserId
+          const suspectName = characterMap[acc.suspectId] ?? acc.suspectId
+
+          return (
+            <Box key={i}>
+              {i > 0 && <Divider sx={{ my: 2 }} />}
+              <Typography variant="body2" fontWeight="bold">
+                {accuserName} → {suspectName}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ my: 0.5 }}>
+                &quot;{acc.motive}&quot;
+              </Typography>
+              <Box display="flex" gap={0.5} flexWrap="wrap" sx={{ mb: 0.5 }}>
+                {acc.evidenceIds.map((id) => (
+                  <Chip key={id} label={assetMap[id] ?? id} size="small" variant="outlined" />
+                ))}
+              </Box>
+              <Typography variant="caption" color="text.secondary">
+                {new Date(acc.submittedAt).toLocaleTimeString()}
+              </Typography>
+            </Box>
+          )
+        })
+      )}
+    </Paper>
+  )
+}
