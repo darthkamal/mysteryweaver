@@ -18,7 +18,7 @@ A JSON-driven engine for live-action tabletop mystery games. Write a scenario in
 
 ## Quick start (local development)
 
-**Requirements:** Node ≥ 20, pnpm ≥ 11
+**Requirements:** Node ≥ 22 (a `.nvmrc` is provided — run `nvm use`), pnpm ≥ 11
 
 ```bash
 git clone https://github.com/darthkamal/mysteryweaver
