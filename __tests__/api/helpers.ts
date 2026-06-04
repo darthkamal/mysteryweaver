@@ -107,11 +107,11 @@ export function insertScenario(db: TestDb) {
     ownerId: HOST_UID,
     name: 'Test Scenario',
     schemaVersion: '1.0',
-    manifest: JSON.stringify(SCENARIO_DATA.manifest),
-    characters: JSON.stringify(SCENARIO_DATA.characters),
-    assets: JSON.stringify(SCENARIO_DATA.assets),
-    gmScript: JSON.stringify(SCENARIO_DATA.gmScript),
-    relationships: JSON.stringify({ edges: [{ from: 'okonkwo', to: 'amadi', label: 'Rivals', public: true }] }),
+    manifest: SCENARIO_DATA.manifest,
+    characters: SCENARIO_DATA.characters,
+    assets: SCENARIO_DATA.assets,
+    gmScript: SCENARIO_DATA.gmScript,
+    relationships: { edges: [{ from: 'okonkwo', to: 'amadi', label: 'Rivals', public: true }] },
     createdAt: Date.now(),
   }).run()
 }
@@ -128,9 +128,9 @@ export function insertSession(
     phase: data.phase,
     phaseIndex: data.phaseIndex,
     status: data.status,
-    characterAssignments: JSON.stringify(data.characterAssignments),
-    unlockedAssets: JSON.stringify(data.unlockedAssets),
-    triggeredNpcEvents: JSON.stringify(data.triggeredNpcEvents),
+    characterAssignments: data.characterAssignments,
+    unlockedAssets: data.unlockedAssets,
+    triggeredNpcEvents: data.triggeredNpcEvents,
     createdAt: Date.now(),
   }).run()
 }
@@ -145,8 +145,8 @@ export function insertPlayer(
     uid,
     characterId: data.characterId,
     displayName: data.displayName,
-    currencies: JSON.stringify(data.currencies),
-    clues: JSON.stringify(data.clues),
+    currencies: data.currencies,
+    clues: data.clues,
     isOnline: true,
     joinedAt: Date.now(),
   }).run()

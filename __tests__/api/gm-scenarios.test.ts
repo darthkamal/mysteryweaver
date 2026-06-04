@@ -174,11 +174,11 @@ describe('GET /api/gm/scenarios', () => {
       ownerId: 'uid_other_gm',
       name: 'Other Scenario',
       schemaVersion: '1.0',
-      manifest: JSON.stringify({}),
-      characters: JSON.stringify({ characters: [] }),
-      assets: JSON.stringify({}),
-      gmScript: JSON.stringify({}),
-      relationships: JSON.stringify({ edges: [{ from: 'okonkwo', to: 'amadi', label: 'Rivals', public: true }] }),
+      manifest: {},
+      characters: { characters: [] },
+      assets: {},
+      gmScript: {},
+      relationships: { edges: [{ from: 'okonkwo', to: 'amadi', label: 'Rivals', public: true }] },
       createdAt: Date.now(),
     }).run()
 
@@ -312,11 +312,11 @@ describe('GET /api/gm/scenarios/[scenarioId]', () => {
       ownerId: 'uid_other_gm',
       name: 'Other Scenario',
       schemaVersion: '1.0',
-      manifest: JSON.stringify({}),
-      characters: JSON.stringify({}),
-      assets: JSON.stringify({}),
-      gmScript: JSON.stringify({}),
-      relationships: JSON.stringify({ edges: [{ from: 'okonkwo', to: 'amadi', label: 'Rivals', public: true }] }),
+      manifest: {},
+      characters: {},
+      assets: {},
+      gmScript: {},
+      relationships: { edges: [{ from: 'okonkwo', to: 'amadi', label: 'Rivals', public: true }] },
       createdAt: Date.now(),
     }).run()
 

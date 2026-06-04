@@ -49,8 +49,8 @@ export async function transferCurrency(db: Db, uid: string, data: TransferCurren
       .get()
     if (!recipientRow) throw new GameError(404, 'Recipient player not found')
 
-    const senderCurrencies: Record<string, number> = JSON.parse(senderRow.currencies)
-    const recipientCurrencies: Record<string, number> = JSON.parse(recipientRow.currencies)
+    const senderCurrencies = senderRow.currencies
+    const recipientCurrencies = recipientRow.currencies
 
     const senderBalance = senderCurrencies[currencyType] ?? 0
     const recipientBalance = recipientCurrencies[currencyType] ?? 0
@@ -60,12 +60,12 @@ export async function transferCurrency(db: Db, uid: string, data: TransferCurren
     }
 
     tx.update(players)
-      .set({ currencies: JSON.stringify({ ...senderCurrencies, [currencyType]: senderBalance - amount }) })
+      .set({ currencies: { ...senderCurrencies, [currencyType]: senderBalance - amount } })
       .where(and(eq(players.sessionId, sessionId), eq(players.uid, uid)))
       .run()
 
     tx.update(players)
-      .set({ currencies: JSON.stringify({ ...recipientCurrencies, [currencyType]: recipientBalance + amount }) })
+      .set({ currencies: { ...recipientCurrencies, [currencyType]: recipientBalance + amount } })
       .where(and(eq(players.sessionId, sessionId), eq(players.uid, recipientUid)))
       .run()
   })

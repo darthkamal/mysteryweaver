@@ -30,11 +30,11 @@ export async function distributeClue(db: Db, uid: string, data: DistributeClueDa
       .get()
     if (!playerRow) throw new GameError(404, `Player document for ${charId} not found`)
 
-    const currentClues: string[] = JSON.parse(playerRow.clues)
+    const currentClues = playerRow.clues
     const newClues = currentClues.includes(clueId) ? currentClues : [...currentClues, clueId]
 
     db.update(players)
-      .set({ clues: JSON.stringify(newClues) })
+      .set({ clues: newClues })
       .where(and(eq(players.sessionId, sessionId), eq(players.uid, playerId)))
       .run()
   }

@@ -20,13 +20,12 @@ export async function joinGame(db: Db, uid: string, data: JoinGameData): Promise
   if (!sessionRow) throw new GameError(404, `Session ${sessionId} not found`)
   if (sessionRow.status !== 'lobby') throw new GameError(422, 'Session is not in lobby phase')
 
-  const assignments: Record<string, string> = JSON.parse(sessionRow.characterAssignments)
-  if (assignments[characterId]) throw new GameError(409, `Character ${characterId} is already taken`)
+  if (sessionRow.characterAssignments[characterId]) throw new GameError(409, `Character ${characterId} is already taken`)
 
   const scenarioRow = db.select().from(scenarios).where(eq(scenarios.id, sessionRow.scenarioId)).get()
   if (!scenarioRow) throw new GameError(404, 'Scenario not found')
 
-  const chars = (JSON.parse(scenarioRow.characters) as { characters: Array<{ id: string; private: { startingInventory: Record<string, number> } }> }).characters
+  const chars = (scenarioRow.characters as { characters: Array<{ id: string; private: { startingInventory: Record<string, number> } }> }).characters
   const character = chars.find((c) => c.id === characterId)
   if (!character) throw new GameError(404, `Character ${characterId} not found in scenario`)
 
@@ -37,7 +36,7 @@ export async function joinGame(db: Db, uid: string, data: JoinGameData): Promise
       .get()
     if (!fresh) throw new GameError(404, `Session ${sessionId} not found`)
 
-    const freshAssignments: Record<string, string> = JSON.parse(fresh.characterAssignments)
+    const freshAssignments = fresh.characterAssignments
     if (freshAssignments[characterId]) throw new GameError(409, `Character ${characterId} is already taken`)
 
     freshAssignments[characterId] = uid
@@ -47,14 +46,14 @@ export async function joinGame(db: Db, uid: string, data: JoinGameData): Promise
       uid,
       characterId,
       displayName,
-      currencies: JSON.stringify(character.private.startingInventory),
-      clues: JSON.stringify([]),
+      currencies: character.private.startingInventory,
+      clues: [],
       isOnline: true,
       joinedAt: Date.now(),
     }).run()
 
     tx.update(sessions)
-      .set({ characterAssignments: JSON.stringify(freshAssignments) })
+      .set({ characterAssignments: freshAssignments })
       .where(eq(sessions.id, sessionId))
       .run()
   })

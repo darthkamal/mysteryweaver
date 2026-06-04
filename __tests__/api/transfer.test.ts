@@ -27,8 +27,8 @@ describe('transferCurrency', () => {
     })
     const p1 = getPlayerRow(db, PLAYER_1_UID)!
     const p2 = getPlayerRow(db, PLAYER_2_UID)!
-    expect(JSON.parse(p1.currencies).yams).toBe(2)
-    expect(JSON.parse(p2.currencies).yams).toBe(9)
+    expect(p1.currencies.yams).toBe(2)
+    expect(p2.currencies.yams).toBe(9)
   })
 
   it('rejects when balance is insufficient', async () => {

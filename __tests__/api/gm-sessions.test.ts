@@ -78,9 +78,9 @@ describe('GET /api/gm/sessions', () => {
       phase: 'lobby',
       phaseIndex: 0,
       status: 'lobby',
-      characterAssignments: JSON.stringify({}),
-      unlockedAssets: JSON.stringify([]),
-      triggeredNpcEvents: JSON.stringify([]),
+      characterAssignments: {},
+      unlockedAssets: [],
+      triggeredNpcEvents: [],
       createdAt: Date.now(),
     }).run()
 
@@ -156,11 +156,11 @@ describe('POST /api/gm/sessions', () => {
       ownerId: 'uid_other_gm',
       name: 'Other Scenario',
       schemaVersion: '1.0',
-      manifest: JSON.stringify({}),
-      characters: JSON.stringify({}),
-      assets: JSON.stringify({}),
-      gmScript: JSON.stringify({}),
-      relationships: JSON.stringify({ edges: [] }),
+      manifest: {},
+      characters: {},
+      assets: {},
+      gmScript: {},
+      relationships: { edges: [] },
       createdAt: Date.now(),
     }).run()
 
@@ -199,9 +199,9 @@ describe('POST /api/gm/sessions', () => {
       phase: 'lobby',
       phaseIndex: 0,
       status: 'lobby',
-      characterAssignments: JSON.stringify({}),
-      unlockedAssets: JSON.stringify([]),
-      triggeredNpcEvents: JSON.stringify([]),
+      characterAssignments: {},
+      unlockedAssets: [],
+      triggeredNpcEvents: [],
       createdAt: Date.now(),
     }).run()
 

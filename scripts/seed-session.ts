@@ -26,11 +26,11 @@ async function main() {
     ownerId: hostId,
     name: 'The Broken Kola Nut',
     schemaVersion: '1.0',
-    manifest: JSON.stringify(manifest),
-    characters: JSON.stringify(characters),
-    assets: JSON.stringify(assets),
-    gmScript: JSON.stringify(gmScript),
-    relationships: JSON.stringify(relationships),
+    manifest,
+    characters,
+    assets,
+    gmScript,
+    relationships,
     createdAt: Date.now(),
   }).onConflictDoUpdate({
     target: schema.scenarios.id,
@@ -47,8 +47,8 @@ async function main() {
     phase: 'lobby',
     phaseIndex: 0,
     status: 'lobby',
-    characterAssignments: JSON.stringify({}),
-    unlockedAssets: JSON.stringify([]),
+    characterAssignments: {},
+    unlockedAssets: [],
     createdAt: Date.now(),
   }).run()
 

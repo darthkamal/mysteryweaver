@@ -20,14 +20,12 @@ export async function GET(req: NextRequest) {
       throw new GameError(409, 'This game has already started. Ask the GM to add you.')
     }
 
-    const assignments = JSON.parse(row.characterAssignments) as Record<string, string>
-
     return NextResponse.json({
       id: row.id,
       scenarioId: row.scenarioId,
       status: row.status,
       // Return only which character IDs are taken — not the player UIDs (those are bearer tokens)
-      takenCharacterIds: Object.keys(assignments),
+      takenCharacterIds: Object.keys(row.characterAssignments),
     })
   } catch (error) {
     return err(error)

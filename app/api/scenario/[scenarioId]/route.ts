@@ -14,7 +14,7 @@ export async function GET(
     const row = db.select().from(scenarios).where(eq(scenarios.id, scenarioId)).get()
     if (!row) throw new GameError(404, `Scenario ${scenarioId} not found`)
 
-    const characters = JSON.parse(row.characters) as {
+    const characters = row.characters as {
       characters: Array<{ id: string; public: unknown; private?: unknown; variantFlag?: unknown }>
     }
 
@@ -25,7 +25,7 @@ export async function GET(
 
     return NextResponse.json({
       characters: publicCharacters,
-      assets: JSON.parse(row.assets),
+      assets: row.assets,
     })
   } catch (error) {
     return err(error)

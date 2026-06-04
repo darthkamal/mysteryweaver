@@ -26,15 +26,15 @@ describe('distributeClue', () => {
       sessionId: SESSION_ID, targetCharacterIds: ['okonkwo'], clueId: 'evidence_1',
     })
     const row = getPlayerRow(db, PLAYER_1_UID)!
-    expect(JSON.parse(row.clues)).toContain('evidence_1')
+    expect(row.clues).toContain('evidence_1')
   })
 
   it('adds clue to multiple target players', async () => {
     await distributeClue(db, HOST_UID, {
       sessionId: SESSION_ID, targetCharacterIds: ['okonkwo', 'amadi'], clueId: 'oracle_1',
     })
-    expect(JSON.parse(getPlayerRow(db, PLAYER_1_UID)!.clues)).toContain('oracle_1')
-    expect(JSON.parse(getPlayerRow(db, PLAYER_2_UID)!.clues)).toContain('oracle_1')
+    expect(getPlayerRow(db, PLAYER_1_UID)!.clues).toContain('oracle_1')
+    expect(getPlayerRow(db, PLAYER_2_UID)!.clues).toContain('oracle_1')
   })
 
   it('does not duplicate a clue already held', async () => {
@@ -44,7 +44,7 @@ describe('distributeClue', () => {
     await distributeClue(db, HOST_UID, {
       sessionId: SESSION_ID, targetCharacterIds: ['okonkwo'], clueId: 'evidence_1',
     })
-    const clues = JSON.parse(getPlayerRow(db, PLAYER_1_UID)!.clues) as string[]
+    const clues = getPlayerRow(db, PLAYER_1_UID)!.clues
     expect(clues.filter((c) => c === 'evidence_1')).toHaveLength(1)
   })
 

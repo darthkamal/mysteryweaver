@@ -25,13 +25,13 @@ describe('triggerNpcEvent', () => {
   it('adds unlocked assets to session.unlockedAssets (deduplicated)', async () => {
     await triggerNpcEvent(db, HOST_UID, { sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies' })
     const row = getSessionRow(db)!
-    expect(JSON.parse(row.unlockedAssets)).toContain('evidence_4')
+    expect(row.unlockedAssets).toContain('evidence_4')
   })
 
   it('does not duplicate if triggered twice', async () => {
     await triggerNpcEvent(db, HOST_UID, { sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies' })
     await triggerNpcEvent(db, HOST_UID, { sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies' })
-    const unlocked = JSON.parse(getSessionRow(db)!.unlockedAssets) as string[]
+    const unlocked = getSessionRow(db)!.unlockedAssets
     expect(unlocked.filter((a) => a === 'evidence_4')).toHaveLength(1)
   })
 
@@ -47,32 +47,32 @@ describe('triggerNpcEvent', () => {
     db = createTestDb()
     db.insert(scenarios).values({
       id: SCENARIO_ID, ownerId: HOST_UID, name: 'Test', schemaVersion: '1.0',
-      manifest: JSON.stringify(autoScenario.manifest),
-      characters: JSON.stringify(autoScenario.characters),
-      assets: JSON.stringify(autoScenario.assets),
-      gmScript: JSON.stringify(autoScenario.gmScript),
-      relationships: JSON.stringify({ edges: [] }),
+      manifest: autoScenario.manifest,
+      characters: autoScenario.characters,
+      assets: autoScenario.assets,
+      gmScript: autoScenario.gmScript,
+      relationships: { edges: [] },
       createdAt: Date.now(),
     }).run()
     insertSession(db, ACTIVE_SESSION_DATA)
     insertPlayer(db, PLAYER_1_UID, PLAYER_1_DATA)
     insertPlayer(db, PLAYER_2_UID, PLAYER_2_DATA)
     await triggerNpcEvent(db, HOST_UID, { sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies' })
-    expect(JSON.parse(getPlayerRow(db, PLAYER_1_UID)!.clues)).toContain('evidence_4')
-    expect(JSON.parse(getPlayerRow(db, PLAYER_2_UID)!.clues)).toContain('evidence_4')
+    expect(getPlayerRow(db, PLAYER_1_UID)!.clues).toContain('evidence_4')
+    expect(getPlayerRow(db, PLAYER_2_UID)!.clues).toContain('evidence_4')
   })
 
   it('records the triggered event id in session.triggeredNpcEvents', async () => {
     await triggerNpcEvent(db, HOST_UID, { sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies' })
     const row = getSessionRow(db)!
-    const triggered = JSON.parse(row.triggeredNpcEvents) as string[]
+    const triggered = row.triggeredNpcEvents
     expect(triggered).toContain('ikemefuna_dies')
   })
 
   it('does not duplicate triggeredNpcEvents when called twice', async () => {
     await triggerNpcEvent(db, HOST_UID, { sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies' })
     await triggerNpcEvent(db, HOST_UID, { sessionId: SESSION_ID, npcEventId: 'ikemefuna_dies' })
-    const triggered = JSON.parse(getSessionRow(db)!.triggeredNpcEvents) as string[]
+    const triggered = getSessionRow(db)!.triggeredNpcEvents
     expect(triggered.filter((e) => e === 'ikemefuna_dies')).toHaveLength(1)
   })
 

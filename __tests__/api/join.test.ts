@@ -29,8 +29,8 @@ describe('joinGame', () => {
     expect(row).not.toBeNull()
     expect(row!.characterId).toBe('okonkwo')
     expect(row!.displayName).toBe('Warrior')
-    expect(JSON.parse(row!.currencies)).toEqual({ yams: 5, oracle_bones: 0 })
-    expect(JSON.parse(row!.clues)).toEqual([])
+    expect(row!.currencies).toEqual({ yams: 5, oracle_bones: 0 })
+    expect(row!.clues).toEqual([])
     expect(row!.isOnline).toBe(true)
   })
 
@@ -39,8 +39,7 @@ describe('joinGame', () => {
       sessionId: SESSION_ID, characterId: 'okonkwo', displayName: 'Warrior',
     })
     const sessionRow = getSessionRow(db)
-    const assignments = JSON.parse(sessionRow!.characterAssignments)
-    expect(assignments.okonkwo).toBe(PLAYER_1_UID)
+    expect(sessionRow!.characterAssignments.okonkwo).toBe(PLAYER_1_UID)
   })
 
   it('rejects when character is already claimed', async () => {

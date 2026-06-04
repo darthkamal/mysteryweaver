@@ -28,8 +28,8 @@ export async function triggerNpcEvent(db: Db, uid: string, data: TriggerNpcEvent
   const newTriggered = [...new Set([...session.triggeredNpcEvents, npcEventId])]
   db.update(sessions)
     .set({
-      unlockedAssets: JSON.stringify(newUnlocked),
-      triggeredNpcEvents: JSON.stringify(newTriggered),
+      unlockedAssets: newUnlocked,
+      triggeredNpcEvents: newTriggered,
     })
     .where(eq(sessions.id, sessionId))
     .run()
@@ -37,10 +37,9 @@ export async function triggerNpcEvent(db: Db, uid: string, data: TriggerNpcEvent
   if (npcEvent.autoDistribute && npcEvent.unlocksAssets.length > 0) {
     const allPlayers = db.select().from(players).where(eq(players.sessionId, sessionId)).all()
     for (const p of allPlayers) {
-      const currentClues: string[] = JSON.parse(p.clues)
-      const newClues = [...new Set([...currentClues, ...npcEvent.unlocksAssets])]
+      const newClues = [...new Set([...p.clues, ...npcEvent.unlocksAssets])]
       db.update(players)
-        .set({ clues: JSON.stringify(newClues) })
+        .set({ clues: newClues })
         .where(and(eq(players.sessionId, sessionId), eq(players.uid, p.uid)))
         .run()
     }

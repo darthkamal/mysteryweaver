@@ -7,10 +7,6 @@ import type { SseClient } from '@/lib/sse/registry'
 
 const encoder = new TextEncoder()
 
-function safeParse<T>(raw: string): T | null {
-  try { return JSON.parse(raw) as T } catch { return null }
-}
-
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ sessionId: string }> },
@@ -48,8 +44,8 @@ export async function GET(
             phaseIndex: sessionRow.phaseIndex,
             status: sessionRow.status,
             hostId: sessionRow.hostId,
-            characterAssignments: safeParse(sessionRow.characterAssignments) ?? {},
-            unlockedAssets: safeParse(sessionRow.unlockedAssets) ?? [],
+            characterAssignments: sessionRow.characterAssignments,
+            unlockedAssets: sessionRow.unlockedAssets,
           }
           controller.enqueue(
             encoder.encode(`event: session-updated\ndata: ${JSON.stringify(sessionData)}\n\n`),
@@ -62,8 +58,8 @@ export async function GET(
         if (sessionForScenario) {
           const scenarioRow = db.select({ characters: scenarios.characters }).from(scenarios).where(eq(scenarios.id, sessionForScenario.scenarioId)).get()
           if (scenarioRow) {
-            const chars = safeParse<{ characters: Array<{ id: string; private: unknown }> }>(scenarioRow.characters)
-            privateCharacter = chars?.characters.find((c) => c.id === playerRow.characterId)?.private ?? null
+            const chars = scenarioRow.characters as { characters: Array<{ id: string; private: unknown }> }
+            privateCharacter = chars.characters.find((c) => c.id === playerRow.characterId)?.private ?? null
           }
         }
 
@@ -71,8 +67,8 @@ export async function GET(
         const playerData = {
           characterId: playerRow.characterId,
           displayName: playerRow.displayName,
-          currencies: safeParse(playerRow.currencies) ?? {},
-          clues: safeParse(playerRow.clues) ?? [],
+          currencies: playerRow.currencies,
+          clues: playerRow.clues,
           privateCharacter,
         }
         controller.enqueue(

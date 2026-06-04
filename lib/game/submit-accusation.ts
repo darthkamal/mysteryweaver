@@ -33,7 +33,7 @@ export async function submitAccusation(db: Db, uid: string, data: SubmitAccusati
       accuserId: uid,
       suspectId,
       motive,
-      evidenceIds: JSON.stringify(evidenceIds),
+      evidenceIds,
       submittedAt: Date.now(),
     })
     .onConflictDoUpdate({
@@ -41,7 +41,7 @@ export async function submitAccusation(db: Db, uid: string, data: SubmitAccusati
       set: {
         suspectId,
         motive,
-        evidenceIds: JSON.stringify(evidenceIds),
+        evidenceIds,
         submittedAt: Date.now(),
       },
     })

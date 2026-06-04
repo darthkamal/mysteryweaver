@@ -34,7 +34,7 @@ describe('submitAccusation', () => {
     expect(row).not.toBeNull()
     expect(row!.suspectId).toBe('amadi')
     expect(row!.motive).toBe('Jealousy and shame')
-    expect(JSON.parse(row!.evidenceIds)).toEqual(['evidence_1'])
+    expect(row!.evidenceIds).toEqual(['evidence_1'])
     expect(row!.accuserId).toBe(PLAYER_1_UID)
   })
 

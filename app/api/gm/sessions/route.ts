@@ -43,14 +43,7 @@ export async function GET(req: NextRequest) {
         phase: row.phase,
         phaseIndex: row.phaseIndex,
         status: row.status,
-        playerCount: (() => {
-          try {
-            const parsed = JSON.parse(row.characterAssignments)
-            return typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)
-              ? Object.keys(parsed as Record<string, string>).length
-              : 0
-          } catch { return 0 }
-        })(),
+        playerCount: Object.keys(row.characterAssignments).length,
         createdAt: row.createdAt,
       })),
     })
@@ -88,9 +81,9 @@ export async function POST(req: NextRequest) {
           phase: 'lobby',
           phaseIndex: 0,
           status: 'lobby',
-          characterAssignments: JSON.stringify({}),
-          unlockedAssets: JSON.stringify([]),
-          triggeredNpcEvents: JSON.stringify([]),
+          characterAssignments: {},
+          unlockedAssets: [],
+          triggeredNpcEvents: [],
           createdAt: Date.now(),
         }).run()
         return ok({ sessionId, roomCode: candidate })

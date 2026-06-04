@@ -26,12 +26,8 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       scenarios: rows.map((row) => {
-        let characterCount = 0
-        try {
-          const result = z.object({ characters: z.array(z.unknown()) })
-            .safeParse(JSON.parse(row.characters))
-          if (result.success) characterCount = result.data.characters.length
-        } catch {}
+        const result = z.object({ characters: z.array(z.unknown()) }).safeParse(row.characters)
+        const characterCount = result.success ? result.data.characters.length : 0
         return { id: row.id, name: row.name, characterCount, createdAt: row.createdAt }
       }),
     })
@@ -67,11 +63,11 @@ export async function POST(req: NextRequest) {
       ownerId: gmId,
       name: body.name,
       schemaVersion: '1.0',
-      manifest: JSON.stringify(body.manifest),
-      characters: JSON.stringify(body.characters),
-      assets: JSON.stringify(body.assets),
-      gmScript: JSON.stringify(body.gmScript),
-      relationships: JSON.stringify(body.relationships),
+      manifest: body.manifest,
+      characters: body.characters,
+      assets: body.assets,
+      gmScript: body.gmScript,
+      relationships: body.relationships,
       createdAt: Date.now(),
     }).run()
 

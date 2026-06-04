@@ -3,10 +3,6 @@ import { db } from '@/lib/db'
 import { sessions, players, scenarios, accusations } from '@/lib/db/schema'
 import { broadcastSession, broadcastPlayer, getConnectedUids, broadcastGm } from './registry'
 
-function safeParse<T>(raw: string): T | null {
-  try { return JSON.parse(raw) as T } catch { return null }
-}
-
 function buildSessionPayload(sessionId: string) {
   const row = db.select().from(sessions).where(eq(sessions.id, sessionId)).get()
   if (!row) return null
@@ -17,9 +13,9 @@ function buildSessionPayload(sessionId: string) {
     phaseIndex: row.phaseIndex,
     status: row.status,
     hostId: row.hostId,
-    characterAssignments: safeParse<Record<string, string>>(row.characterAssignments) ?? {},
-    unlockedAssets: safeParse<string[]>(row.unlockedAssets) ?? [],
-    triggeredNpcEvents: safeParse<string[]>(row.triggeredNpcEvents) ?? [],
+    characterAssignments: row.characterAssignments,
+    unlockedAssets: row.unlockedAssets,
+    triggeredNpcEvents: row.triggeredNpcEvents,
   }
 }
 
@@ -38,16 +34,16 @@ function buildPlayerPayload(sessionId: string, uid: string) {
   if (sessionRow) {
     const scenarioRow = db.select({ characters: scenarios.characters }).from(scenarios).where(eq(scenarios.id, sessionRow.scenarioId)).get()
     if (scenarioRow) {
-      const chars = safeParse<{ characters: Array<{ id: string; private: unknown }> }>(scenarioRow.characters)
-      privateCharacter = chars?.characters.find((c) => c.id === playerRow.characterId)?.private ?? null
+      const chars = scenarioRow.characters as { characters: Array<{ id: string; private: unknown }> }
+      privateCharacter = chars.characters.find((c) => c.id === playerRow.characterId)?.private ?? null
     }
   }
 
   return {
     characterId: playerRow.characterId,
     displayName: playerRow.displayName,
-    currencies: safeParse<Record<string, number>>(playerRow.currencies) ?? {},
-    clues: safeParse<string[]>(playerRow.clues) ?? [],
+    currencies: playerRow.currencies,
+    clues: playerRow.clues,
     privateCharacter,
   }
 }
@@ -59,8 +55,8 @@ function buildRosterPayload(sessionId: string) {
       uid: row.uid,
       characterId: row.characterId,
       displayName: row.displayName,
-      currencies: safeParse<Record<string, number>>(row.currencies) ?? {},
-      clues: safeParse<string[]>(row.clues) ?? [],
+      currencies: row.currencies,
+      clues: row.clues,
       isOnline: row.isOnline,
     })),
   }
@@ -73,7 +69,7 @@ function buildAccusationsPayload(sessionId: string) {
       accuserId: row.accuserId,
       suspectId: row.suspectId,
       motive: row.motive,
-      evidenceIds: safeParse<string[]>(row.evidenceIds) ?? [],
+      evidenceIds: row.evidenceIds,
       submittedAt: row.submittedAt,
     })),
   }

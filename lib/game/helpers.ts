@@ -4,14 +4,6 @@ import { sessions, scenarios } from '@/lib/db/schema'
 import { GameError } from './types'
 import type { SessionData, ScenarioData } from './types'
 
-function safeJsonParse<T>(raw: string, field: string): T {
-  try {
-    return JSON.parse(raw) as T
-  } catch {
-    throw new GameError(500, `Corrupt data in field: ${field}`)
-  }
-}
-
 export function getSession(db: Db, sessionId: string): SessionData {
   const row = db.select().from(sessions).where(eq(sessions.id, sessionId)).get()
   if (!row) throw new GameError(404, `Session ${sessionId} not found`)
@@ -23,9 +15,9 @@ export function getSession(db: Db, sessionId: string): SessionData {
     phase: row.phase,
     phaseIndex: row.phaseIndex,
     status: row.status as 'lobby' | 'active' | 'ended',
-    characterAssignments: safeJsonParse(row.characterAssignments, 'characterAssignments'),
-    unlockedAssets: safeJsonParse(row.unlockedAssets, 'unlockedAssets'),
-    triggeredNpcEvents: safeJsonParse(row.triggeredNpcEvents, 'triggeredNpcEvents'),
+    characterAssignments: row.characterAssignments,
+    unlockedAssets: row.unlockedAssets,
+    triggeredNpcEvents: row.triggeredNpcEvents,
   }
 }
 
@@ -33,10 +25,10 @@ export function getScenario(db: Db, scenarioId: string): ScenarioData {
   const row = db.select().from(scenarios).where(eq(scenarios.id, scenarioId)).get()
   if (!row) throw new GameError(404, `Scenario ${scenarioId} not found`)
   return {
-    manifest: safeJsonParse(row.manifest, 'manifest'),
-    characters: safeJsonParse(row.characters, 'characters'),
-    assets: safeJsonParse(row.assets, 'assets'),
-    gmScript: safeJsonParse(row.gmScript, 'gmScript'),
+    manifest: row.manifest as ScenarioData['manifest'],
+    characters: row.characters as ScenarioData['characters'],
+    assets: row.assets as ScenarioData['assets'],
+    gmScript: row.gmScript as ScenarioData['gmScript'],
   }
 }
 
