@@ -36,4 +36,43 @@ export const theme = createTheme({
     button: { textTransform: 'none', fontWeight: 600 },
     overline: { letterSpacing: 1.2, fontWeight: 600 },
   },
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: { backgroundImage: 'none' },
+        outlined: ({ theme }) => ({ borderColor: theme.palette.divider }),
+      },
+    },
+    MuiCard: {
+      defaultProps: { variant: 'outlined' },
+      styleOverrides: {
+        root: ({ theme }) => ({
+          borderRadius: 16,
+          borderColor: theme.palette.divider,
+          backgroundImage: 'none',
+        }),
+      },
+    },
+    MuiButton: {
+      defaultProps: { disableElevation: true },
+      styleOverrides: { root: { borderRadius: 10, paddingInline: 18 } },
+    },
+    MuiChip: { styleOverrides: { root: { fontWeight: 500 } } },
+    MuiAppBar: {
+      defaultProps: { elevation: 0, color: 'default' },
+      styleOverrides: {
+        root: ({ theme }) => ({
+          backgroundColor: theme.palette.background.paper,
+          borderBottom: `1px solid ${theme.palette.divider}`,
+        }),
+      },
+    },
+    MuiOutlinedInput: { styleOverrides: { root: { borderRadius: 10 } } },
+    MuiDialog: { styleOverrides: { paper: { borderRadius: 16 } } },
+    MuiBottomNavigation: {
+      styleOverrides: {
+        root: ({ theme }) => ({ backgroundColor: theme.palette.background.paper }),
+      },
+    },
+  },
 })
