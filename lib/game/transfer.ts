@@ -1,9 +1,8 @@
-import { eq, and } from 'drizzle-orm'
 import { z } from 'zod'
 import type { Db } from '@/lib/db'
-import { sessions, players } from '@/lib/db/schema'
+import { players } from '@/lib/db/schema'
 import { GameError } from './types'
-import { getSession, getScenario, verifyActiveSession, getPhaseConfig } from './helpers'
+import { getSession, getScenario, verifyActiveSession, getPhaseConfig, playerKey } from './helpers'
 import { writeLog } from './log'
 
 export const TransferCurrencySchema = z.object({
@@ -40,12 +39,12 @@ export async function transferCurrency(db: Db, uid: string, data: TransferCurren
 
   db.transaction((tx) => {
     const senderRow = tx.select().from(players)
-      .where(and(eq(players.sessionId, sessionId), eq(players.uid, uid)))
+      .where(playerKey(sessionId, uid))
       .get()
     if (!senderRow) throw new GameError(404, 'You are not a player in this session')
 
     const recipientRow = tx.select().from(players)
-      .where(and(eq(players.sessionId, sessionId), eq(players.uid, recipientUid)))
+      .where(playerKey(sessionId, recipientUid))
       .get()
     if (!recipientRow) throw new GameError(404, 'Recipient player not found')
 
@@ -61,12 +60,12 @@ export async function transferCurrency(db: Db, uid: string, data: TransferCurren
 
     tx.update(players)
       .set({ currencies: { ...senderCurrencies, [currencyType]: senderBalance - amount } })
-      .where(and(eq(players.sessionId, sessionId), eq(players.uid, uid)))
+      .where(playerKey(sessionId, uid))
       .run()
 
     tx.update(players)
       .set({ currencies: { ...recipientCurrencies, [currencyType]: recipientBalance + amount } })
-      .where(and(eq(players.sessionId, sessionId), eq(players.uid, recipientUid)))
+      .where(playerKey(sessionId, recipientUid))
       .run()
   })
 

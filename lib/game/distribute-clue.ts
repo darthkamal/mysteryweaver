@@ -1,9 +1,8 @@
-import { eq, and } from 'drizzle-orm'
 import { z } from 'zod'
 import type { Db } from '@/lib/db'
 import { players } from '@/lib/db/schema'
 import { GameError } from './types'
-import { getSession, verifyHost, verifyActiveSession } from './helpers'
+import { getSession, verifyHost, verifyActiveSession, playerKey } from './helpers'
 import { writeLog } from './log'
 
 export const DistributeClueSchema = z.object({
@@ -26,7 +25,7 @@ export async function distributeClue(db: Db, uid: string, data: DistributeClueDa
     if (!playerId) throw new GameError(404, `Character ${charId} is not in this session`)
 
     const playerRow = db.select().from(players)
-      .where(and(eq(players.sessionId, sessionId), eq(players.uid, playerId)))
+      .where(playerKey(sessionId, playerId))
       .get()
     if (!playerRow) throw new GameError(404, `Player document for ${charId} not found`)
 
@@ -35,7 +34,7 @@ export async function distributeClue(db: Db, uid: string, data: DistributeClueDa
 
     db.update(players)
       .set({ clues: newClues })
-      .where(and(eq(players.sessionId, sessionId), eq(players.uid, playerId)))
+      .where(playerKey(sessionId, playerId))
       .run()
   }
 

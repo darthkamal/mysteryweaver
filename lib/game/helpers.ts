@@ -1,8 +1,14 @@
-import { eq } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
 import type { Db } from '@/lib/db'
-import { sessions, scenarios } from '@/lib/db/schema'
+import { sessions, scenarios, players } from '@/lib/db/schema'
 import { GameError } from './types'
 import type { SessionData, ScenarioData } from './types'
+
+// The composite-key predicate for the players table, repeated across every
+// per-player read/write. Works against both `db` and a transaction handle.
+export function playerKey(sessionId: string, uid: string) {
+  return and(eq(players.sessionId, sessionId), eq(players.uid, uid))
+}
 
 export function getSession(db: Db, sessionId: string): SessionData {
   const row = db.select().from(sessions).where(eq(sessions.id, sessionId)).get()

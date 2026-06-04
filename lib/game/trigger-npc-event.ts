@@ -1,9 +1,9 @@
-import { eq, and } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 import type { Db } from '@/lib/db'
 import { sessions, players } from '@/lib/db/schema'
 import { GameError } from './types'
-import { getSession, getScenario, verifyHost, verifyActiveSession } from './helpers'
+import { getSession, getScenario, verifyHost, verifyActiveSession, playerKey } from './helpers'
 import { writeLog } from './log'
 
 export const TriggerNpcEventSchema = z.object({
@@ -40,7 +40,7 @@ export async function triggerNpcEvent(db: Db, uid: string, data: TriggerNpcEvent
       const newClues = [...new Set([...p.clues, ...npcEvent.unlocksAssets])]
       db.update(players)
         .set({ clues: newClues })
-        .where(and(eq(players.sessionId, sessionId), eq(players.uid, p.uid)))
+        .where(playerKey(sessionId, p.uid))
         .run()
     }
   }
