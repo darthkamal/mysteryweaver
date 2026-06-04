@@ -2,8 +2,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
-  Box, Card, CardContent, TextField, Button, Typography, Alert, CircularProgress,
+  Box, TextField, Button, Typography, Alert, CircularProgress,
 } from '@mui/material'
+import SectionCard from '@/app/_components/SectionCard'
 import { useGmAuth } from '@/lib/hooks/useGmAuth'
 
 export default function LoginForm() {
@@ -49,10 +50,19 @@ export default function LoginForm() {
   }
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" sx={{ p: 2 }}>
-      <Card sx={{ width: '100%', maxWidth: 400 }}>
-        <CardContent sx={{ p: 4 }}>
-          <Typography variant="h5" fontWeight="bold" gutterBottom color="primary">
+    <Box
+      sx={{
+        minHeight: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: 'background.default',
+        p: 2,
+      }}
+    >
+      <Box sx={{ width: '100%', maxWidth: 400 }}>
+        <SectionCard>
+          <Typography variant="h4" gutterBottom color="primary">
             MysteryWeaver
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
@@ -91,8 +101,8 @@ export default function LoginForm() {
               {submitting ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
             </Button>
           </Box>
-        </CardContent>
-      </Card>
+        </SectionCard>
+      </Box>
     </Box>
   )
 }

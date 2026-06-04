@@ -6,6 +6,7 @@ import {
   Alert, CircularProgress, Avatar, Chip, Stack,
 } from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person'
+import SectionCard from '@/app/_components/SectionCard'
 
 type JoinStep = 'code' | 'character' | 'joining'
 
@@ -100,52 +101,63 @@ export default function JoinFlow() {
   }
 
   return (
-    <Container maxWidth="sm" sx={{ py: 6 }}>
-      <Typography variant="h4" component="h1" gutterBottom fontWeight="bold" color="primary">
-        MysteryWeaver
-      </Typography>
-
+    <Box
+      sx={{
+        minHeight: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: 'background.default',
+        p: 2,
+      }}
+    >
+      <Container maxWidth="sm" sx={{ py: 6 }}>
       {step === 'code' && (
-        <Box
-          component="form"
-          onSubmit={(e) => {
-            e.preventDefault()
-            handleFindGame()
-          }}
-        >
-          <Typography variant="body1" gutterBottom color="text.secondary" sx={{ mb: 3 }}>
-            Enter your room code to join a game.
+        <SectionCard>
+          <Typography variant="h4" component="h1" gutterBottom color="primary">
+            MysteryWeaver
           </Typography>
-          <TextField
-            label="Room Code"
-            value={roomCode}
-            onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-            inputProps={{ maxLength: 6 }}
-            fullWidth
-            variant="outlined"
-            sx={{ mb: 2, letterSpacing: '0.3em' }}
-            autoFocus
-          />
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            size="large"
-            disabled={loading || roomCode.trim().length < 4}
+          <Box
+            component="form"
+            onSubmit={(e) => {
+              e.preventDefault()
+              handleFindGame()
+            }}
           >
-            {loading ? <CircularProgress size={24} color="inherit" /> : 'Find Game'}
-          </Button>
-        </Box>
+            <Typography variant="body1" gutterBottom color="text.secondary" sx={{ mb: 3 }}>
+              Enter your room code to join a game.
+            </Typography>
+            <TextField
+              label="Room Code"
+              value={roomCode}
+              onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+              inputProps={{ maxLength: 6 }}
+              fullWidth
+              variant="outlined"
+              sx={{ mb: 2, letterSpacing: '0.3em', '& input': { textAlign: 'center' } }}
+              autoFocus
+            />
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+              </Alert>
+            )}
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              size="large"
+              disabled={loading || roomCode.trim().length < 4}
+            >
+              {loading ? <CircularProgress size={24} color="inherit" /> : 'Find Game'}
+            </Button>
+          </Box>
+        </SectionCard>
       )}
 
       {(step === 'character' || step === 'joining') && sessionInfo && (
         <Box>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h4" gutterBottom>
             Choose Your Character
           </Typography>
           <TextField
@@ -170,9 +182,8 @@ export default function JoinFlow() {
                   sx={{
                     cursor: taken ? 'not-allowed' : 'pointer',
                     opacity: taken ? 0.5 : 1,
-                    border: selected ? '2px solid' : '1px solid',
-                    borderColor: selected ? 'primary.main' : 'divider',
                     transition: 'border-color 0.15s',
+                    ...(selected && { borderColor: 'primary.main', borderWidth: 2 }),
                   }}
                 >
                   <CardContent sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
@@ -181,7 +192,7 @@ export default function JoinFlow() {
                     </Avatar>
                     <Box flex={1}>
                       <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                        <Typography variant="subtitle1" fontWeight="bold">
+                        <Typography variant="h6">
                           {char.name}
                         </Typography>
                         {taken && <Chip label="Taken" size="small" color="error" />}
@@ -189,7 +200,7 @@ export default function JoinFlow() {
                           <Chip label="Selected" size="small" color="primary" />
                         )}
                       </Box>
-                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                      <Typography variant="body2" color="primary" gutterBottom>
                         {char.title}
                       </Typography>
                       <Typography variant="body2" color="text.secondary" noWrap>
@@ -232,6 +243,7 @@ export default function JoinFlow() {
           </Button>
         </Box>
       )}
-    </Container>
+      </Container>
+    </Box>
   )
 }
