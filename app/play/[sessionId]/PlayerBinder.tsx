@@ -13,6 +13,7 @@ import ProfileTab from './tabs/ProfileTab'
 import YamsTab from './tabs/YamsTab'
 import CluesTab from './tabs/CluesTab'
 import NotesTab from './tabs/NotesTab'
+import ColorSchemeToggle from '@/app/_components/ColorSchemeToggle'
 
 interface Props {
   sessionId: string
@@ -42,14 +43,18 @@ export default function PlayerBinder({ sessionId }: Props) {
   ]
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100dvh', maxWidth: 600, mx: 'auto' }}>
-      {phase && (
-        <Box sx={{ bgcolor: 'primary.main', color: 'white', px: 2, py: 0.75 }}>
-          <Typography variant="caption" sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>
-            {phase}
-          </Typography>
-        </Box>
-      )}
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100dvh', maxWidth: 600, mx: 'auto', bgcolor: 'background.default' }}>
+      <Box
+        sx={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          px: 2, py: 1, bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider',
+        }}
+      >
+        <Typography variant="overline" color="text.secondary" sx={{ letterSpacing: 1.5 }}>
+          {phase ?? '—'}
+        </Typography>
+        <ColorSchemeToggle size="small" />
+      </Box>
 
       <Box sx={{ flex: 1, overflow: 'auto' }}>{tabs[activeTab]}</Box>
 
@@ -65,11 +70,7 @@ export default function PlayerBinder({ sessionId }: Props) {
         <BottomNavigationAction label="Yams" icon={<SavingsIcon />} />
         <BottomNavigationAction
           label="Clues"
-          icon={
-            <Badge badgeContent={newClueCount} color="error" max={9}>
-              <SearchIcon />
-            </Badge>
-          }
+          icon={<Badge badgeContent={newClueCount} color="error" max={9}><SearchIcon /></Badge>}
         />
         <BottomNavigationAction label="Notes" icon={<EditNoteIcon />} />
       </BottomNavigation>
