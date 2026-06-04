@@ -8,7 +8,7 @@ import { theme } from '@/lib/theme'
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <AppRouterCacheProvider>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme} defaultMode="system">
         <CssBaseline />
         {children}
       </ThemeProvider>
