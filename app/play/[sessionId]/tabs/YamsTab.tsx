@@ -1,10 +1,11 @@
 'use client'
 import { useState } from 'react'
 import {
-  Box, Typography, Paper, Button, Drawer, TextField, MenuItem,
+  Box, Typography, Button, Drawer, TextField, MenuItem,
   Select, FormControl, InputLabel, Alert, CircularProgress, Stack, Divider,
 } from '@mui/material'
 import SavingsIcon from '@mui/icons-material/Savings'
+import SectionCard from '@/app/_components/SectionCard'
 import { usePlayerStore } from '@/lib/store/player-store'
 import { useSessionStore } from '@/lib/store/session-store'
 import { useGameApi } from '@/lib/hooks/useGameApi'
@@ -61,45 +62,45 @@ export default function YamsTab({ sessionId, uid: _uid }: Props) {
   const yamsLocked = phase === 'accusation' || phase === 'introduction' || phase === 'lobby'
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h6" fontWeight="bold" gutterBottom>
-        Your Currencies
-      </Typography>
-
-      <Stack spacing={2} sx={{ mb: 4 }}>
-        {Object.entries(currencies).length === 0 && (
-          <Typography color="text.secondary">Loading…</Typography>
-        )}
-        {Object.entries(currencies).map(([type, balance]) => (
-          <Paper key={type} variant="outlined" sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
-            <SavingsIcon color="primary" />
-            <Box flex={1}>
-              <Typography variant="subtitle2" color="text.secondary" sx={{ textTransform: 'capitalize' }}>
-                {type.replace('_', ' ')}
-              </Typography>
-              <Typography variant="h4" fontWeight="bold">
-                {balance}
-              </Typography>
+    <Box sx={{ p: 2.5, display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <SectionCard title="Your Currencies">
+        <Stack spacing={2}>
+          {Object.entries(currencies).length === 0 && (
+            <Typography color="text.secondary">Loading…</Typography>
+          )}
+          {Object.entries(currencies).map(([type, balance]) => (
+            <Box key={type} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <SavingsIcon color="primary" />
+              <Box flex={1}>
+                <Typography variant="body2" color="text.secondary" sx={{ textTransform: 'capitalize' }}>
+                  {type.replace('_', ' ')}
+                </Typography>
+                <Typography variant="h4">
+                  {balance}
+                </Typography>
+              </Box>
             </Box>
-          </Paper>
-        ))}
-      </Stack>
+          ))}
+        </Stack>
+      </SectionCard>
 
-      <Button
-        variant="contained"
-        fullWidth
-        size="large"
-        onClick={() => setDrawerOpen(true)}
-        disabled={otherCharacters.length === 0 || (currencies['yams'] ?? 0) === 0 || yamsLocked}
-      >
-        Transfer Yams
-      </Button>
+      <Box>
+        <Button
+          variant="contained"
+          fullWidth
+          size="large"
+          onClick={() => setDrawerOpen(true)}
+          disabled={otherCharacters.length === 0 || (currencies['yams'] ?? 0) === 0 || yamsLocked}
+        >
+          Transfer Yams
+        </Button>
 
-      {yamsLocked && (
-        <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1, textAlign: 'center' }}>
-          Yam transfers are locked during {phase}.
-        </Typography>
-      )}
+        {yamsLocked && (
+          <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1, textAlign: 'center' }}>
+            Yam transfers are locked during {phase}.
+          </Typography>
+        )}
+      </Box>
 
       <Drawer
         anchor="bottom"

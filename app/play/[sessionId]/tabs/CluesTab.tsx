@@ -4,6 +4,7 @@ import {
   Box, Typography, Accordion, AccordionSummary, AccordionDetails, Chip, Stack,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import SectionCard from '@/app/_components/SectionCard'
 import { usePlayerStore } from '@/lib/store/player-store'
 import { useScenario } from '@/lib/hooks/useScenario'
 
@@ -37,26 +38,22 @@ export default function CluesTab({ sessionId: _sessionId, uid: _uid }: Props) {
 
   if (clues.length === 0) {
     return (
-      <Box sx={{ p: 3 }}>
-        <Typography variant="h6" fontWeight="bold" gutterBottom>
-          Your Clues
-        </Typography>
-        <Typography color="text.secondary">
-          You have no clues yet. The GM will distribute them as the investigation unfolds.
-        </Typography>
+      <Box sx={{ p: 2.5, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <SectionCard title="Your Clues">
+          <Typography color="text.secondary">
+            You have no clues yet. The GM will distribute them as the investigation unfolds.
+          </Typography>
+        </SectionCard>
       </Box>
     )
   }
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Box display="flex" alignItems="center" gap={1} sx={{ mb: 2 }}>
-        <Typography variant="h6" fontWeight="bold">
-          Your Clues
-        </Typography>
-        <Chip label={`${clues.length}`} size="small" color="primary" />
-      </Box>
-
+    <Box sx={{ p: 2.5, display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <SectionCard
+        title="Your Clues"
+        action={<Chip label={`${clues.length}`} size="small" color="primary" />}
+      >
       <Stack spacing={1}>
         {clueAssets.map((asset) => {
           const isNew = newClueIds.includes(asset.id)
@@ -103,6 +100,7 @@ export default function CluesTab({ sessionId: _sessionId, uid: _uid }: Props) {
             </Accordion>
           ))}
       </Stack>
+      </SectionCard>
     </Box>
   )
 }

@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { Box, Typography, TextField } from '@mui/material'
+import SectionCard from '@/app/_components/SectionCard'
 
 interface Props {
   sessionId: string
@@ -28,26 +29,25 @@ export default function NotesTab({ sessionId, uid }: Props) {
   }
 
   return (
-    <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Typography variant="h6" fontWeight="bold">
-        Notes
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        Your private notes — only visible to you, saved on this device.
-      </Typography>
-      {loaded && (
-        <TextField
-          multiline
-          minRows={14}
-          maxRows={30}
-          fullWidth
-          variant="outlined"
-          placeholder="Write your clues, suspicions, and observations here…"
-          value={notes}
-          onChange={(e) => handleChange(e.target.value)}
-          inputProps={{ style: { fontFamily: 'monospace', fontSize: '0.875rem' } }}
-        />
-      )}
+    <Box sx={{ p: 2.5, display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <SectionCard title="Notes">
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          Your private notes — only visible to you, saved on this device.
+        </Typography>
+        {loaded && (
+          <TextField
+            multiline
+            minRows={14}
+            maxRows={30}
+            fullWidth
+            variant="outlined"
+            placeholder="Write your clues, suspicions, and observations here…"
+            value={notes}
+            onChange={(e) => handleChange(e.target.value)}
+            inputProps={{ style: { fontFamily: 'monospace', fontSize: '0.875rem' } }}
+          />
+        )}
+      </SectionCard>
     </Box>
   )
 }
