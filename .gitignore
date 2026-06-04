@@ -30,5 +30,6 @@ coverage/
 .DS_Store
 *.log
 
-# Database
+# Database (including SQLite WAL/SHM/journal sidecar files)
 data/*.db
+data/*.db-*
