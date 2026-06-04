@@ -1,11 +1,16 @@
 import { type NextRequest } from 'next/server'
 import { eq, and } from 'drizzle-orm'
 import { db } from '@/lib/db'
-import { sessions, players, scenarios } from '@/lib/db/schema'
+import { players } from '@/lib/db/schema'
 import { addClient, removeClient } from '@/lib/sse/registry'
 import type { SseClient } from '@/lib/sse/registry'
+import { buildSessionPayload, buildPlayerPayload } from '@/lib/sse/payloads'
 
 const encoder = new TextEncoder()
+
+function sseEvent(event: string, data: unknown): Uint8Array {
+  return encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
+}
 
 export async function GET(
   req: NextRequest,
@@ -34,46 +39,13 @@ export async function GET(
       addClient(client)
 
       try {
-        // Send current session state immediately on connect
-        const sessionRow = db.select().from(sessions).where(eq(sessions.id, sessionId)).get()
-        if (sessionRow) {
-          const sessionData = {
-            sessionId: sessionRow.id,
-            scenarioId: sessionRow.scenarioId,
-            phase: sessionRow.phase,
-            phaseIndex: sessionRow.phaseIndex,
-            status: sessionRow.status,
-            hostId: sessionRow.hostId,
-            characterAssignments: sessionRow.characterAssignments,
-            unlockedAssets: sessionRow.unlockedAssets,
-          }
-          controller.enqueue(
-            encoder.encode(`event: session-updated\ndata: ${JSON.stringify(sessionData)}\n\n`),
-          )
-        }
+        // Send current session + player state immediately on connect, reusing the
+        // same payload builders as live broadcasts so the shapes never drift.
+        const sessionData = buildSessionPayload(sessionId)
+        if (sessionData) controller.enqueue(sseEvent('session-updated', sessionData))
 
-        // Include the player's own private character data
-        let privateCharacter = null
-        const sessionForScenario = sessionRow ?? db.select({ scenarioId: sessions.scenarioId }).from(sessions).where(eq(sessions.id, sessionId)).get()
-        if (sessionForScenario) {
-          const scenarioRow = db.select({ characters: scenarios.characters }).from(scenarios).where(eq(scenarios.id, sessionForScenario.scenarioId)).get()
-          if (scenarioRow) {
-            const chars = scenarioRow.characters as { characters: Array<{ id: string; private: unknown }> }
-            privateCharacter = chars.characters.find((c) => c.id === playerRow.characterId)?.private ?? null
-          }
-        }
-
-        // Send current player state immediately on connect
-        const playerData = {
-          characterId: playerRow.characterId,
-          displayName: playerRow.displayName,
-          currencies: playerRow.currencies,
-          clues: playerRow.clues,
-          privateCharacter,
-        }
-        controller.enqueue(
-          encoder.encode(`event: player-updated\ndata: ${JSON.stringify(playerData)}\n\n`),
-        )
+        const playerData = buildPlayerPayload(sessionId, uid)
+        if (playerData) controller.enqueue(sseEvent('player-updated', playerData))
       } catch (e) {
         // On any error during init, clean up and close the stream
         if (client) { removeClient(client); client = null }
