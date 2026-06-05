@@ -1,10 +1,11 @@
 'use client'
 import { useState } from 'react'
-import { Box, BottomNavigation, BottomNavigationAction, Badge, Typography } from '@mui/material'
+import { Box, BottomNavigation, BottomNavigationAction, Badge, Typography, Button, Paper } from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person'
 import SavingsIcon from '@mui/icons-material/Savings'
 import SearchIcon from '@mui/icons-material/Search'
 import EditNoteIcon from '@mui/icons-material/EditNote'
+import GavelIcon from '@mui/icons-material/Gavel'
 import { usePlayerToken } from '@/lib/hooks/usePlayerToken'
 import { useSession } from '@/lib/hooks/useSession'
 import { usePlayerStore } from '@/lib/store/player-store'
@@ -14,6 +15,8 @@ import YamsTab from './tabs/YamsTab'
 import CluesTab from './tabs/CluesTab'
 import NotesTab from './tabs/NotesTab'
 import ColorSchemeToggle from '@/app/_components/ColorSchemeToggle'
+import { useScenario } from '@/lib/hooks/useScenario'
+import AccusationSheet from './AccusationSheet'
 
 interface Props {
   sessionId: string
@@ -24,6 +27,10 @@ export default function PlayerBinder({ sessionId }: Props) {
   const [activeTab, setActiveTab] = useState(0)
   const newClueCount = usePlayerStore((s) => s.newClueCount)
   const phase = useSessionStore((s) => s.phase)
+  const scenario = useScenario()
+  const myAccusation = usePlayerStore((s) => s.myAccusation)
+  const [accuseOpen, setAccuseOpen] = useState(false)
+  const inAccusationPhase = !!scenario?.accusationMechanic && phase === scenario.accusationMechanic.allowedPhase
 
   useSession(sessionId, uid)
 
@@ -58,6 +65,14 @@ export default function PlayerBinder({ sessionId }: Props) {
 
       <Box sx={{ flex: 1, overflow: 'auto' }}>{tabs[activeTab]}</Box>
 
+      {inAccusationPhase && (
+        <Paper square elevation={0} sx={{ p: 1.5, borderTop: 1, borderColor: 'divider', bgcolor: 'background.paper' }}>
+          <Button fullWidth size="large" variant="contained" startIcon={<GavelIcon />} onClick={() => setAccuseOpen(true)}>
+            {myAccusation ? 'Accusation submitted — tap to revise' : 'Make Your Accusation'}
+          </Button>
+        </Paper>
+      )}
+
       <BottomNavigation
         value={activeTab}
         onChange={(_, newValue: number) => {
@@ -74,6 +89,8 @@ export default function PlayerBinder({ sessionId }: Props) {
         />
         <BottomNavigationAction label="Notes" icon={<EditNoteIcon />} />
       </BottomNavigation>
+
+      <AccusationSheet sessionId={sessionId} open={accuseOpen} onClose={() => setAccuseOpen(false)} />
     </Box>
   )
 }
