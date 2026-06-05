@@ -18,6 +18,7 @@ export interface ScenarioAsset {
 export interface ScenarioCache {
   characters: ScenarioCharacter[]
   assets: ScenarioAsset[]
+  accusationMechanic: { allowedPhase: string; requiresEvidence: boolean } | null
 }
 
 export function useScenario(): ScenarioCache | null {
@@ -31,12 +32,19 @@ export function useScenario(): ScenarioCache | null {
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
         return r.json()
       })
-      .then((data: { characters: { characters: ScenarioCharacter[] }; assets: { assets: ScenarioAsset[] } }) => {
-        setScenario({
-          characters: data.characters.characters,
-          assets: data.assets.assets,
-        })
-      })
+      .then(
+        (data: {
+          characters: { characters: ScenarioCharacter[] }
+          assets: { assets: ScenarioAsset[] }
+          accusationMechanic?: { allowedPhase: string; requiresEvidence: boolean } | null
+        }) => {
+          setScenario({
+            characters: data.characters.characters,
+            assets: data.assets.assets,
+            accusationMechanic: data.accusationMechanic ?? null,
+          })
+        },
+      )
       .catch((e) => {
         console.error('[useScenario] Failed to load scenario:', e)
       })

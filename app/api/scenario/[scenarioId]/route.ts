@@ -26,6 +26,9 @@ export async function GET(
     return NextResponse.json({
       characters: publicCharacters,
       assets: row.assets,
+      accusationMechanic:
+        (row.manifest as { accusationMechanic?: { allowedPhase: string; requiresEvidence: boolean } })
+          .accusationMechanic ?? null,
     })
   } catch (error) {
     return err(error)
