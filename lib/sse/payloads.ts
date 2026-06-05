@@ -1,5 +1,6 @@
 import { eq, and } from 'drizzle-orm'
 import { db } from '@/lib/db'
+import type { Db } from '@/lib/db'
 import { sessions, players, scenarios, accusations } from '@/lib/db/schema'
 
 // Shared payload builders for both live broadcasts (broadcast.ts) and the
@@ -22,8 +23,8 @@ export function buildSessionPayload(sessionId: string) {
   }
 }
 
-export function buildPlayerPayload(sessionId: string, uid: string) {
-  const playerRow = db
+export function buildPlayerPayload(database: Db, sessionId: string, uid: string) {
+  const playerRow = database
     .select()
     .from(players)
     .where(and(eq(players.sessionId, sessionId), eq(players.uid, uid)))
@@ -33,14 +34,28 @@ export function buildPlayerPayload(sessionId: string, uid: string) {
   // Include the player's own private character data so the client never needs to
   // fetch the full scenario (which no longer includes private fields)
   let privateCharacter = null
-  const sessionRow = db.select({ scenarioId: sessions.scenarioId }).from(sessions).where(eq(sessions.id, sessionId)).get()
+  const sessionRow = database.select({ scenarioId: sessions.scenarioId }).from(sessions).where(eq(sessions.id, sessionId)).get()
   if (sessionRow) {
-    const scenarioRow = db.select({ characters: scenarios.characters }).from(scenarios).where(eq(scenarios.id, sessionRow.scenarioId)).get()
+    const scenarioRow = database.select({ characters: scenarios.characters }).from(scenarios).where(eq(scenarios.id, sessionRow.scenarioId)).get()
     if (scenarioRow) {
       const chars = scenarioRow.characters as { characters: Array<{ id: string; private: unknown }> }
       privateCharacter = chars.characters.find((c) => c.id === playerRow.characterId)?.private ?? null
     }
   }
+
+  const accusationRow = database
+    .select()
+    .from(accusations)
+    .where(and(eq(accusations.sessionId, sessionId), eq(accusations.accuserId, uid)))
+    .get()
+  const myAccusation = accusationRow
+    ? {
+        suspectId: accusationRow.suspectId,
+        motive: accusationRow.motive,
+        evidenceIds: accusationRow.evidenceIds,
+        submittedAt: accusationRow.submittedAt,
+      }
+    : null
 
   return {
     characterId: playerRow.characterId,
@@ -48,6 +63,7 @@ export function buildPlayerPayload(sessionId: string, uid: string) {
     currencies: playerRow.currencies,
     clues: playerRow.clues,
     privateCharacter,
+    myAccusation,
   }
 }
 

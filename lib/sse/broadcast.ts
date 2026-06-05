@@ -1,3 +1,4 @@
+import { db } from '@/lib/db'
 import { broadcastSession, broadcastPlayer, getConnectedUids, broadcastGm } from './registry'
 import {
   buildSessionPayload,
@@ -36,7 +37,7 @@ export function broadcastAll(sessionId: string): void {
   const uids = getConnectedUids(sessionId)
   for (const uid of uids) {
     try {
-      const playerData = buildPlayerPayload(sessionId, uid)
+      const playerData = buildPlayerPayload(db, sessionId, uid)
       if (playerData) broadcastPlayer(sessionId, uid, playerData)
     } catch (e) {
       console.error('[broadcast] player payload failed for', sessionId, uid, e)

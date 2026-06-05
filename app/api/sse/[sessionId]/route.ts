@@ -44,7 +44,7 @@ export async function GET(
         const sessionData = buildSessionPayload(sessionId)
         if (sessionData) controller.enqueue(sseEvent('session-updated', sessionData))
 
-        const playerData = buildPlayerPayload(sessionId, uid)
+        const playerData = buildPlayerPayload(db, sessionId, uid)
         if (playerData) controller.enqueue(sseEvent('player-updated', playerData))
       } catch (e) {
         // On any error during init, clean up and close the stream
