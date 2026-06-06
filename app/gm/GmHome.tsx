@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid2'
 import LogoutIcon from '@mui/icons-material/Logout'
 import AddIcon from '@mui/icons-material/Add'
 import { useGmAuth } from '@/lib/hooks/useGmAuth'
+import ColorSchemeToggle from '@/app/_components/ColorSchemeToggle'
 
 interface SessionSummary {
   id: string; roomCode: string; scenarioName: string; phase: string
@@ -96,7 +97,7 @@ export default function GmHome() {
     .sort((a, b) => b.createdAt - a.createdAt)
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <AppBar position="static" color="default" elevation={1}>
         <Toolbar>
           <Typography variant="h6" fontWeight="bold" color="primary" sx={{ flex: 1 }}>
@@ -109,6 +110,7 @@ export default function GmHome() {
             onClick={() => setNewSessionOpen(true)}>
             New Session
           </Button>
+          <ColorSchemeToggle />
           <Button startIcon={<LogoutIcon />} onClick={handleLogout}>Logout</Button>
         </Toolbar>
       </AppBar>
@@ -117,7 +119,7 @@ export default function GmHome() {
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
         {/* Active Sessions */}
-        <Typography variant="h6" fontWeight="bold" gutterBottom>
+        <Typography variant="h5" gutterBottom>
           Active Sessions
         </Typography>
         {activeSessions.length === 0 ? (
@@ -131,7 +133,7 @@ export default function GmHome() {
                 <Card variant="outlined">
                   <CardContent>
                     <Typography variant="subtitle1" fontWeight="bold">{s.scenarioName}</Typography>
-                    <Typography variant="h4" fontFamily="monospace" color="primary" sx={{ my: 1 }}>
+                    <Typography variant="h4" color="primary" sx={{ my: 1 }}>
                       {s.roomCode}
                     </Typography>
                     <Box display="flex" gap={1} flexWrap="wrap">
@@ -159,7 +161,7 @@ export default function GmHome() {
 
         {/* Scenario Library */}
         <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-          <Typography variant="h6" fontWeight="bold">Your Scenarios</Typography>
+          <Typography variant="h5">Your Scenarios</Typography>
           <Button variant="outlined" onClick={() => router.push('/gm/scenarios')}>
             Upload Scenario
           </Button>
