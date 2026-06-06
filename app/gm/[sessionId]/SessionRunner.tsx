@@ -130,8 +130,6 @@ export default function SessionRunner({ sessionId }: { sessionId: string }) {
           {roomCode && (
             <Typography
               variant="h5"
-              fontFamily="monospace"
-              fontWeight="bold"
               color="primary"
               sx={{ letterSpacing: 4, mr: 1 }}
             >
