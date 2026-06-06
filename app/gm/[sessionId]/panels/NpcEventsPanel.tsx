@@ -1,10 +1,11 @@
 'use client'
 import { useState } from 'react'
 import {
-  Box, Paper, Typography, Button, Chip, Dialog, DialogTitle,
+  Box, Typography, Button, Chip, Dialog, DialogTitle,
   DialogContent, DialogActions, CircularProgress, Alert,
 } from '@mui/material'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import SectionCard from '@/app/_components/SectionCard'
 import { useGmStore } from '@/lib/store/gm-store'
 import type { ScenarioFull } from '../SessionRunner'
 
@@ -49,8 +50,7 @@ export default function NpcEventsPanel({ sessionId, scenario, onAction }: Props)
   if (scenario.gmScript.npcEvents.length === 0) return null
 
   return (
-    <Paper variant="outlined" sx={{ p: 2 }}>
-      <Typography variant="subtitle2" fontWeight="bold" gutterBottom>NPC Events</Typography>
+    <SectionCard title="NPC Events">
       <Box display="flex" flexDirection="column" gap={1}>
         {scenario.gmScript.npcEvents.map((event) => {
           const triggered = triggeredNpcEvents.includes(event.id)
@@ -96,6 +96,6 @@ export default function NpcEventsPanel({ sessionId, scenario, onAction }: Props)
           </Button>
         </DialogActions>
       </Dialog>
-    </Paper>
+    </SectionCard>
   )
 }

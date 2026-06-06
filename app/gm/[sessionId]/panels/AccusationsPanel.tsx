@@ -1,5 +1,6 @@
 'use client'
-import { Box, Paper, Typography, Chip, Divider } from '@mui/material'
+import { Box, Typography, Chip, Divider } from '@mui/material'
+import SectionCard from '@/app/_components/SectionCard'
 import { useGmStore } from '@/lib/store/gm-store'
 import type { ScenarioFull } from '../SessionRunner'
 
@@ -21,11 +22,7 @@ export default function AccusationsPanel({ characterMap = {}, assetMap = {} }: P
   players.forEach((p) => { uidToCharId[p.uid] = p.characterId })
 
   return (
-    <Paper variant="outlined" sx={{ p: 2 }}>
-      <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
-        Accusations ({accusations.length})
-      </Typography>
-
+    <SectionCard title={`Accusations (${accusations.length})`}>
       {accusations.length === 0 ? (
         <Typography variant="body2" color="text.secondary">No accusations submitted yet.</Typography>
       ) : (
@@ -55,6 +52,6 @@ export default function AccusationsPanel({ characterMap = {}, assetMap = {} }: P
           )
         })
       )}
-    </Paper>
+    </SectionCard>
   )
 }

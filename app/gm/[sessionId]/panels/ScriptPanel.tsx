@@ -1,8 +1,9 @@
 'use client'
 import { useEffect, useRef } from 'react'
 import {
-  Box, Typography, Chip, Paper, Divider,
+  Box, Typography, Chip, Paper,
 } from '@mui/material'
+import SectionCard from '@/app/_components/SectionCard'
 import type { ScenarioFull } from '../SessionRunner'
 
 type ChipColor = 'primary' | 'secondary' | 'default' | 'info' | 'success' | 'warning' | 'error'
@@ -53,15 +54,12 @@ export default function ScriptPanel({ scenario, phase }: ScriptPanelProps) {
   scenario.gmScript.npcRoster.forEach((npc) => { npcMap[npc.id] = npc.name })
 
   return (
-    <Box ref={scrollRef} sx={{ height: '100%', overflow: 'auto' }}>
-      <Typography variant="h6" fontWeight="bold" gutterBottom>
-        Script
-      </Typography>
-
+    <Box ref={scrollRef} sx={{ height: '100%', overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <SectionCard title="Script">
       {entries.length === 0 ? (
         <Typography color="text.secondary">No script entries for this phase.</Typography>
       ) : (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {entries.map((entry, i) => (
             <Paper key={i} variant="outlined" sx={{ p: 2 }}>
               <Box display="flex" alignItems="center" gap={1} mb={0.5}>
@@ -97,12 +95,9 @@ export default function ScriptPanel({ scenario, phase }: ScriptPanelProps) {
           ))}
         </Box>
       )}
+      </SectionCard>
 
-      <Divider sx={{ my: 3 }} />
-
-      <Typography variant="h6" fontWeight="bold" gutterBottom>
-        NPC Roster
-      </Typography>
+      <SectionCard title="NPC Roster">
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {scenario.gmScript.npcRoster.map((npc) => (
           <Paper key={npc.id} variant="outlined" sx={{ p: 2 }}>
@@ -120,6 +115,7 @@ export default function ScriptPanel({ scenario, phase }: ScriptPanelProps) {
           </Paper>
         ))}
       </Box>
+      </SectionCard>
     </Box>
   )
 }

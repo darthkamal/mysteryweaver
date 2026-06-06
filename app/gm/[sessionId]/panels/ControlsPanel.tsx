@@ -3,8 +3,9 @@ import { useState } from 'react'
 import {
   Box, Typography, Button, LinearProgress,
   Dialog, DialogTitle, DialogContent, DialogActions,
-  Paper, Divider, CircularProgress,
+  Divider, CircularProgress,
 } from '@mui/material'
+import SectionCard from '@/app/_components/SectionCard'
 import { useGmStore } from '@/lib/store/gm-store'
 import type { ScenarioFull } from '../SessionRunner'
 import NpcEventsPanel from './NpcEventsPanel'
@@ -79,10 +80,7 @@ export default function ControlsPanel({
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {/* Phase Section */}
-      <Paper variant="outlined" sx={{ p: 2 }}>
-        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-          Phase Progress
-        </Typography>
+      <SectionCard title="Phase Progress">
         <Typography variant="body2" color="text.secondary">
           Step {stepNumber} of {totalPhases}
         </Typography>
@@ -106,13 +104,10 @@ export default function ControlsPanel({
             → Advance to {nextPhase.name}
           </Button>
         ) : null}
-      </Paper>
+      </SectionCard>
 
       {/* Players Section */}
-      <Paper variant="outlined" sx={{ p: 2 }}>
-        <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-          Players ({players.length} / {totalCharacters})
-        </Typography>
+      <SectionCard title={`Players (${players.length} / ${totalCharacters})`}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           {/* Joined players */}
           {players.map((player) => {
@@ -126,7 +121,7 @@ export default function ControlsPanel({
                     width: 8,
                     height: 8,
                     borderRadius: '50%',
-                    bgcolor: player.isOnline ? 'success.main' : 'grey.400',
+                    bgcolor: player.isOnline ? 'success.main' : 'text.disabled',
                     flexShrink: 0,
                   }}
                 />
@@ -156,7 +151,7 @@ export default function ControlsPanel({
                       height: 8,
                       borderRadius: '50%',
                       border: '1px solid',
-                      borderColor: 'grey.400',
+                      borderColor: 'divider',
                       flexShrink: 0,
                     }}
                   />
@@ -172,7 +167,7 @@ export default function ControlsPanel({
               )
             })}
         </Box>
-      </Paper>
+      </SectionCard>
 
       <Divider />
 

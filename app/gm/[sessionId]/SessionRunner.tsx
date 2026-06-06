@@ -9,6 +9,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useGmAuth } from '@/lib/hooks/useGmAuth'
 import { useGmSession } from '@/lib/hooks/useGmSession'
 import { useGmStore } from '@/lib/store/gm-store'
+import ColorSchemeToggle from '@/app/_components/ColorSchemeToggle'
 import ScriptPanel from './panels/ScriptPanel'
 import ControlsPanel from './panels/ControlsPanel'
 
@@ -115,7 +116,7 @@ export default function SessionRunner({ sessionId }: { sessionId: string }) {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', flexDirection: 'column' }}>
       <AppBar position="static" color="default" elevation={1}>
         <Toolbar sx={{ gap: 1 }}>
           <IconButton edge="start" onClick={() => router.push('/gm')}>
@@ -143,6 +144,7 @@ export default function SessionRunner({ sessionId }: { sessionId: string }) {
             size="small"
             color={statusColor as 'success' | 'error' | 'default'}
           />
+          <ColorSchemeToggle />
         </Toolbar>
       </AppBar>
 

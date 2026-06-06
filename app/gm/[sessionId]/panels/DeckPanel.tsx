@@ -1,9 +1,10 @@
 'use client'
 import { useState } from 'react'
 import {
-  Box, Paper, Typography, Button, Chip, Drawer, List, ListItem,
+  Box, Typography, Button, Chip, Drawer, List, ListItem,
   ListItemText, Checkbox, Divider, CircularProgress, Alert,
 } from '@mui/material'
+import SectionCard from '@/app/_components/SectionCard'
 import { useGmStore } from '@/lib/store/gm-store'
 import type { ScenarioFull } from '../SessionRunner'
 
@@ -76,9 +77,7 @@ export default function DeckPanel({ sessionId, scenario, characterMap, onAction 
   const sendAsset = sendAssetId ? scenario.assets.assets.find((a) => a.id === sendAssetId) : null
 
   return (
-    <Paper variant="outlined" sx={{ p: 2 }}>
-      <Typography variant="subtitle2" fontWeight="bold" gutterBottom>Clue Deck</Typography>
-
+    <SectionCard title="Clue Deck">
       {/* Type filter chips */}
       <Box display="flex" gap={0.5} flexWrap="wrap" sx={{ mb: 1.5 }}>
         <Chip label="All" size="small" variant={!typeFilter ? 'filled' : 'outlined'}
@@ -151,6 +150,6 @@ export default function DeckPanel({ sessionId, scenario, characterMap, onAction 
             : `Send to ${selectedUids.length} player(s)`}
         </Button>
       </Drawer>
-    </Paper>
+    </SectionCard>
   )
 }
