@@ -13,6 +13,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useGmAuth } from '@/lib/hooks/useGmAuth'
+import SectionCard from '@/app/_components/SectionCard'
 import {
   ManifestSchema, CharactersSchema, AssetsSchema, GmScriptSchema, RelationshipsSchema,
 } from '@/lib/schemas'
@@ -115,7 +116,7 @@ export default function ScenarioManager() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <AppBar position="static" color="default" elevation={1}>
         <Toolbar>
           <IconButton onClick={() => router.push('/gm')} sx={{ mr: 1 }}>
@@ -139,33 +140,35 @@ export default function ScenarioManager() {
             required
           />
 
-          {MODULES.map((mod) => {
-            const state = modules[mod.key]
-            return (
-              <Box key={mod.key} sx={{ mb: 2 }}>
-                <Box display="flex" alignItems="center" gap={2}>
-                  <Typography variant="body2" sx={{ minWidth: 160, fontFamily: 'monospace' }}>
-                    {mod.label}
-                  </Typography>
-                  <Box component="label" sx={{ cursor: 'pointer' }}>
-                    <Button variant="outlined" size="small" component="span">
-                      Choose File
-                    </Button>
-                    <input type="file" accept=".json" hidden
-                      onChange={handleFileSelect(mod.key, mod.schema)} />
+          <SectionCard title="Scenario Files">
+            {MODULES.map((mod) => {
+              const state = modules[mod.key]
+              return (
+                <Box key={mod.key} sx={{ mb: 2 }}>
+                  <Box display="flex" alignItems="center" gap={2}>
+                    <Typography variant="body2" sx={{ minWidth: 160, fontFamily: 'monospace' }}>
+                      {mod.label}
+                    </Typography>
+                    <Box component="label" sx={{ cursor: 'pointer' }}>
+                      <Button variant="outlined" size="small" component="span">
+                        Choose File
+                      </Button>
+                      <input type="file" accept=".json" hidden
+                        onChange={handleFileSelect(mod.key, mod.schema)} />
+                    </Box>
+                    {state.status === 'idle' && <RadioButtonUncheckedIcon sx={{ color: 'text.disabled' }} fontSize="small" />}
+                    {state.status === 'valid' && <CheckCircleIcon sx={{ color: 'success.main' }} fontSize="small" />}
+                    {state.status === 'error' && <ErrorIcon sx={{ color: 'error.main' }} fontSize="small" />}
                   </Box>
-                  {state.status === 'idle' && <RadioButtonUncheckedIcon sx={{ color: 'grey.400' }} fontSize="small" />}
-                  {state.status === 'valid' && <CheckCircleIcon color="success" fontSize="small" />}
-                  {state.status === 'error' && <ErrorIcon color="error" fontSize="small" />}
+                  {state.status === 'error' && state.error && (
+                    <Typography variant="caption" color="error" sx={{ ml: '180px', display: 'block', mt: 0.5 }}>
+                      {state.error.slice(0, 200)}
+                    </Typography>
+                  )}
                 </Box>
-                {state.status === 'error' && state.error && (
-                  <Typography variant="caption" color="error" sx={{ ml: '180px', display: 'block', mt: 0.5 }}>
-                    {state.error.slice(0, 200)}
-                  </Typography>
-                )}
-              </Box>
-            )
-          })}
+              )
+            })}
+          </SectionCard>
 
           {submitError && <Alert severity="error" sx={{ mt: 2 }}>{submitError}</Alert>}
 
@@ -184,7 +187,7 @@ export default function ScenarioManager() {
         {/* Existing Scenarios */}
         {existing.length > 0 && (
           <>
-            <Typography variant="h6" fontWeight="bold" gutterBottom>
+            <Typography variant="h5" gutterBottom>
               Your Scenarios
             </Typography>
             {deleteError && <Alert severity="error" sx={{ mb: 2 }}>{deleteError}</Alert>}
