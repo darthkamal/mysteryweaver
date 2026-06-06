@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Dialog, AppBar, Toolbar, Typography, IconButton, Box, Button, TextField,
   Select, MenuItem, FormControl, InputLabel, Chip, Alert, CircularProgress,
@@ -27,6 +27,15 @@ export default function AccusationSheet({ sessionId, open, onClose }: Props) {
   const [evidenceIds, setEvidenceIds] = useState<string[]>(myAccusation?.evidenceIds ?? [])
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (open) {
+      setSuspectId(myAccusation?.suspectId ?? '')
+      setMotive(myAccusation?.motive ?? '')
+      setEvidenceIds(myAccusation?.evidenceIds ?? [])
+      setError(null)
+    }
+  }, [open, myAccusation])
 
   const requiresEvidence = scenario?.accusationMechanic?.requiresEvidence ?? false
   const suspects = (scenario?.characters ?? []).filter((c) => c.id !== characterId)
