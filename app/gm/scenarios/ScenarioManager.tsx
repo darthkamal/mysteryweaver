@@ -13,7 +13,6 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useGmAuth } from '@/lib/hooks/useGmAuth'
-import SectionCard from '@/app/_components/SectionCard'
 import {
   ManifestSchema, CharactersSchema, AssetsSchema, GmScriptSchema, RelationshipsSchema,
 } from '@/lib/schemas'
@@ -140,7 +139,8 @@ export default function ScenarioManager() {
             required
           />
 
-          <SectionCard title="Scenario Files">
+          <Typography variant="overline" color="text.secondary">Scenario Files</Typography>
+          <Box sx={{ mt: 1 }}>
             {MODULES.map((mod) => {
               const state = modules[mod.key]
               return (
@@ -168,7 +168,7 @@ export default function ScenarioManager() {
                 </Box>
               )
             })}
-          </SectionCard>
+          </Box>
 
           {submitError && <Alert severity="error" sx={{ mt: 2 }}>{submitError}</Alert>}
 
