@@ -147,9 +147,15 @@ services:
       DATABASE_URL: file:/app/data/mysteryweaver.db
       JWT_SECRET: ${JWT_SECRET}
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/join').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
 
 volumes:
   sqlite_data:
 ```
 
-`restart: unless-stopped` ensures the container restarts automatically after a crash or server reboot, but stays stopped if you manually stop it via Coolify.
+`restart: unless-stopped` ensures the container restarts automatically after a crash or server reboot, but stays stopped if you manually stop it via Coolify. The `healthcheck` lets Coolify track readiness and surface an unhealthy container.

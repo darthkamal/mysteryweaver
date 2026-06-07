@@ -1,3 +1,8 @@
+# pnpm 11 blocks dependency build scripts by default. Allow the ones we need:
+# - better-sqlite3: compiles the native SQLite binding (required at runtime)
+# - esbuild: used by tsx (seed-gm script) and vitest
+# - sharp: Next.js production image optimization
 allowBuilds:
-  better-sqlite3: set this to true or false
-  esbuild: set this to true or false
+  better-sqlite3: true
+  esbuild: true
+  sharp: true

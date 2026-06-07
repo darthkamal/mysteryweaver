@@ -16,16 +16,25 @@ if (!dbUrl.startsWith('file:')) {
   console.error('[FATAL] DATABASE_URL must use the file: scheme.')
   process.exit(1)
 }
-const dbPath = path.resolve(dbUrl.slice(5))
+// `file::memory:` → a throwaway in-memory database (used during `next build`,
+// where route modules are imported but no real persistence is wanted).
+const rawPath = dbUrl.slice(5)
+const isMemory = rawPath === ':memory:'
+const dbPath = isMemory ? ':memory:' : path.resolve(rawPath)
 
-const dataDir = path.dirname(dbPath)
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true })
+if (!isMemory) {
+  const dataDir = path.dirname(dbPath)
+  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true })
+}
 
 let sqlite: Database.Database
 try {
   sqlite = new Database(dbPath)
   sqlite.pragma('journal_mode = WAL')
   sqlite.pragma('foreign_keys = ON')
+  // Wait for the write lock instead of throwing SQLITE_BUSY under concurrency
+  // (concurrent SSE-driven writes at runtime; parallel route imports at build).
+  sqlite.pragma('busy_timeout = 5000')
 } catch (e) {
   console.error('[FATAL] Failed to open SQLite database:', e)
   process.exit(1)
