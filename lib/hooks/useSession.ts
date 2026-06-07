@@ -20,32 +20,43 @@ export function useSession(sessionId: string, uid: string | null) {
     }
     if (!token) return
 
-    const es = new EventSource(
-      `/api/sse/${sessionId}?token=${encodeURIComponent(token)}`,
-    )
+    let es: EventSource | null = null
+    let cancelled = false
 
-    es.addEventListener('session-updated', (e) => {
+    // Exchange the long-lived token (sent as a header) for a short-lived ticket,
+    // then open the stream with ?ticket= — keeps the token out of the URL/logs.
+    ;(async () => {
       try {
-        const data = JSON.parse((e as MessageEvent).data)
-        setSession(data)
-      } catch {
-        console.error('[useSession] Failed to parse session-updated payload')
-      }
-    })
+        const res = await fetch('/api/sse/ticket', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ sessionId }),
+        })
+        if (!res.ok || cancelled) return
+        const { ticket } = (await res.json()) as { ticket: string }
+        if (cancelled) return
 
-    es.addEventListener('player-updated', (e) => {
-      try {
-        const data = JSON.parse((e as MessageEvent).data)
-        setPlayer(data)
-      } catch {
-        console.error('[useSession] Failed to parse player-updated payload')
-      }
-    })
+        es = new EventSource(`/api/sse/${sessionId}?ticket=${encodeURIComponent(ticket)}`)
 
-    es.onerror = () => es.close()
+        es.addEventListener('session-updated', (e) => {
+          try { setSession(JSON.parse((e as MessageEvent).data)) }
+          catch { console.error('[useSession] Failed to parse session-updated payload') }
+        })
+
+        es.addEventListener('player-updated', (e) => {
+          try { setPlayer(JSON.parse((e as MessageEvent).data)) }
+          catch { console.error('[useSession] Failed to parse player-updated payload') }
+        })
+
+        es.onerror = () => es?.close()
+      } catch {
+        console.error('[useSession] Failed to open SSE stream')
+      }
+    })()
 
     return () => {
-      es.close()
+      cancelled = true
+      es?.close()
       clearSession()
       clearPlayer()
     }

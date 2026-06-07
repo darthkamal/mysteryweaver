@@ -46,3 +46,30 @@ export async function signGmToken(gmId: string, email: string): Promise<string> 
     .setExpirationTime('7d')
     .sign(getJwtSecret())
 }
+
+// Short-lived, single-purpose ticket for opening an SSE stream. The browser
+// EventSource API can't send headers, so instead of putting the long-lived
+// player token in the URL (where it lands in access logs), the client exchanges
+// its token (via header) for this ~60s signed ticket and passes it as ?ticket=.
+export async function signSseTicket(uid: string, sessionId: string): Promise<string> {
+  return new SignJWT({ sid: sessionId, typ: 'sse' })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setSubject(uid)
+    .setIssuedAt()
+    .setExpirationTime('60s')
+    .sign(getJwtSecret())
+}
+
+// Verifies an SSE ticket is validly signed, unexpired, of type 'sse', and bound
+// to this session. Returns the player uid. Throws GameError(401) otherwise.
+export async function verifySseTicket(ticket: string, sessionId: string): Promise<string> {
+  try {
+    const { payload } = await jwtVerify(ticket, getJwtSecret())
+    if (payload.typ !== 'sse' || payload.sid !== sessionId || typeof payload.sub !== 'string') {
+      throw new Error('invalid ticket claims')
+    }
+    return payload.sub
+  } catch {
+    throw new GameError(401, 'Invalid or expired SSE ticket')
+  }
+}

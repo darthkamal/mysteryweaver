@@ -5,6 +5,7 @@ import { players } from '@/lib/db/schema'
 import { addClient, removeClient } from '@/lib/sse/registry'
 import type { SseClient } from '@/lib/sse/registry'
 import { buildPlayerSessionPayload, buildPlayerPayload } from '@/lib/sse/payloads'
+import { verifySseTicket } from '@/lib/api/auth'
 
 const encoder = new TextEncoder()
 
@@ -17,20 +18,26 @@ export async function GET(
   { params }: { params: Promise<{ sessionId: string }> },
 ) {
   const { sessionId } = await params
-  const token = req.nextUrl.searchParams.get('token')
+  const ticket = req.nextUrl.searchParams.get('ticket')
 
-  if (!token) return new Response('Missing token', { status: 401 })
+  if (!ticket) return new Response('Missing ticket', { status: 401 })
 
-  // Authenticate by the secret token; the connection is keyed by the player's uid.
+  // Authenticate via a short-lived signed ticket (not the raw token in the URL).
+  let uid: string
+  try {
+    uid = await verifySseTicket(ticket, sessionId)
+  } catch {
+    return new Response('Invalid ticket', { status: 401 })
+  }
+
+  // Confirm the player still exists in this session (ticket encodes the uid).
   const playerRow = db
     .select()
     .from(players)
-    .where(and(eq(players.sessionId, sessionId), eq(players.token, token)))
+    .where(and(eq(players.sessionId, sessionId), eq(players.uid, uid)))
     .get()
 
-  if (!playerRow) return new Response('Invalid token', { status: 401 })
-
-  const uid = playerRow.uid
+  if (!playerRow) return new Response('Invalid ticket', { status: 401 })
   let client: SseClient | null = null
   let pingTimer: ReturnType<typeof setInterval> | null = null
 
