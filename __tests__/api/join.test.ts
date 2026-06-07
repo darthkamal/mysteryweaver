@@ -22,7 +22,7 @@ describe('joinGame', () => {
   })
 
   it('creates player row with correct starting inventory', async () => {
-    await joinGame(db, PLAYER_1_UID, {
+    await joinGame(db, PLAYER_1_UID, 'tok_p1', {
       sessionId: SESSION_ID, characterId: 'okonkwo', displayName: 'Warrior',
     })
     const row = getPlayerRow(db, PLAYER_1_UID)
@@ -35,19 +35,33 @@ describe('joinGame', () => {
   })
 
   it('records character claim in session.characterAssignments', async () => {
-    await joinGame(db, PLAYER_1_UID, {
+    await joinGame(db, PLAYER_1_UID, 'tok_p1', {
       sessionId: SESSION_ID, characterId: 'okonkwo', displayName: 'Warrior',
     })
     const sessionRow = getSessionRow(db)
     expect(sessionRow!.characterAssignments.okonkwo).toBe(PLAYER_1_UID)
   })
 
+  it('stores the secret token separately from the uid; assignments use the uid, not the token', async () => {
+    await joinGame(db, PLAYER_1_UID, 'tok_p1', {
+      sessionId: SESSION_ID, characterId: 'okonkwo', displayName: 'Warrior',
+    })
+    const row = getPlayerRow(db, PLAYER_1_UID)
+    expect(row!.uid).toBe(PLAYER_1_UID)
+    expect(row!.token).toBe('tok_p1')
+    expect(row!.token).not.toBe(row!.uid)
+    // The assignment map (which the GM sees) holds the uid, never the secret token.
+    const sessionRow = getSessionRow(db)
+    expect(sessionRow!.characterAssignments.okonkwo).toBe(PLAYER_1_UID)
+    expect(Object.values(sessionRow!.characterAssignments)).not.toContain('tok_p1')
+  })
+
   it('rejects when character is already claimed', async () => {
-    await joinGame(db, PLAYER_1_UID, {
+    await joinGame(db, PLAYER_1_UID, 'tok_p1', {
       sessionId: SESSION_ID, characterId: 'okonkwo', displayName: 'First',
     })
     await expect(
-      joinGame(db, PLAYER_2_UID, {
+      joinGame(db, PLAYER_2_UID, 'tok_p2', {
         sessionId: SESSION_ID, characterId: 'okonkwo', displayName: 'Second',
       }),
     ).rejects.toMatchObject({ status: 409 })
@@ -58,7 +72,7 @@ describe('joinGame', () => {
     insertScenario(db)
     insertSession(db, ACTIVE_SESSION_DATA)
     await expect(
-      joinGame(db, PLAYER_1_UID, {
+      joinGame(db, PLAYER_1_UID, 'tok_p1', {
         sessionId: SESSION_ID, characterId: 'okonkwo', displayName: 'Late',
       }),
     ).rejects.toMatchObject({ status: 422 })
@@ -66,7 +80,7 @@ describe('joinGame', () => {
 
   it('rejects when character is not in scenario', async () => {
     await expect(
-      joinGame(db, PLAYER_1_UID, {
+      joinGame(db, PLAYER_1_UID, 'tok_p1', {
         sessionId: SESSION_ID, characterId: 'nobody', displayName: 'Ghost',
       }),
     ).rejects.toMatchObject({ status: 404 })
@@ -74,7 +88,7 @@ describe('joinGame', () => {
 
   it('rejects when session does not exist', async () => {
     await expect(
-      joinGame(db, PLAYER_1_UID, {
+      joinGame(db, PLAYER_1_UID, 'tok_p1', {
         sessionId: 'MISSING', characterId: 'okonkwo', displayName: 'Nobody',
       }),
     ).rejects.toMatchObject({ status: 404 })

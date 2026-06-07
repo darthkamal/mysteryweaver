@@ -17,10 +17,11 @@ export function verifyPlayerToken(req: NextRequest, sessionId: string): string {
     throw new GameError(401, 'Missing or invalid Authorization header')
   }
   const token = header.slice(7)
+  // Authenticate by the secret token; return the player's uid (identity).
   const row = db
     .select({ uid: players.uid })
     .from(players)
-    .where(and(eq(players.sessionId, sessionId), eq(players.uid, token)))
+    .where(and(eq(players.sessionId, sessionId), eq(players.token, token)))
     .get()
   if (!row) throw new GameError(401, 'Invalid or expired player token')
   return row.uid

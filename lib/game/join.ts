@@ -13,7 +13,9 @@ export const JoinGameSchema = z.object({
 
 export type JoinGameData = z.infer<typeof JoinGameSchema>
 
-export async function joinGame(db: Db, uid: string, data: JoinGameData): Promise<void> {
+// `uid` is the player's identity (used in characterAssignments, rosters);
+// `token` is their secret bearer credential (used only for auth, never broadcast).
+export async function joinGame(db: Db, uid: string, token: string, data: JoinGameData): Promise<void> {
   const { sessionId, characterId, displayName } = data
 
   const sessionRow = db.select().from(sessions).where(eq(sessions.id, sessionId)).get()
@@ -44,6 +46,7 @@ export async function joinGame(db: Db, uid: string, data: JoinGameData): Promise
     tx.insert(players).values({
       sessionId,
       uid,
+      token,
       characterId,
       displayName,
       currencies: character.private.startingInventory,

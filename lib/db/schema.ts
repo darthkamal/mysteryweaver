@@ -40,6 +40,9 @@ export const players = sqliteTable(
   {
     sessionId: text('session_id').notNull(),
     uid: text('uid').notNull(),
+    // Secret bearer token, distinct from uid (identity). Players authenticate with
+    // this; it is never placed in any payload. Nullable only for migration safety.
+    token: text('token'),
     characterId: text('character_id').notNull(),
     displayName: text('display_name').notNull(),
     currencies: text('currencies', { mode: 'json' }).$type<Record<string, number>>().notNull(),

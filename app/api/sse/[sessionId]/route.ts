@@ -21,15 +21,16 @@ export async function GET(
 
   if (!token) return new Response('Missing token', { status: 401 })
 
+  // Authenticate by the secret token; the connection is keyed by the player's uid.
   const playerRow = db
     .select()
     .from(players)
-    .where(and(eq(players.sessionId, sessionId), eq(players.uid, token)))
+    .where(and(eq(players.sessionId, sessionId), eq(players.token, token)))
     .get()
 
   if (!playerRow) return new Response('Invalid token', { status: 401 })
 
-  const uid = token
+  const uid = playerRow.uid
   let client: SseClient | null = null
   let pingTimer: ReturnType<typeof setInterval> | null = null
 

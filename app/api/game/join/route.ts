@@ -8,8 +8,9 @@ import { broadcastAll } from '@/lib/sse/broadcast'
 export async function POST(req: NextRequest) {
   try {
     const body = JoinGameSchema.parse(await req.json())
-    const playerToken = randomUUID()
-    await joinGame(db, playerToken, body)
+    const uid = randomUUID()          // identity (appears in assignments/rosters)
+    const playerToken = randomUUID()  // secret bearer credential (never broadcast)
+    await joinGame(db, uid, playerToken, body)
     broadcastAll(body.sessionId)
     return ok({ joined: true, playerToken })
   } catch (error) {
