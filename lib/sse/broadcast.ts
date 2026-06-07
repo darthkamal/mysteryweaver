@@ -2,6 +2,7 @@ import { db } from '@/lib/db'
 import { broadcastSession, broadcastPlayer, getConnectedUids, broadcastGm } from './registry'
 import {
   buildSessionPayload,
+  buildPlayerSessionPayload,
   buildPlayerPayload,
   buildRosterPayload,
   buildAccusationsPayload,
@@ -9,7 +10,7 @@ import {
 
 export function broadcastGmFull(sessionId: string): void {
   try {
-    const sessionData = buildSessionPayload(sessionId)
+    const sessionData = buildSessionPayload(db, sessionId) // GM: full charId -> uid map
     if (sessionData) broadcastGm(sessionId, 'session-updated', sessionData)
   } catch (e) {
     console.error('[broadcast] GM session payload failed for', sessionId, e)
@@ -28,7 +29,8 @@ export function broadcastGmFull(sessionId: string): void {
 
 export function broadcastAll(sessionId: string): void {
   try {
-    const sessionData = buildSessionPayload(sessionId)
+    // Players get the redacted payload (no uids); the GM gets the full map via broadcastGmFull below.
+    const sessionData = buildPlayerSessionPayload(db, sessionId)
     if (sessionData) broadcastSession(sessionId, sessionData)
   } catch (e) {
     console.error('[broadcast] session payload failed for', sessionId, e)

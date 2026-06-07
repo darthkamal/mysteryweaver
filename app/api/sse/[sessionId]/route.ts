@@ -4,7 +4,7 @@ import { db } from '@/lib/db'
 import { players } from '@/lib/db/schema'
 import { addClient, removeClient } from '@/lib/sse/registry'
 import type { SseClient } from '@/lib/sse/registry'
-import { buildSessionPayload, buildPlayerPayload } from '@/lib/sse/payloads'
+import { buildPlayerSessionPayload, buildPlayerPayload } from '@/lib/sse/payloads'
 
 const encoder = new TextEncoder()
 
@@ -41,7 +41,8 @@ export async function GET(
       try {
         // Send current session + player state immediately on connect, reusing the
         // same payload builders as live broadcasts so the shapes never drift.
-        const sessionData = buildSessionPayload(sessionId)
+        // Player-facing payload — no uids (see buildPlayerSessionPayload).
+        const sessionData = buildPlayerSessionPayload(db, sessionId)
         if (sessionData) controller.enqueue(sseEvent('session-updated', sessionData))
 
         const playerData = buildPlayerPayload(db, sessionId, uid)

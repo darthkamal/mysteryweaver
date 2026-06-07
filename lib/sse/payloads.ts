@@ -7,8 +7,11 @@ import { sessions, players, scenarios, accusations } from '@/lib/db/schema'
 // initial state pushed when a client first connects (the SSE route handlers).
 // Keeping them here ensures connect-time and update-time payloads stay identical.
 
-export function buildSessionPayload(sessionId: string) {
-  const row = db.select().from(sessions).where(eq(sessions.id, sessionId)).get()
+// GM-facing session payload. Contains the full characterId -> uid assignment
+// map. uids are player bearer tokens, so this MUST only be sent to the
+// authenticated host (broadcastGm / GM SSE) — never to players.
+export function buildSessionPayload(database: Db, sessionId: string) {
+  const row = database.select().from(sessions).where(eq(sessions.id, sessionId)).get()
   if (!row) return null
   return {
     sessionId: row.id,
@@ -21,6 +24,25 @@ export function buildSessionPayload(sessionId: string) {
     unlockedAssets: row.unlockedAssets,
     triggeredNpcEvents: row.triggeredNpcEvents,
   }
+}
+
+// Player-facing session payload. Identical to buildSessionPayload EXCEPT the
+// characterAssignments map exposes characterId -> displayName instead of
+// characterId -> uid, so a player can see which characters are taken (and by
+// whom) without ever receiving another player's bearer token. Players only use
+// the keys of this map (the set of taken characters); display names are safe to
+// share and already visible in-game.
+export function buildPlayerSessionPayload(database: Db, sessionId: string) {
+  const full = buildSessionPayload(database, sessionId)
+  if (!full) return null
+  const rows = database
+    .select({ characterId: players.characterId, displayName: players.displayName })
+    .from(players)
+    .where(eq(players.sessionId, sessionId))
+    .all()
+  const characterAssignments: Record<string, string> = {}
+  for (const r of rows) characterAssignments[r.characterId] = r.displayName
+  return { ...full, characterAssignments }
 }
 
 export function buildPlayerPayload(database: Db, sessionId: string, uid: string) {
