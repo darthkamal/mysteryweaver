@@ -1,0 +1,186 @@
+{
+  "characters": [
+    {
+      "id": "isabella",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Contessa Isabella Morosini",
+        "title": "The Hostess",
+        "avatarUrl": null,
+        "bio": "Mistress of the Palazzo Morosini and one of the most celebrated hostesses in Venice, the Contessa throws the Carnival ball that everyone schemes to attend. Gracious, sharp-eyed, and proud, she presides over the night the Senator died beneath her roof."
+      },
+      "private": {
+        "secretObjectives": [
+          "Protect the honour of your house — a murder at your ball could ruin the Morosini name.",
+          "Conceal the debt that forced you to invite guests you despise.",
+          "Recover the letter you wrote to the Senator before anyone reads it.",
+          "Be seen to lead the inquiry, never to be its subject."
+        ],
+        "startingInventory": { "ducats": 4, "whispers": 2 },
+        "hiddenKnowledge": [
+          "The Morosini fortune is nearly spent; you mortgaged jewels to fund this very ball, hoping to secure a marriage or a patron.",
+          "You wrote the Senator a desperate letter begging him to forgive a family debt; if found, it makes you look like one in need of his death.",
+          "From the gallery you saw the apothecary Vittore lingering near the wine service shortly before the Senator drank — though at the time it meant nothing."
+        ],
+        "roleplayingNotes": "Be regal, warm to allies and frostily polite to rivals. Steer every conversation toward the dignity of your house. You are frightened beneath the poise and would sooner die than show it."
+      }
+    },
+    {
+      "id": "vittore",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Vittore",
+        "title": "The Apothecary",
+        "avatarUrl": null,
+        "bio": "Master of the finest apothecary shop near the Rialto, Vittore is sought by nobles and physicians alike for his remedies, cosmetics, and rare imported powders. Soft-spoken and obliging, he was invited to the ball as a respected man of medicine."
+      },
+      "private": {
+        "secretObjectives": [
+          "Ensure the death is blamed on a weak heart, bad oysters, or an enemy of the Senator — anything but poison.",
+          "Recover the hollow poison-ring from where you discarded it before the search finds it.",
+          "Offer your knowledge of medicine to 'help' identify the cause, so you can guide every conclusion.",
+          "Above all, do not get caught."
+        ],
+        "startingInventory": { "ducats": 6, "whispers": 2 },
+        "hiddenKnowledge": [
+          "You murdered Senator Falier. At the crowded wine table you tipped cantarella — Venetian arsenic — from a hollow ring into a goblet, then let an unwitting server carry the poisoned cup to him.",
+          "Falier had discovered that you sell poison to assassins, and he had drafted a denunciation to the Council of Ten naming you; he meant to deliver it after Carnival.",
+          "Years ago, that same Senator sent your brother to die at the oars of a galley on a false charge — your hatred is old and deep.",
+          "The empty poison-ring is hidden in a planter on the loggia; the denunciation letter is in the Senator's coat, unsent.",
+          "As the only true man of medicine present, you control how the body is read — use that authority to misdirect."
+        ],
+        "roleplayingNotes": "Be gentle, courteous, and endlessly helpful. Volunteer to examine the body and the wine, and steer findings toward natural causes or toward another guest. Stay serene. If pressed on poisons, drown the listener in learned detail. Never seem eager to leave a conversation."
+      }
+    },
+    {
+      "id": "benedetto",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Father Benedetto",
+        "title": "The Priest",
+        "avatarUrl": null,
+        "bio": "A worldly priest with a parish among the wealthy, Father Benedetto hears the confessions of half of Venice's nobility and dines at their tables. He came to bless the Contessa's ball and stayed to pray over a corpse."
+      },
+      "private": {
+        "secretObjectives": [
+          "Protect the secrets of the confessional, even as they pull at the truth of the murder.",
+          "Hide the donations you have quietly diverted from the parish to cover your own gambling.",
+          "Use what you know — without revealing how you know it — to see justice done.",
+          "Keep your own failings from the light."
+        ],
+        "startingInventory": { "ducats": 5, "whispers": 3 },
+        "hiddenKnowledge": [
+          "In confession, the apothecary Vittore once hinted at a great wrong done to his family by a powerful man — though he named no one.",
+          "You have embezzled parish funds to pay gambling debts, a secret that would unfrock you.",
+          "You heard the Senator boast that night that he would 'clean a viper out of the Rialto' once Carnival ended — you do not know whom he meant.",
+          "You did NOT kill him, but your hidden vice makes you reluctant to be scrutinised."
+        ],
+        "roleplayingNotes": "Be smooth, consoling, and quietly evasive. Speak in moral generalities. You genuinely want justice but are hamstrung by the seal of confession and by your own guilt. Hint more than you tell."
+      }
+    },
+    {
+      "id": "caterina",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Caterina Bellandi",
+        "title": "The Courtesan",
+        "avatarUrl": null,
+        "bio": "The most celebrated courtesan in Venice, Caterina is welcomed in salons that would never admit her by daylight. Witty, beautiful, and devastatingly observant, she knows the private business of every powerful man in the room."
+      },
+      "private": {
+        "secretObjectives": [
+          "Trade the secrets you have gathered for ducats, protection, or advancement.",
+          "Conceal that you serve as an informant for the Council of Ten.",
+          "Find out what the Senator knew that got him killed — it may be worth a fortune.",
+          "Protect your patrons' names unless selling them serves you better."
+        ],
+        "startingInventory": { "ducats": 7, "whispers": 3 },
+        "hiddenKnowledge": [
+          "You are a paid informant for the Council of Ten, which is why you notice everything and trust no one.",
+          "The Senator confided to you, weeks ago, that he was preparing to denounce a poisoner near the Rialto — but he never gave the name.",
+          "You saw a guest in a plague-doctor mask slip something from a ring into a goblet near the wine table — but the mask hid the face.",
+          "You did NOT kill him, though your web of secrets makes you everyone's suspect."
+        ],
+        "roleplayingNotes": "Be charming, knowing, and always trading. Everything you reveal has a price in ducats or whispers. You weigh each person as an asset or a threat. Beneath the wit is a survivor who answers, ultimately, to the Council."
+      }
+    },
+    {
+      "id": "marco",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Marco Vendramin",
+        "title": "The Glassblower",
+        "avatarUrl": null,
+        "bio": "A master of the Murano furnaces, Marco crafts glass so fine the nobility beg for it — including the very goblets used at tonight's ball. Proud of his art and bitter at those who profit from it, he was invited as a curiosity among his betters."
+      },
+      "private": {
+        "secretObjectives": [
+          "Clear your name — you made the goblets, and suspicion will fall on the maker of the poisoned cup.",
+          "Hide that you have been smuggling Murano glass secrets out of Venice, a capital crime.",
+          "Recover the favour the Senator promised you, which dies with him.",
+          "Avoid becoming the convenient commoner the nobles blame."
+        ],
+        "startingInventory": { "ducats": 3, "whispers": 2 },
+        "hiddenKnowledge": [
+          "You crafted the goblets, including the one the Senator drank from — which makes you an easy scapegoat.",
+          "You have been selling the guarded secrets of Murano glassmaking to a foreign buyer, a crime punishable by death.",
+          "The Senator had promised to sponsor your workshop; with him dead, your future collapses, so you had every reason to want him alive.",
+          "You did NOT kill him, but your smuggling means you dread any investigation."
+        ],
+        "roleplayingNotes": "Be proud, plain-spoken, and resentful of noble condescension. Defend your craft fiercely. Your guilt is over the smuggling, not the murder, so you protest too much about the goblets. You feel the trap closing and it makes you hot-tempered."
+      }
+    },
+    {
+      "id": "dragan",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Captain Dragan",
+        "title": "The Foreign Merchant",
+        "avatarUrl": null,
+        "bio": "A sea-captain and trader from across the Adriatic, Dragan brings silks, spices, and rumours from the East. Charismatic and watchful, he is a guest of fortune at the Contessa's ball, navigating Venetian intrigue like a strange harbour."
+      },
+      "private": {
+        "secretObjectives": [
+          "Complete the trade deal the Senator's death has thrown into doubt.",
+          "Conceal that you carry secret correspondence the Senate would consider espionage.",
+          "Use your outsider's eye to read these Venetians better than they read you.",
+          "Avoid being blamed as the convenient foreigner."
+        ],
+        "startingInventory": { "ducats": 8, "whispers": 1 },
+        "hiddenKnowledge": [
+          "You are carrying coded letters between a foreign power and a Venetian contact — if found, you will be taken as a spy.",
+          "The Senator was your partner in a lucrative trade agreement that his death now imperils, so you needed him alive.",
+          "From across the room you noticed a servant bring the Senator a fresh goblet just before he drank — carried over from the crush at the wine table.",
+          "You did NOT kill him, but as a foreigner with secret papers, you are the easiest target in the room."
+        ],
+        "roleplayingNotes": "Be gracious, shrewd, and a little guarded — a stranger learning the currents. Observe sharply and reveal carefully. You measure these nobles as a captain measures weather. Your accented courtesy hides real danger if cornered."
+      }
+    },
+    {
+      "id": "giulietta",
+      "variantFlag": { "includedIn": ["7-player"] },
+      "public": {
+        "name": "Giulietta Falier",
+        "title": "The Senator's Wife",
+        "avatarUrl": null,
+        "bio": "Young, lovely, and decades junior to her late husband, Giulietta married into the powerful Falier name and the gilded cage that came with it. Tonight she is a widow before the candles have guttered, watched by all of Venice."
+      },
+      "private": {
+        "secretObjectives": [
+          "Secure your widow's portion of the Falier estate — your only freedom and security.",
+          "Conceal the lover you had hoped to escape with.",
+          "Appear suitably grief-stricken without inviting suspicion.",
+          "Learn whether your husband changed his testament before he died."
+        ],
+        "startingInventory": { "ducats": 6, "whispers": 2 },
+        "hiddenKnowledge": [
+          "You were trapped in a loveless marriage and had secretly planned to flee Venice with a lover after Carnival.",
+          "Your husband had grown suspicious and threatened to disown and confine you, giving you a glaring motive.",
+          "You quarrelled with him in a side chamber not an hour before he died, and a servant overheard.",
+          "You did NOT poison him, but your motive is plain and your only alibi is a lover you dare not name."
+        ],
+        "roleplayingNotes": "Be composed in public, frightened in private. Mourn with dignity while guarding your secret. You instinctively protect your lover, which makes you look worse. You are sharper and more desperate than the nobles assume."
+      }
+    }
+  ]
+}

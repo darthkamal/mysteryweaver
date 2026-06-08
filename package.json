@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "lint": "next lint",
-    "seed-gm": "tsx scripts/seed-gm.ts"
+    "seed-gm": "tsx scripts/seed-gm.ts",
+    "seed-future-scenarios": "tsx scripts/seed-future-scenarios.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

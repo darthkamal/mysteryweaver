@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "name": "A Carnival of Masks",
+  "theme": "venetian-carnival",
+  "seedColor": "#7B1E3B",
+  "playerCount": { "min": 6, "max": 7 },
+  "currencies": [
+    { "id": "ducats",   "name": "Ducats",   "icon": "ducat.png",   "tradeable": true },
+    { "id": "whispers", "name": "Whispers", "icon": "whisper.png", "tradeable": false }
+  ],
+  "phases": [
+    { "id": "lobby",         "name": "Lobby",             "yamsLocked": true  },
+    { "id": "masquerade",    "name": "The Masquerade",    "yamsLocked": true  },
+    { "id": "investigation", "name": "The Investigation", "yamsLocked": false },
+    { "id": "accusation",    "name": "The Accusation",    "yamsLocked": true  },
+    { "id": "debrief",       "name": "Debrief",           "yamsLocked": true  }
+  ],
+  "accusationMechanic": {
+    "allowedPhase": "accusation",
+    "whoCanAccuse": "any_player",
+    "requiresEvidence": true,
+    "resolution": "gm_manual"
+  }
+}

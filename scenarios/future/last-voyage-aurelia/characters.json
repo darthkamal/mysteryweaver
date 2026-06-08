@@ -1,0 +1,186 @@
+{
+  "characters": [
+    {
+      "id": "beatrice",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Lady Beatrice Ashford",
+        "title": "The Dowager Countess",
+        "avatarUrl": null,
+        "bio": "A grande dame of the old aristocracy, Lady Beatrice has crossed the Atlantic a dozen times and knows everyone worth knowing. She is gracious, formidable, and never without an opinion delivered as if it were law."
+      },
+      "private": {
+        "secretObjectives": [
+          "Conceal your ruin — the Ashford fortune is gone, and no one aboard must suspect it.",
+          "Secure a loan or a marriage that restores your standing before the ship docks.",
+          "Recover the letters you once wrote to Cornelius Vane; in the wrong hands they would destroy you.",
+          "Be seen at the centre of the investigation, never its subject."
+        ],
+        "startingInventory": { "pounds": 4, "favours": 2 },
+        "hiddenKnowledge": [
+          "You are penniless. The estate is mortgaged twice over and your jewels aboard are paste copies.",
+          "Years ago you and Cornelius Vane were lovers; you wrote him reckless letters you have spent decades trying to retrieve.",
+          "You saw Dr. Pierce leaving Vane's stateroom corridor very late on the night of the death, though you thought nothing of it at the time."
+        ],
+        "roleplayingNotes": "Speak with crisp, commanding authority. Deflect questions about money with disdain. Be warm to those who flatter you and icy to those who pry. You are terrified of exposure but would die before showing it."
+      }
+    },
+    {
+      "id": "pierce",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Dr. Julian Pierce",
+        "title": "The Ship's Surgeon",
+        "avatarUrl": null,
+        "bio": "Calm, capable, and endlessly reassuring, Dr. Pierce is the Aurelia's chief medical officer. Passengers trust him with their ailments and their confidences. It was he who examined Cornelius Vane and pronounced it a failure of the heart."
+      },
+      "private": {
+        "secretObjectives": [
+          "Ensure the death is recorded as natural — a weak heart, nothing more.",
+          "Retrieve and destroy the empty vial of digitalis before anyone searches your quarters.",
+          "Maintain your composed, helpful image; volunteer to assist the investigation so you can steer it.",
+          "Above all, do not get caught."
+        ],
+        "startingInventory": { "pounds": 6, "favours": 1 },
+        "hiddenKnowledge": [
+          "You murdered Cornelius Vane. You laced his nightly brandy with a fatal dose of digitalis, which mimics a heart attack.",
+          "Vane had discovered that you quietly euthanised and robbed wealthy dying patients in London, and he was blackmailing you — threatening exposure unless you paid him for life.",
+          "You are dependent on morphine, which makes your hands unsteady at the worst moments.",
+          "Your medical bag still contains the syringe you used; the empty digitalis vial is hidden in your cabin behind the washbasin.",
+          "As the only physician aboard, you control the body and the death certificate — use that."
+        ],
+        "roleplayingNotes": "Be the most helpful person in the room. Offer to examine evidence, soothe the frightened, and gently redirect suspicion toward Vane's heart or toward Crane's embezzlement. Stay measured. If cornered, lean on your authority as the doctor. Never appear eager to end the conversation."
+      }
+    },
+    {
+      "id": "margot",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Margot Leclair",
+        "title": "The Chanteuse",
+        "avatarUrl": null,
+        "bio": "The toast of the Aurelia's ballroom, Margot is a French-cabaret singer with a smoky voice and a guarded smile. She travels alone, dresses magnificently, and reveals nothing she does not choose to."
+      },
+      "private": {
+        "secretObjectives": [
+          "Learn the truth about Cornelius Vane's death — he was more to you than the others know.",
+          "Keep your true parentage secret unless revealing it serves you.",
+          "Find out whether you are named in his will before anyone else does.",
+          "Protect your reputation; a scandal would end your career."
+        ],
+        "startingInventory": { "pounds": 3, "favours": 2 },
+        "hiddenKnowledge": [
+          "Cornelius Vane was your father. He abandoned your mother, a singer like you, and never acknowledged you publicly.",
+          "You confronted him privately two nights ago and demanded recognition; the argument was overheard.",
+          "He told you, to your shock, that he intended to change his will in your favour 'in the morning' — the morning he never saw.",
+          "You genuinely grieve him, which complicates everything."
+        ],
+        "roleplayingNotes": "Be poised, magnetic, and a little melancholy. Use charm as armour. You have real feelings under the performance — let them slip only rarely. You are an outsider to this set and resent their condescension."
+      }
+    },
+    {
+      "id": "crane",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Silas Crane",
+        "title": "The Purser",
+        "avatarUrl": null,
+        "bio": "The Aurelia's purser holds the keys to the strongroom, the passenger valuables, and the ship's accounts. Silas Crane is precise, deferential, and always at your service — for a price you may not notice."
+      },
+      "private": {
+        "secretObjectives": [
+          "Hide the discrepancies in the ship's ledger before any audit of Vane's affairs begins.",
+          "Recover the smuggled goods stored under Vane's name before they are discovered.",
+          "Deflect the investigation away from the strongroom and your accounts.",
+          "Profit quietly from the chaos if you can."
+        ],
+        "startingInventory": { "pounds": 9, "favours": 1 },
+        "hiddenKnowledge": [
+          "You have been embezzling from the shipping line for two years, hiding it in doctored ledgers.",
+          "You smuggle untaxed goods on every crossing, currently using a hold manifest under Cornelius Vane's name.",
+          "Vane had begun asking pointed questions about the manifest — you feared he was onto you, which makes you look very guilty.",
+          "You did NOT kill him, but you cannot prove where you were: you were in the hold moving contraband."
+        ],
+        "roleplayingNotes": "Be obsequious and exact. Volunteer small helpful facts to seem cooperative while guarding the ledger. You sweat under pressure. You are a plausible suspect and you know it — overcompensate."
+      }
+    },
+    {
+      "id": "evelyn",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Evelyn Vane",
+        "title": "The Young Widow",
+        "avatarUrl": null,
+        "bio": "Cornelius Vane's second wife, decades his junior, Evelyn is elegant and composed even in mourning. Society watched their marriage with raised eyebrows; now it watches her grief with open suspicion."
+      },
+      "private": {
+        "secretObjectives": [
+          "Secure your widow's inheritance — you married him for security and intend to keep it.",
+          "Conceal your affair with Theodore until the will is settled.",
+          "Appear appropriately grief-stricken without overplaying it.",
+          "Discover whether Cornelius changed his will before he died."
+        ],
+        "startingInventory": { "pounds": 7, "favours": 2 },
+        "hiddenKnowledge": [
+          "You are in love with Theodore Vane, your husband's nephew, and the two of you planned a future together.",
+          "Cornelius had grown cold and suspicious; you feared he intended to cut you out of the will.",
+          "You quarrelled with him the evening he died, which several stewards overheard.",
+          "You did not kill him — but your motive is glaring and your alibi is only Theodore, whose word means nothing."
+        ],
+        "roleplayingNotes": "Be controlled and watchful. Grieve with dignity in public; show flashes of real fear in private. Protect Theodore instinctively, which makes you both look worse. You are sharper than you let people assume."
+      }
+    },
+    {
+      "id": "theodore",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Theodore Vane",
+        "title": "The Nephew & Heir",
+        "avatarUrl": null,
+        "bio": "Charming, athletic, and perpetually short of cash, Teddy is Cornelius Vane's only blood relation aboard and a presumptive heir. He laughs easily and owes money to half of London."
+      },
+      "private": {
+        "secretObjectives": [
+          "Confirm you remain in the will — your creditors are closing in and the inheritance is your only escape.",
+          "Protect Evelyn, and keep your affair hidden.",
+          "Steer suspicion toward Crane or Margot, away from yourself.",
+          "Find out who actually killed your uncle, if only to clear your own name."
+        ],
+        "startingInventory": { "pounds": 2, "favours": 2 },
+        "hiddenKnowledge": [
+          "You have ruinous gambling debts and have already borrowed against your expected inheritance.",
+          "You are in love with Evelyn, your uncle's wife, and you both gain enormously from his death.",
+          "Your uncle had threatened, in a fury, to disinherit you over your debts.",
+          "You did not kill him, but you have the strongest financial motive aboard and a worthless alibi."
+        ],
+        "roleplayingNotes": "Be breezy and likeable, hiding desperation under good humour. Make light of your debts. Defend Evelyn a little too quickly. You are genuinely frightened — the case against you writes itself."
+      }
+    },
+    {
+      "id": "anna",
+      "variantFlag": { "includedIn": ["7-player"] },
+      "public": {
+        "name": "Anna Kowalski",
+        "title": "The Lady's Maid",
+        "avatarUrl": null,
+        "bio": "A quiet, watchful young woman in service to the first-class passengers, Anna moves through the ship unseen as servants do. She hears everything and is presumed to matter to no one."
+      },
+      "private": {
+        "secretObjectives": [
+          "Keep your true identity hidden — you are not who your papers say.",
+          "Find proof that Cornelius Vane ruined your family, to clear your father's name.",
+          "Use your invisibility as a servant to gather what the first-class passengers will not say aloud.",
+          "Decide whether justice for your father matters more than your own safety."
+        ],
+        "startingInventory": { "pounds": 1, "favours": 3 },
+        "hiddenKnowledge": [
+          "Your real name is not Kowalski. Cornelius Vane's company destroyed your father's business and drove him to ruin and death.",
+          "You boarded under false papers specifically to confront Vane — which gives you an obvious motive.",
+          "Because you serve the cabins, you saw more than anyone: a steward's tray with two brandy glasses outside Vane's door late that night, and Dr. Pierce returning to his cabin after.",
+          "You did NOT kill him, though you had dreamed of it. His death has stolen your reckoning from you."
+        ],
+        "roleplayingNotes": "Be deferential and near-invisible until you choose to speak. You notice details others miss — reveal them carefully, weighing each against your own exposure. Beneath the meek manner is a banked, controlled anger."
+      }
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "assets": [
+    {
+      "id": "evidence_implant_log",
+      "type": "evidence",
+      "title": "The Corrupted Implant Log",
+      "content": "The founder's cortical-link telemetry for the night. The final seconds are scrambled — but the corruption is too clean, too localised, to be a natural fault. Something was deleted here.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_access_badge",
+      "type": "evidence",
+      "title": "The Overwritten Badge Entry",
+      "content": "The vault door logged one entry after the blackout began — then the badge ID was overwritten with a maintenance code. Someone with high access tried to erase who walked in.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_maint_record",
+      "type": "evidence",
+      "title": "The Maintenance Override",
+      "content": "The blackout traces to a maintenance circuit, triggered manually from inside the building using facilities engineer Cruz's override — an override he says he lent out earlier in the week.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_deleted_files",
+      "type": "evidence",
+      "title": "The Deleted Research",
+      "content": "Fragments of a purged project folder: unsanctioned consciousness-upload trials, and a redacted incident report referencing a deceased test subject. The author's credentials were scrubbed.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_raw_logs",
+      "type": "evidence",
+      "title": "The Untampered Logs",
+      "content": "A raw, unaltered copy of the neural-link logs. In the final timestamp sits an external override command — a deliberate lethal instruction, sent to the implant. No power glitch can write a command like this.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": { "npcEvent": "cipher_shares_logs" }
+    },
+    {
+      "id": "omen_flicker",
+      "type": "omen",
+      "title": "The Flicker Before Dark",
+      "content": "Building records show the lights stuttered in a precise pattern three times before the blackout — not a failing grid, but a system being told what to do.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "omen_silence",
+      "type": "omen",
+      "title": "The Quiet Floor",
+      "content": "For ninety seconds during the blackout, every sensor on the executive floor went still at once — too coordinated to be chance. The tower held its breath while someone worked.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "oracle_signature",
+      "type": "oracle",
+      "title": "The Hand on the Backdoor",
+      "content": "Whatever killed Reyes spoke the implant's most secret language — a backdoor known only to the few who built the neural platform itself. This was not an accident. It was authorship.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "oracle_motive",
+      "type": "oracle",
+      "title": "What He Would Have Done Tomorrow",
+      "content": "Reyes's calendar held one entry for the morning he never reached: a meeting to halt a project and report a colleague to the regulators. Someone made very sure that meeting never happened.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_subject",
+      "type": "rumor",
+      "title": "The Missing Volunteer",
+      "content": "A junior tech whispers that a trial volunteer from the neuro lab simply stopped appearing months ago — and that asking about them is a fast way to lose your job.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_takeover",
+      "type": "rumor",
+      "title": "The Coup That Was Coming",
+      "content": "Word on the executive floor is that the board investor had the votes lined up to push the founder out within the week. His death made the vote unnecessary.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_jumpsuit",
+      "type": "rumor",
+      "title": "Someone at the Panel",
+      "content": "More than one person glimpsed a figure in a maintenance jumpsuit at the circuit panel moments before the lights died — though no one can say who was inside it.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rel_card_favour",
+      "type": "relationship",
+      "title": "The Camera Favour",
+      "content": "An access log shows Dr. Sol and the head of security met privately the afternoon before the death — and right after, a vault-corridor camera was quietly taken offline.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rel_card_funding",
+      "type": "relationship",
+      "title": "The Shell Account",
+      "content": "A laundered payment trail links a board member's shell account to the fixer's last job — someone on the board has been paying to bleed the company.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    }
+  ]
+}

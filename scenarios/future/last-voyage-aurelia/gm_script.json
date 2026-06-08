@@ -1,0 +1,127 @@
+{
+  "timeline": [
+    {
+      "phaseId": "embarkation",
+      "entries": [
+        {
+          "time": "0:00",
+          "label": "Welcome Aboard",
+          "type": "gm_monologue",
+          "script": "Good evening, and welcome aboard the RMS Aurelia, pride of the Vane Line, three days out from Southampton and bound for New York. Tonight you are first-class passengers and trusted crew on the most glamorous crossing of the season — champagne, jazz, and the cold black Atlantic on every side. I am your Game Master and I will play the captain, the stewards, and every soul aboard who is not one of you. You each hold a character with public airs and private secrets. Read your folder carefully and share it with no one. Take five minutes to become the person you will be tonight.",
+          "gmTip": "Set a tone of luxury and confinement — there is nowhere to run on a ship. Hand out character folders now. Encourage period mannerisms."
+        },
+        {
+          "time": "0:05",
+          "label": "The Captain's Table",
+          "type": "player_prompt",
+          "script": "You are all gathered at the captain's table for the evening. Introduce yourselves in character — your name, your reason for crossing, and one thing you make sure the table believes about you.",
+          "gmTip": "Go around the table. Note who flatters whom and who avoids whom. These first impressions will frame the whole game."
+        }
+      ]
+    },
+    {
+      "phaseId": "investigation",
+      "entries": [
+        {
+          "time": "0:15",
+          "label": "A Death at Sea",
+          "type": "npc_dialogue",
+          "npcId": "captain_hale",
+          "script": "Ladies and gentlemen, I must ask for calm. Mr. Cornelius Vane — owner of this very line — was found dead in his stateroom this morning. Our surgeon attributes it to the heart. But we are four days from any port, and until I am satisfied, no one disembarks and no one is above question. I would be grateful if you would help me learn the truth.",
+          "gmTip": "Use a grave, authoritative tone. The captain wants order, not justice — he is afraid of scandal touching the line. He gives no clues himself."
+        },
+        {
+          "time": "0:25",
+          "label": "Opening the Investigation",
+          "type": "clue_distribution",
+          "script": "The captain grants you the run of the ship. You may question anyone, search the public rooms, and request to examine Mr. Vane's effects. Tread carefully — on a ship, everyone is a neighbour.",
+          "gmTip": "Reveal evidence_glass (the brandy glass) to anyone who examines the stateroom. Make rumor_quarrel available freely. Hold the surgeon's syringe and the ledger for players who actively search the right places."
+        },
+        {
+          "time": "0:30",
+          "label": "Open Investigation",
+          "type": "gm_note",
+          "script": "Players investigate freely. Roleplay NPCs, gate clues behind actions, and keep the social pressure high.",
+          "gmTip": "Key triggers: (1) Search the surgeon's bag → evidence_syringe. (2) Search the purser's office → evidence_ledger + rumor_smuggling. (3) Examine the body again or consult anyone medically literate → oracle_heart. (4) Press the stewards about late-night movements → omen_clock. (5) Dr. Pierce will helpfully volunteer 'heart failure' and nudge suspicion toward Crane or Margot — this is his cover."
+        },
+        {
+          "time": "1:00",
+          "label": "Mid-Crossing Pulse Check",
+          "type": "gm_note",
+          "script": "Assess where suspicion has landed and adjust.",
+          "gmTip": "If players fixate on Crane (the obvious embezzler) or Theodore (the obvious heir), feed in oracle_heart and rumor_morphine to point back toward someone with medical skill. If the affair is undiscovered and you want drama, surface rel_card_affair. Keep the Pounds economy alive — informants and stewards expect to be tipped."
+        },
+        {
+          "time": "1:30",
+          "label": "Tightening the Net",
+          "type": "gm_note",
+          "script": "Begin steering toward the accusation.",
+          "gmTip": "Ensure oracle_heart and at least one of (evidence_syringe / rumor_morphine) have surfaced. When players move to search Dr. Pierce's private cabin — or when you judge the moment is right — trigger the 'search_pierce_cabin' event to unlock evidence_vial, the decisive clue."
+        }
+      ]
+    },
+    {
+      "phaseId": "accusation",
+      "entries": [
+        {
+          "time": "2:15",
+          "label": "The Accusation",
+          "type": "gm_monologue",
+          "script": "The captain assembles you in the first-class lounge. The sea is calm, the ship silent. 'We dock tomorrow,' he says, 'and I will hand someone to the authorities. Speak now. Name who killed Cornelius Vane, and show me why you are sure.' Each of you may make a formal accusation.",
+          "gmTip": "Players submit accusations through the app. Read each aloud for effect. After all are in, deliver the reveal."
+        },
+        {
+          "time": "2:30",
+          "label": "The Reveal",
+          "type": "gm_monologue",
+          "script": "The truth: it was Dr. Julian Pierce. Cornelius Vane had uncovered the doctor's crimes ashore — the patients quietly killed and robbed in their sickbeds — and was bleeding him for silence. So the surgeon poured a fatal measure of digitalis into Vane's nightcap, signed a false certificate of heart failure, and counted on being the one man no one would think to search. The bitter glass, the wiped syringe, the dilated eyes of the dead, and the empty vial behind his own washbasin tell the whole story.",
+          "gmTip": "Deliver slowly. Pause after naming Pierce. Let the betrayal of the trusted healer land before moving on."
+        }
+      ]
+    },
+    {
+      "phaseId": "debrief",
+      "entries": [
+        {
+          "time": "2:45",
+          "label": "Debrief & Secrets Revealed",
+          "type": "gm_monologue",
+          "script": "We step off the Aurelia now and out of character. Let us reveal every secret carried aboard tonight — the debts, the affairs, the false names — and talk about how close each of you came to the truth.",
+          "gmTip": "Go around the table; each player reads their hidden knowledge aloud. Celebrate the best bluffs and the sharpest deductions. This is the reward for a game well played."
+        }
+      ]
+    }
+  ],
+  "npcRoster": [
+    {
+      "id": "cornelius",
+      "name": "Cornelius Vane",
+      "description": "The deceased — owner of the Vane shipping line, a ruthless self-made magnate with more enemies than friends. Referenced throughout but never seen alive.",
+      "portraitUrl": null,
+      "playingNotes": "Spoken of only in memory. When players quote or recall him, render him as imperious, transactional, and quietly cruel — a man who collected leverage over people the way others collect art."
+    },
+    {
+      "id": "captain_hale",
+      "name": "Captain Hale",
+      "description": "Master of the Aurelia. A career sailor desperate to bring his ship in without a scandal staining the line that employs him.",
+      "portraitUrl": null,
+      "playingNotes": "Grave, formal, authoritative. He wants the matter closed quietly, not justly. He provides no clues and gently discourages anything that might embarrass the company."
+    },
+    {
+      "id": "steward_bly",
+      "name": "Steward Bly",
+      "description": "A first-class deck steward who sees everyone come and go and remembers it all.",
+      "portraitUrl": null,
+      "playingNotes": "Discreet and observant; he trades information for tips (Pounds). He genuinely saw late-night movements and will share them — for the right gratuity or favour."
+    }
+  ],
+  "npcEvents": [
+    {
+      "id": "search_pierce_cabin",
+      "label": "Search the Surgeon's Cabin",
+      "description": "Triggered when the players obtain leave to search Dr. Pierce's private cabin (or when the GM judges the climax is near). Reveals the empty digitalis vial hidden behind the washbasin — the decisive piece of evidence.",
+      "unlocksAssets": ["evidence_vial"],
+      "autoDistribute": false
+    }
+  ]
+}

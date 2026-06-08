@@ -1,0 +1,130 @@
+{
+  "assets": [
+    {
+      "id": "evidence_goblet",
+      "type": "evidence",
+      "title": "The Senator's Goblet",
+      "content": "The fine Murano goblet from which Falier drank his last. A faint sweetish residue rings the base — the dregs smell of almonds where the wine should not.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_letter",
+      "type": "evidence",
+      "title": "The Unsent Denunciation",
+      "content": "Folded in the dead Senator's coat: a formal denunciation addressed to the Council of Ten, naming a poisoner of the Rialto and promising proof — the name smudged by sweat, but beginning with the letter that starts the apothecary's trade.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_almond",
+      "type": "evidence",
+      "title": "The Scent of Almonds",
+      "content": "On the Senator's lips and in his cup lingers the bitter-almond breath the physicians whisper of — the unmistakable mark of cantarella, the Venetian poison.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_ledger",
+      "type": "evidence",
+      "title": "The Parish Accounts",
+      "content": "A small book of parish donations with sums that do not reconcile — coins diverted to cover a private debt. Damning to a priest, but no proof of murder.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_ring",
+      "type": "evidence",
+      "title": "The Hollow Ring",
+      "content": "Hidden in a planter on the loggia: a heavy ring with a hinged bezel that opens into a tiny empty chamber, its inner rim crusted with a white residue. A vessel made for one purpose — to tip poison unseen into a cup.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": { "npcEvent": "search_the_loggia" }
+    },
+    {
+      "id": "omen_raven",
+      "type": "omen",
+      "title": "The Raven on the Canal",
+      "content": "A black bird settled on the water-gate just as the Senator fell, the gondoliers say. In Venice they call it a summons — the city marking one of its own for the grave.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "omen_candle",
+      "type": "omen",
+      "title": "The Snuffed Candle",
+      "content": "At the moment the Senator drank, the tall candle nearest the wine table guttered out though no window was open — as if the night itself leaned in to watch the deed.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "oracle_physician",
+      "type": "oracle",
+      "title": "The Verdict of the Body",
+      "content": "Read plainly, the body confesses what no guest will: the blue lips, the almond breath, the burning in the throat — this was no failing heart and no bad oyster. This was cantarella, given by a hand that knew exactly how much.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "oracle_hand",
+      "type": "oracle",
+      "title": "The Practised Hand",
+      "content": "Only one guest tonight commands poisons by trade and could measure a killing dose to a grain — and that same guest had reason to fear what the Senator carried in his coat.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_galley",
+      "type": "rumor",
+      "title": "The Brother at the Oars",
+      "content": "An old servant remembers that years ago the Senator condemned a Rialto man's brother to the galleys on a thin charge — and that the family never forgave it.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_switch",
+      "type": "rumor",
+      "title": "The Switched Cup",
+      "content": "A guest swears the Senator's goblet was carried away and a fresh one brought just before he drank — by a servant no one seems able to name.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_quarrel",
+      "type": "rumor",
+      "title": "Voices in the Side Chamber",
+      "content": "A servant overheard the Senator and his young wife exchanging bitter words in a side chamber not an hour before he died.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rel_card_confession",
+      "type": "relationship",
+      "title": "The Trembling Penitent",
+      "content": "A sacristan recalls the apothecary leaving Father Benedetto's confessional pale and shaking weeks ago, muttering about a wrong that must be 'set right'.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rel_card_informant",
+      "type": "relationship",
+      "title": "The Council's Cipher",
+      "content": "A sealed note in a courier's satchel, in the cipher of the Council of Ten, addressed to one of tonight's guests — someone at this ball reports to the Council.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    }
+  ]
+}

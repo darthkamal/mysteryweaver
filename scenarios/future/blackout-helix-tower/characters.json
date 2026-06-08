@@ -1,0 +1,186 @@
+{
+  "characters": [
+    {
+      "id": "kira",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Kira Nakamura",
+        "title": "Head of Tower Security",
+        "avatarUrl": null,
+        "bio": "Kira runs security for Helix Tower's upper floors — the cameras, the locks, the armed response. Cool under pressure and fiercely loyal to the company, she was first on the scene when the founder was found dead in the server vault."
+      },
+      "private": {
+        "secretObjectives": [
+          "Find out why the cameras went dark in the vault corridor during the blackout — and whether you'll be blamed for it.",
+          "Conceal that you disabled a camera that night, off the record, as a favour you now regret.",
+          "Keep control of the investigation; you have the access and the authority, use them.",
+          "Protect the company's reputation — and your own job."
+        ],
+        "startingInventory": { "credits": 5, "clearance": 3 },
+        "hiddenKnowledge": [
+          "Earlier that evening you quietly disabled the vault-corridor camera at Dr. Sol's request — she said it was for a 'surprise demo'. You had no idea what it would be used to hide.",
+          "The blackout was not a city grid failure; it was triggered from inside the building, on a maintenance circuit.",
+          "You ran the access logs and found one badge used the vault after the blackout began — but the entry was overwritten."
+        ],
+        "roleplayingNotes": "Be controlled, watchful, and economical with words. You feel guilty about the camera and overcompensate by being aggressively thorough. You distrust easily and trust slowly. You are not the killer but you handed them the dark room."
+      }
+    },
+    {
+      "id": "aria",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Dr. Aria Sol",
+        "title": "Chief Neuro-Engineer",
+        "avatarUrl": null,
+        "bio": "The visionary behind Helix's neural-interface division, Dr. Sol turned cortical implants from science fiction into the company's flagship product. Brilliant, charismatic, and adored by the press, she was the founder's closest collaborator — and, everyone assumed, his heir apparent."
+      },
+      "private": {
+        "secretObjectives": [
+          "Ensure the death reads as an implant malfunction caused by the blackout — a tragic accident, nothing more.",
+          "Erase the override command from the neural-link logs before anyone with the skill reads them.",
+          "Volunteer your expertise to 'interpret' the technical evidence, so you can steer every conclusion.",
+          "Above all, do not get caught — your work must continue at any cost."
+        ],
+        "startingInventory": { "credits": 7, "clearance": 2 },
+        "hiddenKnowledge": [
+          "You murdered Halcyon Reyes. Using a backdoor you built into every Helix implant, you sent a lethal neural-overload command to the founder's cortical link during the blackout, when the override would look like a power-fault glitch.",
+          "Reyes had discovered your unsanctioned consciousness-upload experiments — including a test subject who died — and was going to cut your funding and report you to the board and the regulators in the morning.",
+          "You arranged the camera blind spot through Kira and triggered the building's maintenance blackout yourself to mask the implant's signature.",
+          "The override command is still buried in the neural-link logs; if a competent engineer reads them rawly, you are finished.",
+          "As the only true neuro-expert in the room, you control how the technical evidence is read — weaponise that."
+        ],
+        "roleplayingNotes": "Be warm, generous, and dazzlingly helpful. Offer to decode every log and explain every reading — always toward 'accident' or toward someone else. Grieve Reyes publicly and convincingly. If cornered on the science, bury people in jargon. Never seem to want a conversation to end."
+      }
+    },
+    {
+      "id": "jax",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Jax Mercer",
+        "title": "The Fixer",
+        "avatarUrl": null,
+        "bio": "Officially a 'procurement consultant', Jax is the man who gets things into and out of Helix Tower that the official channels would never permit. He has a contact on every floor and a price for every favour."
+      },
+      "private": {
+        "secretObjectives": [
+          "Recover the prototype you were smuggling out of the building before security finds it.",
+          "Hide your client list — several names on it would be ruinous if exposed.",
+          "Trade your knowledge of who-was-where for credits and protection.",
+          "Avoid becoming the convenient outsider everyone pins it on."
+        ],
+        "startingInventory": { "credits": 9, "clearance": 1 },
+        "hiddenKnowledge": [
+          "You were in the building that night to smuggle out a stolen neural prototype — which gives you no end of trouble explaining where you were.",
+          "Your buyer for the prototype was, unknown to you, acting for one of the people in this room.",
+          "You saw someone in a maintenance jumpsuit at the circuit panel just before the lights died — you didn't see the face.",
+          "You did NOT kill Reyes, but your reasons for being there are all illegal."
+        ],
+        "roleplayingNotes": "Be smooth, amused, and transactional — everything is a deal. Dole out true facts in exchange for credits or favours. You're a born suspect and you lean into it just enough to seem harmless. Never give away more than you're paid for."
+      }
+    },
+    {
+      "id": "lenore",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Lenore Idris",
+        "title": "The Board Investor",
+        "avatarUrl": null,
+        "bio": "Representing the largest outside stake in Helix Dynamics, Lenore sits on the board and has made no secret of her impatience with the founder's direction. Polished, ruthless, and impossible to read across a negotiating table."
+      },
+      "private": {
+        "secretObjectives": [
+          "Complete the hostile takeover of Helix that Reyes's death now makes possible — but do not look like you wanted it.",
+          "Hide that you were already moving to oust him before he died.",
+          "Steer suspicion toward the engineers or the fixer, away from the boardroom.",
+          "Learn who actually did this — a murderer you can prove against is leverage you can use."
+        ],
+        "startingInventory": { "credits": 8, "clearance": 2 },
+        "hiddenKnowledge": [
+          "You were days from forcing Reyes out in a boardroom coup; his death hands you everything you wanted and a glaring motive.",
+          "You had a tense private meeting with him that very evening, which the logs will show.",
+          "You quietly funded a buyer for stolen Helix tech to weaken the company before the takeover — a thread that connects you to Jax.",
+          "You did NOT kill him, though almost everyone benefits from believing you might have."
+        ],
+        "roleplayingNotes": "Be glacial, precise, and always negotiating. Treat grief as a performance you can't quite be bothered to give well. Deflect with questions. You are several moves ahead of the room and faintly contemptuous of those who aren't."
+      }
+    },
+    {
+      "id": "cipher",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Cipher",
+        "title": "The Contract Hacker",
+        "avatarUrl": null,
+        "bio": "No one knows Cipher's real name. Brought in on a sealed contract to audit Helix's security, they live behind a hood and a voice-filter and see the building as a system to be read. Tonight, that system has a corpse in it."
+      },
+      "private": {
+        "secretObjectives": [
+          "Finish — and hide — the data heist you were actually hired to perform under cover of the 'audit'.",
+          "Protect your anonymity; if your identity surfaces, the contract and your freedom are gone.",
+          "Use your access to the logs to find the truth before anyone else can rewrite it.",
+          "Decide what the truth is worth, and to whom."
+        ],
+        "startingInventory": { "credits": 6, "clearance": 3 },
+        "hiddenKnowledge": [
+          "Your 'audit' is a cover: you were hired anonymously to exfiltrate a research dataset from Reyes's private server — the very vault he died in.",
+          "Your client is hidden behind layers, but the payment routing brushes against the board.",
+          "You have a raw copy of the neural-link logs that has NOT been tampered with — including a command no power glitch could produce.",
+          "You did NOT kill him, but you were inside his most secret systems on the night he died, which looks damning."
+        ],
+        "roleplayingNotes": "Be terse, technical, and unreadable. Speak in clipped certainties about the system and evasions about yourself. You hold the single most dangerous piece of evidence and must decide whether revealing it exposes you too. Trust nothing you didn't verify."
+      }
+    },
+    {
+      "id": "mateo",
+      "variantFlag": { "includedIn": ["6-player", "7-player"] },
+      "public": {
+        "name": "Mateo Cruz",
+        "title": "Facilities Engineer",
+        "avatarUrl": null,
+        "bio": "Mateo keeps Helix Tower breathing — the power, the air, the maintenance tunnels behind every wall. The executives barely register him, which means he goes everywhere and overhears everything."
+      },
+      "private": {
+        "secretObjectives": [
+          "Clear yourself — it was a maintenance circuit that caused the blackout, and that points straight at you.",
+          "Hide that you let someone borrow your access to the maintenance panel earlier that week.",
+          "Use your run of the building's hidden spaces to gather what the executives won't say.",
+          "Protect your job and your family; you cannot afford to be the scapegoat."
+        ],
+        "startingInventory": { "credits": 3, "clearance": 3 },
+        "hiddenKnowledge": [
+          "The blackout came from a maintenance circuit you are responsible for — but you did not trigger it.",
+          "Days ago, Dr. Sol charmed you into lending your maintenance override 'to test a sensor'. You didn't think twice.",
+          "From the service tunnel you saw the vault door open during the blackout and one person enter — moving with the ease of someone who belonged there, not a panicked intruder.",
+          "You did NOT kill Reyes, but the physical cause runs through your systems, and you're terrified."
+        ],
+        "roleplayingNotes": "Be plain-spoken, anxious, and decent. You know the building better than anyone and are used to being invisible. Your guilt is misplaced loyalty, not crime. When you finally speak up about what you saw, make it count."
+      }
+    },
+    {
+      "id": "vivian",
+      "variantFlag": { "includedIn": ["7-player"] },
+      "public": {
+        "name": "Vivian Reyes",
+        "title": "The Estranged Heir",
+        "avatarUrl": null,
+        "bio": "Halcyon Reyes's daughter and a rival executive at a competing firm, Vivian arrived at the tower that very evening — the first time father and daughter had spoken in years. Now he is dead, and she stands to inherit a controlling share."
+      },
+      "private": {
+        "secretObjectives": [
+          "Secure the inheritance and the shares — and don't let your timing here look like a plan.",
+          "Conceal what you and your father actually argued about tonight.",
+          "Find out who killed him; whatever your differences, he was your father.",
+          "Keep the rival-firm reasons for your visit out of the conversation."
+        ],
+        "startingInventory": { "credits": 7, "clearance": 1 },
+        "hiddenKnowledge": [
+          "You came to reconcile — and to ask him to back your breakaway venture. He refused, coldly, hours before he died.",
+          "You inherit a controlling block of shares now, giving you a motive as bright as a flare.",
+          "Your competing firm had been quietly courting the same stolen dataset Cipher was sent to take — a thread you'd rather no one pulls.",
+          "You did NOT kill him, and the grief under your composure is real and raw."
+        ],
+        "roleplayingNotes": "Be guarded, sharp, and privately wounded. You expected anger tonight, not loss, and you're off-balance. Defend yourself with corporate poise while something cracks underneath. You trusted no one here and now need them."
+      }
+    }
+  ]
+}

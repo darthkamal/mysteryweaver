@@ -1,0 +1,27 @@
+{
+  "edges": [
+    { "from": "cornelius", "to": "evelyn",   "label": "Husband",            "public": true  },
+    { "from": "cornelius", "to": "theodore", "label": "Uncle & heir",       "public": true  },
+    { "from": "cornelius", "to": "crane",    "label": "Employer",           "public": true  },
+    { "from": "cornelius", "to": "beatrice", "label": "Old friends",        "public": true  },
+    { "from": "theodore",  "to": "cornelius","label": "Gambling debts",     "public": false },
+    { "from": "evelyn",    "to": "theodore", "label": "Secret affair",      "public": false },
+    { "from": "pierce",    "to": "cornelius","label": "Being blackmailed",  "public": false },
+    { "from": "crane",     "to": "cornelius","label": "Embezzling under",   "public": false },
+    { "from": "margot",    "to": "cornelius","label": "Estranged daughter", "public": false },
+    { "from": "beatrice",  "to": "cornelius","label": "Old letters",        "public": false },
+    { "from": "anna",      "to": "cornelius","label": "Ruined her family",  "public": false }
+  ],
+  "relationshipCards": [
+    {
+      "assetId": "rel_card_grudge",
+      "content": "A steward recalls Dr. Pierce and Mr. Vane exchanging sharp words in the smoking room, and an envelope of cash changing hands afterward.",
+      "revealsEdge": { "from": "pierce", "to": "cornelius" }
+    },
+    {
+      "assetId": "rel_card_affair",
+      "content": "Two stewards have separately seen Mrs. Vane and young Mr. Theodore on the boat deck after midnight, standing far too close for relations.",
+      "revealsEdge": { "from": "evelyn", "to": "theodore" }
+    }
+  ]
+}

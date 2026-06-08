@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "name": "Blackout at Helix Tower",
+  "theme": "neon-noir-arcology",
+  "seedColor": "#9D17E6",
+  "playerCount": { "min": 6, "max": 7 },
+  "currencies": [
+    { "id": "credits",   "name": "Credits",       "icon": "credit.png",    "tradeable": true },
+    { "id": "clearance", "name": "Clearance Keys", "icon": "keycard.png",   "tradeable": false }
+  ],
+  "phases": [
+    { "id": "lobby",         "name": "Lobby",             "yamsLocked": true  },
+    { "id": "lockdown",      "name": "Lockdown",          "yamsLocked": true  },
+    { "id": "investigation", "name": "The Investigation", "yamsLocked": false },
+    { "id": "accusation",    "name": "The Accusation",    "yamsLocked": true  },
+    { "id": "debrief",       "name": "Debrief",           "yamsLocked": true  }
+  ],
+  "accusationMechanic": {
+    "allowedPhase": "accusation",
+    "whoCanAccuse": "any_player",
+    "requiresEvidence": true,
+    "resolution": "gm_manual"
+  }
+}

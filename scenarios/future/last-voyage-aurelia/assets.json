@@ -1,0 +1,130 @@
+{
+  "assets": [
+    {
+      "id": "evidence_glass",
+      "type": "evidence",
+      "title": "The Nightcap Glass",
+      "content": "Cornelius Vane's brandy glass, still on his bedside table. A faint bitter sediment clings to the bottom — not the residue ordinary brandy leaves.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_syringe",
+      "type": "evidence",
+      "title": "The Surgeon's Syringe",
+      "content": "A used glass syringe found tucked in the ship surgeon's medical bag. It has been wiped, but a trace of plant-derived extract remains in the barrel.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_ledger",
+      "type": "evidence",
+      "title": "The Purser's Ledger",
+      "content": "The ship's account book. Several entries under Vane's name have been altered, and a hold manifest lists cargo that does not appear on the official record.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_telegram",
+      "type": "evidence",
+      "title": "The Torn Telegram",
+      "content": "A half-burned draft of a wireless message from Vane to his solicitor: '...changing everything in the mor—'. The rest is ash.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "evidence_vial",
+      "type": "evidence",
+      "title": "The Empty Vial",
+      "content": "A small empty bottle labelled 'Digitalis — Tinct.', found hidden behind the washbasin in the ship surgeon's private cabin. Enough was in it to stop a strong man's heart.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": { "npcEvent": "search_pierce_cabin" }
+    },
+    {
+      "id": "omen_clock",
+      "type": "omen",
+      "title": "The Stopped Clock",
+      "content": "The clock in Vane's stateroom stopped at 2:14 — knocked, perhaps, as he fell. The hour of death is not what the surgeon first reported.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "omen_gulls",
+      "type": "omen",
+      "title": "No Gulls",
+      "content": "The sailors mutter that no gulls have followed the ship since the death. Out here in the deep Atlantic, they say, the only predators left aboard are the human kind.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "oracle_heart",
+      "type": "oracle",
+      "title": "The Heart That Did Not Fail",
+      "content": "A second, careful look at the body tells its own story: the lividity and the dilated pupils point not to a failing heart but to a powerful drug. Someone who knew medicine signed a certificate they knew was false.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "oracle_hands",
+      "type": "oracle",
+      "title": "The Unsteady Hand",
+      "content": "Whoever administered the dose had access to surgical tools and the skill to use them — and hands that, lately, have not been entirely steady.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_morphine",
+      "type": "rumor",
+      "title": "The Doctor's Habit",
+      "content": "A stewardess whispers that Dr. Pierce keeps very odd hours and that his hands shake before he's had his 'medicine'. Some say he takes more than he prescribes.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_smuggling",
+      "type": "rumor",
+      "title": "Cargo in the Dark",
+      "content": "A deckhand will tell you, for a price, that the purser was down in the forward hold the night of the death, moving crates that aren't on any manifest.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rumor_quarrel",
+      "type": "rumor",
+      "title": "Words After Dinner",
+      "content": "Half the dining saloon heard Mrs. Vane and her husband exchange cold words that last evening. She left the table early; he did not follow.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rel_card_grudge",
+      "type": "relationship",
+      "title": "The Smoking-Room Argument",
+      "content": "A steward recalls Dr. Pierce and Mr. Vane exchanging sharp words in the smoking room, and an envelope of cash changing hands afterward.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    },
+    {
+      "id": "rel_card_affair",
+      "type": "relationship",
+      "title": "On the Boat Deck",
+      "content": "Two stewards have separately seen Mrs. Vane and young Mr. Theodore on the boat deck after midnight, standing far too close for relations.",
+      "imageUrl": null,
+      "visibility": "hidden",
+      "triggerCondition": null
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "edges": [
+    { "from": "halcyon", "to": "aria",    "label": "Closest collaborator", "public": true  },
+    { "from": "halcyon", "to": "lenore",  "label": "Boardroom rivals",     "public": true  },
+    { "from": "halcyon", "to": "vivian",  "label": "Estranged daughter",   "public": true  },
+    { "from": "kira",    "to": "halcyon", "label": "Head of his security", "public": true  },
+    { "from": "aria",    "to": "halcyon", "label": "About to be exposed",  "public": false },
+    { "from": "aria",    "to": "kira",    "label": "Borrowed a favour",    "public": false },
+    { "from": "aria",    "to": "mateo",   "label": "Borrowed his access",  "public": false },
+    { "from": "lenore",  "to": "halcyon", "label": "Planning his ouster",  "public": false },
+    { "from": "lenore",  "to": "jax",     "label": "Secret funding",       "public": false },
+    { "from": "cipher",  "to": "halcyon", "label": "Inside his servers",   "public": false },
+    { "from": "vivian",  "to": "halcyon", "label": "Refused that night",   "public": false }
+  ],
+  "relationshipCards": [
+    {
+      "assetId": "rel_card_favour",
+      "content": "An access log shows Dr. Sol and the head of security met privately the afternoon before the death — and right after, a vault-corridor camera was quietly taken offline.",
+      "revealsEdge": { "from": "aria", "to": "kira" }
+    },
+    {
+      "assetId": "rel_card_funding",
+      "content": "A laundered payment trail links a board member's shell account to the fixer's last job — someone on the board has been paying to bleed the company.",
+      "revealsEdge": { "from": "lenore", "to": "jax" }
+    }
+  ]
+}

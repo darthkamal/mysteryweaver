@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "name": "The Last Voyage of the Aurelia",
+  "theme": "art-deco-ocean-liner",
+  "seedColor": "#0E7C86",
+  "playerCount": { "min": 6, "max": 7 },
+  "currencies": [
+    { "id": "pounds", "name": "Pounds Sterling", "icon": "pound.png", "tradeable": true },
+    { "id": "favours", "name": "Favours", "icon": "favour.png", "tradeable": false }
+  ],
+  "phases": [
+    { "id": "lobby",         "name": "Lobby",              "yamsLocked": true  },
+    { "id": "embarkation",   "name": "Embarkation",        "yamsLocked": true  },
+    { "id": "investigation", "name": "The Investigation",  "yamsLocked": false },
+    { "id": "accusation",    "name": "The Accusation",     "yamsLocked": true  },
+    { "id": "debrief",       "name": "Debrief",            "yamsLocked": true  }
+  ],
+  "accusationMechanic": {
+    "allowedPhase": "accusation",
+    "whoCanAccuse": "any_player",
+    "requiresEvidence": true,
+    "resolution": "gm_manual"
+  }
+}

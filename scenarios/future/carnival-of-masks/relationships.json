@@ -1,0 +1,26 @@
+{
+  "edges": [
+    { "from": "falier",   "to": "giulietta", "label": "Husband",            "public": true  },
+    { "from": "falier",   "to": "isabella",  "label": "Guest of honour",    "public": true  },
+    { "from": "falier",   "to": "dragan",    "label": "Trade partners",     "public": true  },
+    { "from": "isabella", "to": "falier",    "label": "Debtor",             "public": false },
+    { "from": "vittore",  "to": "falier",    "label": "About to be denounced", "public": false },
+    { "from": "vittore",  "to": "benedetto", "label": "Confessed to",       "public": false },
+    { "from": "caterina", "to": "falier",    "label": "Kept his secrets",   "public": false },
+    { "from": "caterina", "to": "council",   "label": "Secret informant",   "public": false },
+    { "from": "marco",    "to": "falier",    "label": "Promised patronage", "public": false },
+    { "from": "giulietta","to": "falier",    "label": "Wished to flee",     "public": false }
+  ],
+  "relationshipCards": [
+    {
+      "assetId": "rel_card_confession",
+      "content": "A sacristan recalls the apothecary leaving Father Benedetto's confessional pale and shaking weeks ago, muttering about a wrong that must be 'set right'.",
+      "revealsEdge": { "from": "vittore", "to": "benedetto" }
+    },
+    {
+      "assetId": "rel_card_informant",
+      "content": "A sealed note in a courier's satchel, in the cipher of the Council of Ten, addressed to one of tonight's guests — someone at this ball reports to the Council.",
+      "revealsEdge": { "from": "caterina", "to": "council" }
+    }
+  ]
+}

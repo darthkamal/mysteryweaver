@@ -1,0 +1,127 @@
+{
+  "timeline": [
+    {
+      "phaseId": "lockdown",
+      "entries": [
+        {
+          "time": "0:00",
+          "label": "Welcome to Helix Tower",
+          "type": "gm_monologue",
+          "script": "Welcome to the ninetieth floor of Helix Tower, the crown of Helix Dynamics, on the night the whole city went dark. You are the few people with clearance to be this high after hours — executives, specialists, and the people who keep the lights on. I am your Game Master, and I will play the building, the systems, and everyone who isn't one of you. Each of you carries a public face and a private file of secrets. Read your file, share it with no one, and take five minutes to become who you'll be tonight.",
+          "gmTip": "Establish a sealed, vertical world — the tower is in lockdown, no one leaves. Hand out character files now. Lean into the neon-noir mood."
+        },
+        {
+          "time": "0:05",
+          "label": "Stranded Together",
+          "type": "player_prompt",
+          "script": "Emergency power has you all locked on this floor until the grid is restored. Introduce yourselves in character — your role at Helix, why you're in the building tonight, and the one thing you most want the others to believe.",
+          "gmTip": "Go around the room. Note alliances, rivalries, and who's too eager to explain themselves. Establish that no one can leave."
+        }
+      ]
+    },
+    {
+      "phaseId": "investigation",
+      "entries": [
+        {
+          "time": "0:15",
+          "label": "The Body in the Vault",
+          "type": "npc_dialogue",
+          "npcId": "halix_ai",
+          "script": "ATTENTION OCCUPANTS. Founder Halcyon Reyes is non-responsive in the server vault. Vital telemetry ceased at the onset of the power event. Building protocol requires lockdown until cause is determined. I am authorised to assist your inquiry within the bounds of my access.",
+          "gmTip": "Voice the building AI as flat, helpful, and subtly limited — it will answer literally but its records have been tampered with. It is a tool, not a detective."
+        },
+        {
+          "time": "0:25",
+          "label": "Granting Access",
+          "type": "clue_distribution",
+          "script": "The AI unlocks the executive floor's records to you: camera feeds, access logs, system telemetry. You may question one another, search the offices and the vault, and pull what data your clearance allows.",
+          "gmTip": "Reveal evidence_implant_log and evidence_access_badge to anyone who pulls the vault records. Make rumor_takeover and rumor_jumpsuit freely available. Gate the deleted research and raw logs behind real effort."
+        },
+        {
+          "time": "0:30",
+          "label": "Open Investigation",
+          "type": "gm_note",
+          "script": "Players investigate freely. Voice NPCs, gate clues behind actions, and keep the corporate paranoia high.",
+          "gmTip": "Key triggers: (1) Trace the blackout → evidence_maint_record. (2) Dig the purged neuro project → evidence_deleted_files + rumor_subject. (3) Examine the implant telemetry with any skill → oracle_signature (it took backdoor-level access). (4) Pull Reyes's calendar → oracle_motive. (5) Dr. Sol will eagerly 'interpret' every technical clue toward 'accident' or toward Cipher/Jax — that is her cover."
+        },
+        {
+          "time": "1:00",
+          "label": "Mid-Crisis Pulse Check",
+          "type": "gm_note",
+          "script": "Assess where suspicion has landed and adjust.",
+          "gmTip": "If players pile onto Mateo (the blackout) or Jax/Cipher (the obvious outsiders), surface oracle_signature and rel_card_favour to point back toward someone with deep platform access. If Lenore is escaping notice and you want pressure, drop rumor_takeover. Keep the Credits economy alive — informants and the fixer deal in favours and credits."
+        },
+        {
+          "time": "1:30",
+          "label": "Closing In",
+          "type": "gm_note",
+          "script": "Begin steering toward the accusation.",
+          "gmTip": "Ensure oracle_signature and oracle_motive have surfaced. The decisive clue is the untampered logs held by Cipher — when players persuade, pay, or pressure Cipher into sharing (or when the climax demands it), trigger 'cipher_shares_logs' to reveal evidence_raw_logs and the explicit override command."
+        }
+      ]
+    },
+    {
+      "phaseId": "accusation",
+      "entries": [
+        {
+          "time": "2:15",
+          "label": "The Accusation",
+          "type": "gm_monologue",
+          "script": "The grid is minutes from coming back, and with it the authorities and the press. The building AI announces: 'Lockdown lifting in ten minutes. Please resolve the incident.' This is your last private window. Each of you may now formally accuse — name who killed Halcyon Reyes, and show the evidence that proves it.",
+          "gmTip": "Players submit accusations through the app. Read each aloud. After all are in, deliver the reveal."
+        },
+        {
+          "time": "2:30",
+          "label": "The Reveal",
+          "type": "gm_monologue",
+          "script": "The truth: it was Dr. Aria Sol. Reyes had uncovered her unsanctioned consciousness-upload trials — including the volunteer they cost — and had set a morning meeting to end her project and report her. So she used the backdoor she had built into every Helix implant to send a lethal override to his cortical link, and triggered the blackout to disguise the command as a power-fault glitch. She borrowed Kira's camera, Mateo's access, and everyone's trust. Only the one copy of the logs she couldn't reach — Cipher's — preserved the command in her own secret language.",
+          "gmTip": "Deliver slowly. Pause after naming Sol. Let the betrayal by the celebrated, beloved colleague land before moving on."
+        }
+      ]
+    },
+    {
+      "phaseId": "debrief",
+      "entries": [
+        {
+          "time": "2:45",
+          "label": "Debrief & Secrets Revealed",
+          "type": "gm_monologue",
+          "script": "Lights up — out of character now. Let's surface every secret carried in this tower tonight: the heists, the coups, the borrowed favours, the buried grief. And let's talk about who came closest to the truth.",
+          "gmTip": "Go around the room; each player reads their hidden knowledge aloud. Celebrate the sharpest deductions and the boldest bluffs. This is the payoff for a game well played."
+        }
+      ]
+    }
+  ],
+  "npcRoster": [
+    {
+      "id": "halcyon",
+      "name": "Halcyon Reyes",
+      "description": "The deceased — founder and CEO of Helix Dynamics, a visionary who built the neural-interface empire and made as many enemies as fortunes. Referenced throughout, never seen alive.",
+      "portraitUrl": null,
+      "playingNotes": "Spoken of only in memory. Render him as brilliant, exacting, and increasingly alarmed by what his company had become — a man who, at the end, chose to do the right thing one day too publicly."
+    },
+    {
+      "id": "halix_ai",
+      "name": "HALIX",
+      "description": "The building's management AI. Controls doors, power, and records on the executive floor. Helpful within its access — but its logs have been quietly tampered with.",
+      "portraitUrl": null,
+      "playingNotes": "Flat, literal, relentlessly cooperative. It answers exactly what is asked and nothing more. It does not lie, but it cannot see the records that were overwritten. Use it to dispense neutral facts and frustrate sloppy questions."
+    },
+    {
+      "id": "rook",
+      "name": "Rook",
+      "description": "A night-shift security tech under Kira's command, jumpy and junior, who was watching the feeds when they went dark.",
+      "portraitUrl": null,
+      "playingNotes": "Nervous and eager to please. He trades small observations for reassurance or credits. He genuinely noticed the camera go offline and the strange flicker pattern, and will say so if handled gently."
+    }
+  ],
+  "npcEvents": [
+    {
+      "id": "cipher_shares_logs",
+      "label": "Cipher Reveals the Raw Logs",
+      "description": "Triggered when the players convince, pay, or pressure Cipher into surfacing the untampered neural-link logs (or when the GM judges the climax is near). Reveals the explicit lethal override command — the decisive evidence.",
+      "unlocksAssets": ["evidence_raw_logs"],
+      "autoDistribute": false
+    }
+  ]
+}

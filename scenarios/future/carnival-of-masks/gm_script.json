@@ -1,0 +1,134 @@
+{
+  "timeline": [
+    {
+      "phaseId": "masquerade",
+      "entries": [
+        {
+          "time": "0:00",
+          "label": "Welcome to the Palazzo",
+          "type": "gm_monologue",
+          "script": "Benvenuti! Welcome to Venice in the height of Carnival, to the Palazzo Morosini, where the candlelight gleams on gold and glass and every face is hidden behind a mask. Tonight you are the guests of the most coveted ball of the season — nobles, merchants, and one or two who do not belong here at all. I am your Game Master, and I will play the servants, the gondoliers, and every soul beneath a mask who is not one of you. Each of you holds a public face and a private folio of secrets. Read it, share it with no one, and take five minutes to become who you will be tonight.",
+          "gmTip": "Lean into masks, music, and intrigue — anyone could be anyone behind a mask. Hand out character folios now. Encourage florid, courtly manners."
+        },
+        {
+          "time": "0:05",
+          "label": "The Grand Entrance",
+          "type": "player_prompt",
+          "script": "The Contessa receives her guests at the head of the stair. One by one, introduce yourselves in character — your name, your standing in Venice, and the one thing you most wish this gilded room to believe about you.",
+          "gmTip": "Go around the room. Note who flatters, who avoids whom, and who watches from behind the eye-holes. These first moves shape the night."
+        }
+      ]
+    },
+    {
+      "phaseId": "investigation",
+      "entries": [
+        {
+          "time": "0:15",
+          "label": "Death at the Ball",
+          "type": "npc_dialogue",
+          "npcId": "majordomo",
+          "script": "Signori e signore — I beg your calm. Senator Lorenzo Falier has been found dead at the wine table, his goblet fallen from his hand. The water-gates are barred and the Contessa permits no one to leave the palazzo. Until the truth is known, I must ask that every guest remain — and submit to questions, however high their birth.",
+          "gmTip": "Grave and deferential, but firm. The household wants the matter resolved discreetly before the Council of Ten descends. The majordomo offers no clues himself."
+        },
+        {
+          "time": "0:25",
+          "label": "The Inquiry Begins",
+          "type": "clue_distribution",
+          "script": "The Contessa grants you the run of the palazzo — the salons, the loggia, the wine table, the chamber where the Senator lies. You may question any guest, examine the body, and call for servants. But remember: in Venice, every wall has ears, and every favour has its price in ducats or in whispers.",
+          "gmTip": "Reveal evidence_goblet (the goblet) to anyone who examines the wine table or the body. Make rumor_quarrel and rumor_switch freely available. Hold the denunciation letter, the parish ledger, and the hidden ring for players who search the right places."
+        },
+        {
+          "time": "0:30",
+          "label": "Open Investigation",
+          "type": "gm_note",
+          "script": "Players investigate freely. Voice the servants and masked NPCs, gate clues behind actions, and keep the courtly intrigue thick.",
+          "gmTip": "Key triggers: (1) Examine the body or the cup closely → evidence_almond + oracle_physician (cantarella, not a weak heart). (2) Search the Senator's coat → evidence_letter (the unsent denunciation). (3) Press servants on the parish or the priest → evidence_ledger. (4) Dig into old Rialto grudges → rumor_galley. (5) Vittore will helpfully 'diagnose' a weak heart or bad oysters and nudge suspicion toward Marco's goblets or the foreigner Dragan — this is his cover."
+        },
+        {
+          "time": "1:00",
+          "label": "Mid-Ball Pulse Check",
+          "type": "gm_note",
+          "script": "Assess where suspicion has landed and adjust.",
+          "gmTip": "If players blame Marco (the goblet-maker), Dragan (the foreigner), or Giulietta (the young widow), surface oracle_physician and oracle_hand to point toward someone who commands poisons by trade. If the apothecary is escaping notice, reveal rumor_galley and rel_card_confession. Keep the economy alive — informants like Caterina sell secrets for ducats and whispers."
+        },
+        {
+          "time": "1:30",
+          "label": "Closing the Net",
+          "type": "gm_note",
+          "script": "Begin steering toward the accusation.",
+          "gmTip": "Ensure oracle_physician (it was cantarella) and evidence_letter (the denunciation) have surfaced. The decisive clue is the hollow poison-ring — when players search the loggia, or when the climax demands it, trigger 'search_the_loggia' to reveal evidence_ring."
+        }
+      ]
+    },
+    {
+      "phaseId": "accusation",
+      "entries": [
+        {
+          "time": "2:15",
+          "label": "The Accusation",
+          "type": "gm_monologue",
+          "script": "The Contessa gathers you beneath the great chandelier. 'At dawn,' she says, 'the Council of Ten will come for answers, and I will give them a name. Better it be the right one, spoken here, than the wrong one wrung from us in the Doge's prisons. Speak now.' Each of you may make a formal accusation — name who killed Senator Falier, and show the evidence that damns them.",
+          "gmTip": "Players submit accusations through the app. Read each aloud, with Venetian flourish. After all are in, deliver the reveal."
+        },
+        {
+          "time": "2:30",
+          "label": "The Reveal",
+          "type": "gm_monologue",
+          "script": "The truth: it was Vittore, the apothecary. Senator Falier had learned that Vittore sold cantarella to assassins, and carried in his very coat a denunciation that would have delivered him to the Council of Ten after Carnival. Worse, that same Senator had years ago condemned Vittore's brother to die at the galley oars on a false charge. So beneath his gentle smile, amid the crush at the wine table, Vittore tipped poison from a hollow ring into a goblet and let an unwitting server carry the poisoned cup to the Senator — then offered, as the only man of medicine present, to name the cause himself. The almond breath, the unsent letter, the old grudge, and the empty ring in the loggia tell the whole tale.",
+          "gmTip": "Deliver slowly. Pause after naming Vittore. Let the betrayal of the gentle, trusted healer land before moving on."
+        }
+      ]
+    },
+    {
+      "phaseId": "debrief",
+      "entries": [
+        {
+          "time": "2:45",
+          "label": "Debrief & Secrets Revealed",
+          "type": "gm_monologue",
+          "script": "Masks off — out of character now. Let us reveal every secret carried into the Palazzo Morosini tonight: the debts, the spies, the smuggling, the loves planned in the dark. And let us speak of who came closest to the truth.",
+          "gmTip": "Go around the room; each player reads their hidden knowledge aloud. Celebrate the cleverest plays and the sharpest deductions. This is the reward for a game well played."
+        }
+      ]
+    }
+  ],
+  "npcRoster": [
+    {
+      "id": "falier",
+      "name": "Senator Lorenzo Falier",
+      "description": "The deceased — a powerful and feared member of the Venetian Senate, righteous in public and ruthless in private. Referenced throughout, never seen alive.",
+      "portraitUrl": null,
+      "playingNotes": "Spoken of only in memory. Render him as proud, exacting, and dangerous to cross — a man who collected enemies the way Venice collects canals, and who, at the end, set out to do one last act of justice that cost him his life."
+    },
+    {
+      "id": "majordomo",
+      "name": "The Majordomo",
+      "description": "The Contessa's chief steward, who runs the household and now guards a crime scene. Discreet, anxious, and devoted to the honour of the house.",
+      "portraitUrl": null,
+      "playingNotes": "Deferential and careful. He wants the matter settled before the Council of Ten arrives and will gently discourage anything that shames the Morosini name. He gives no clues, only manages the room."
+    },
+    {
+      "id": "pietro",
+      "name": "Pietro the Server",
+      "description": "A young wine-server who carried cups all night and is now terrified he will be blamed for the poisoned goblet.",
+      "portraitUrl": null,
+      "playingNotes": "Frightened and eager to please. He trades what he saw for reassurance, ducats, or whispers. He genuinely remembers carrying a fresh goblet to the Senator from the wine table, where a masked guest stood close, and will say so if handled kindly."
+    },
+    {
+      "id": "council",
+      "name": "The Council of Ten",
+      "description": "Venice's feared secret tribunal, whose spies and judges move unseen through the city. They do not appear in person tonight, but their shadow governs every choice — and at dawn they will come for answers.",
+      "portraitUrl": null,
+      "playingNotes": "An ever-present off-stage authority, never voiced directly as a character. Invoke them to raise the stakes: anyone denounced to the Council faces the Doge's prisons. Caterina secretly answers to them, and the Senator's unsent letter was meant for them."
+    }
+  ],
+  "npcEvents": [
+    {
+      "id": "search_the_loggia",
+      "label": "Search the Loggia",
+      "description": "Triggered when the players search the open loggia above the canal (or when the GM judges the climax is near). Reveals the hollow poison-ring hidden in a planter — the decisive piece of evidence.",
+      "unlocksAssets": ["evidence_ring"],
+      "autoDistribute": false
+    }
+  ]
+}
